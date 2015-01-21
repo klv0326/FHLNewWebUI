@@ -1,0 +1,271 @@
+/* Layer 1 */
+#fhlTopMenu {  
+  position:	fixed;
+  background-color: black;  
+  left: 5%;  
+  width: 90%;
+  height: 40px;
+}
+
+#logoFHL {
+	width: 96px;
+	height: 32px;
+}
+
+#fhlToolbar {  
+  position: fixed;  
+  background-color: rgb(240,240,240);  
+  top: 40px;
+  left: 5%;  
+  width: 90%;/*The same as fhlTopMenu*/
+  height: 80px;  
+}
+
+#bookSelect {
+  position: relative; 
+  float:left;
+  width: 20%;
+  height: 80px;/*The Same as fhlToolbar*/
+  font-family: Microsoft JhengHei;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;    
+  line-height: 80px;/*The Same as fhlToolbar*/
+}
+
+#versionSelect {  
+  position: relative;
+  float:left; 
+  width: 10%;
+  height: 80px;/*The Same as fhlToolbar*/  
+  font-family: Microsoft JhengHei;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;    
+  line-height: 80px;/*The Same as fhlToolbar*/
+}
+
+#versionList {
+  position: relative;  
+  left: 23%;
+  top: 112px;   
+  width: 10%;     
+  height: 95%;
+  margin:0;  
+  background-color:rgb(200,200,200);
+  font-family: Microsoft JhengHei;  
+  z-index: 901;
+}
+
+#versionList ul { 
+  list-style: none; 
+  padding:8px;
+  margin:0;
+}
+
+#versionList li {    
+  cursor: pointer;  
+  height: 18px;
+  line-height: 18px;  
+  white-space: nowrap;
+  padding:0;
+  margin:0;
+}
+
+#versionListOld li.selected {
+  background-color: rgb(180,180,180);
+}
+
+#bookListOld {
+  position: relative;  
+  left: 4.6%;
+  top: 112px;   
+  width: 10%;     
+  height: 95%;
+  margin:0;  
+  float:left;  
+  background-color:rgb(200,200,200);
+  font-family: Microsoft JhengHei;  
+  z-index: 901;
+}
+
+#bookListOld ul { 
+  list-style: none; 
+  padding:8px;
+  margin:0;
+}
+
+#bookListOld li {    
+  cursor: pointer;  
+  height: 18px;
+  line-height: 18px;  
+  white-space: nowrap;
+  padding:0;
+  margin:0;
+}
+
+#bookListNew { 
+  position: relative;  
+  left: 4.6%;
+  top: 112px;       
+  width: 10%;  
+  height: 95%;
+  margin:0;   
+  float:left;
+  background-color:rgb(200,200,200);
+  font-family: Microsoft JhengHei;  
+  z-index: 901;  
+}
+
+#bookListNew ul { 
+  list-style: none; 
+  padding:8px;
+  margin:0;
+}
+
+#bookListNew li {    
+  cursor: pointer;  
+  height: 18px;
+  line-height: 18px;  
+  white-space: nowrap;
+  padding:0;
+  margin:0;
+}
+
+#bookChapters {  
+  position: relative; 
+  left: 4.6%;
+  top: 112px;        
+  width: 20%; 
+  margin:0;    
+  float:left;
+  background-color:rgb(150,150,150);
+  font-family: Microsoft JhengHei;
+  z-index: 901;
+}
+
+#bookChapters ul {  
+  width:100%;
+  display: inline-block;
+  list-style: none;   
+  padding:4px;
+  margin:0;
+}
+
+#bookChapters li {   
+  width: 20%;  
+  display: inline-block;
+  font-weight: bold;
+  text-align: center;      
+  cursor: pointer;  
+  height: 18px;
+  line-height: 18px;  
+  white-space: nowrap;
+  padding:0;
+  margin-top:1px;
+}
+
+#fhlLecture {  
+  position: fixed;  
+  overflow: hidden;
+  left: 5%;
+  top: 120px;
+  width: 54%;
+  height: 80%;
+  background-color: white;  
+}
+
+#lectureText {
+  position: relative;     
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  line-height: 30px;
+  font-family: Microsoft JhengHei;  
+  float: left;  
+  padding-right: 15px; 
+  z-index:900;
+}
+
+#lectureText .lecTitle{
+  display: inline-block;  
+  width: 10%;  
+  vertical-align: middle;
+  padding-left:40px;
+  padding-top:10px;  
+}
+
+#lectureText .lecContent{  
+  display: inline-block;    
+  width: 80%;  
+  vertical-align: middle;  
+  padding-top:10px;  
+}
+
+#lectureText .lecContent2{  
+  display: inline-block;    
+  width: 40%;  
+  vertical-align: middle;  
+  padding-top:10px;  
+}
+
+#fhlInfo {  
+  position: fixed;
+  top: 120px;
+  left: 59%;
+  width: 36%;  
+  height: 80%;
+  overflow: hidden;
+  background-color: white;
+  text-align:left;
+  font-family: Microsoft JhengHei;  
+}
+
+#fhlInfo ul {
+  width:90%;  
+  list-style: none;  
+  padding:0;  
+  margin:0;    
+}
+
+#fhlInfo li {
+  position: relative;
+  width:10%;   
+  font-weight: bold;
+  text-align: center;      
+  display: inline-block;
+  cursor: pointer;  
+  height: 30px;
+  line-height: 30px;    
+  background-color: rgb(220,220,220);  
+  border-top: 1px solid;
+  border-right: 1px solid;
+  border-left: 1px solid;    
+  border-bottom: 1px solid rgb(220,220,220);
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;  
+  z-index:901;
+}
+
+#fhlInfo li.selected {
+  background-color: rgb(180,180,180);  
+  border-bottom: 1px solid rgb(180,180,180);
+}
+
+#fhlInfo-content {
+  position: relative;
+  overflow: auto;
+  display: inline-block;
+  width:100%; 
+  height:95.7%;  
+  margin:auto;
+  top: -1px;
+  border-top: 1px solid;
+  /*border-right: 1px solid;
+  border-left: 1px solid;
+  border-bottom: 1px solid;*/
+  background-color: rgb(180,180,180);
+  font-family: Microsoft JhengHei;  
+  padding-right: 15px; 
+  z-index:900;
+}

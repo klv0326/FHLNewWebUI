@@ -1,0 +1,180 @@
+#fhlTopMenu {  
+  position: fixed;
+  background-color: black;  
+  top: 0;
+  left: 0;  
+  width: 100%;
+  height: 40px;  
+  z-index: 100;/*Layer 1*/
+}
+#logoFHL {
+  width: 120px;
+  height: 40px;
+  background-color: white;
+}
+
+#fhlToolbar {  
+  position: fixed;
+  background-color: #F3F3F3;  
+  top: 40px;
+  left: 0;
+  width: 100%;/*The same as fhlTopMenu*/
+  height: 80px;  
+  z-index: 100;/*Layer 1*/
+}
+#fhlToolbar div{
+  cursor:pointer;
+  font: 30px/80px bold ,Microsoft JhengHei;
+  padding:0px 10px 0px 10px;
+  text-align: center;  
+  position: relative; 
+  float:left;    
+}
+#fhlToolbar div:hover{
+  background-color: #C0C0C0;
+}
+#fhlToolbar div.selected{
+  background-color: #A0A0A0;
+}
+#bookSelectPopUp {
+  position: fixed;
+  font: 18px/18px bold ,Microsoft JhengHei;
+  background-color: transparent;  
+  z-index: 101;/*Layer 2*/
+}
+#bookSelectName {
+  float:left;
+  background-color: #B0B0B0;
+  -webkit-column-count: 2;
+  -moz-column-count: 2;
+  column-count: 2;
+}
+#bookSelectName ul { 
+  list-style: none; 
+  padding:2px;
+  margin:0;
+}
+#bookSelectName li {    
+  cursor: pointer;
+  white-space: nowrap;
+  padding:0;
+  margin:0;
+}
+#bookSelectName li:hover{    
+  background-color: white;
+}
+#bookSelectName li.selected{    
+  background-color: black;
+  color:white;
+}
+#bookSelectChapter{
+  float:left;
+  background-color: #A0A0A0;
+}
+#bookSelectChapter ul {  
+  width:200px;
+  display: inline-block;
+  list-style: none;  
+  padding:0;
+  margin:0; 
+}
+#bookSelectChapter li {
+  width:20%;  
+  display: inline-block;
+  text-align: center;      
+  cursor: pointer;  
+  white-space: nowrap;
+  padding:0;
+  margin-bottom:4px;
+}
+#bookSelectChapter li:hover{
+  background-color: white;
+}
+
+#versionSelectPopUp {
+  position: fixed;
+  background-color: #B0B0B0;
+  z-index: 101;/*Layer 2*/
+}
+
+#fhlLecture {
+  position: fixed;
+  overflow: auto;
+  background-color: white;  
+  font: 20px/20px bold ,Microsoft JhengHei;
+  top: 130px;
+  left: 0;  
+  width:60%;
+  height: 80%;
+  padding-right:20px;
+  z-index: 100;/*Layer 1*/
+}
+#fhlLecture .lec:hover{
+  background-color: red;
+}
+#fhlLecture .selected{
+  background-color: #C0C0C0;
+}
+#fhlLecture .lecTitle{
+  display: inline-block;  
+  width: 10%;  
+  vertical-align: middle;
+  padding-left:40px;
+  padding-top:10px;
+}
+#fhlLecture .lecContent{  
+  display: inline-block;    
+  width: 80%;  
+  vertical-align: middle;  
+  padding-top:10px;
+}
+
+#fhlInfo {
+  position: fixed;
+  overflow: hidden;
+  /*background-color: blue;*/
+  top: 130px; 
+  left:60%; 
+  width:40%;
+  height: 90%;
+  z-index: 100;/*Layer 1*/
+}
+#fhlInfoTitle ul {
+  width:100%;  
+  list-style: none;  
+  padding:0;  
+  margin:0;    
+}
+#fhlInfoTitle li {
+  position: relative;
+  background-color: #F3F3F3;  
+  display: inline-block;
+  width:10%;
+  font: 20px/30px bold ,Microsoft JhengHei;  
+  text-align: center;        
+  cursor: pointer;  
+  border:1px solid #A0A0A0;
+  margin-right:3px;
+  border-bottom: 1px solid #A0A0A0;
+  border-radius: 10px 10px 0px 0px;
+  z-index:101;
+}
+#fhlInfoTitle li:hover{
+  background-color: #C0C0C0;
+}
+#fhlInfoTitle .selected{
+  background-color: #A0A0A0;
+}
+#fhlInfoContent {
+  position: relative;
+  overflow:auto;
+  background-color: #A0A0A0;
+  display: inline-block;
+  width:100%;
+  height:90%;
+  font: 20px/30px bold ,Microsoft JhengHei;
+  top: -1px;
+  border-top: 1px solid;  
+  padding-right:15px;
+  z-index:100;
+}

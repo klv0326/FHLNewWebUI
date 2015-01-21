@@ -1,0 +1,64 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="./libs/jquery-ui.css">
+<script src="./libs/jquery-1.10.2.js"></script>
+<script src="./libs/jquery-ui.js"></script>
+<script src="./libs/xml2json.min.js"></script>
+<script>
+var URL_PRE="https://bkbible.fhl.net/json/";
+//var test_url=URL_PRE+"sc.php?chineses=羅&chap=1&sec=&version=nstrunv&strong=0&gb=0";
+//var test_url=URL_PRE+"qb.php?chineses=詩&chap=119&sec=&version=nstrunv&strong=0&gb=0";
+//var test_url=URL_PRE+"abv.php";
+var test_url=URL_PRE+"sc.php?engs=Ex&chap=1&sec=15&gb=0&book=3";
+$(function(){
+	$('#btn').click(function(){
+		clickBtnAct();
+	});
+});
+
+function clickBtnAct(){	
+	$.ajax({
+		url:test_url,
+		type:'get',
+		dataType:'jsonp',
+		success:
+	});.done(function(d,s,j){		
+		//var json=j.responseText;		
+		$('#json').text(d);
+	});		
+/*	
+	$.ajax({
+		url:test_url,
+	}).done(function(d,s,j){		
+		var json=j.responseText;		
+		$('#json').text(json);
+	});			
+*/	
+/*	
+	$.ajax({
+		url:test_url,
+		dataType:'xml'
+	}).done(function(d,s,j){		
+		$('#xml').text(j.responseText);
+	});
+
+	$.ajax({
+		url:test_url,
+		dataType:'xml'
+	}).done(function(d,s,j){
+		var x2js = new X2JS();		
+		var json=JSON.stringify(x2js.xml_str2json(j.responseText));		
+		$('#json').text(json);
+	});	
+*/	
+}
+</script
+</head>
+<body>
+<input id="btn" type="button" value="Click"/>
+<div id="xml"></div>
+<br/>
+<div id="json"></div>
+</body>
+</html>

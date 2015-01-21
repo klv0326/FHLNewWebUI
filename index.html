@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="./libs/fhl.css"/>
+<script src="./libs/jquery-1.10.2.js"></script>
+<script src="./libs/xml2json.min.js"></script>
+<script>
+$(function(){
+  //fhlTopMenu.init(pageState);
+  //fhlTopMenu.render(pageState);
+  fhlToolbar.init(pageState);
+  fhlLecture.init(pageState,$('#fhlLecture'));
+  fhlInfo.init(pageState);  
+});
+
+var urlJSON="https://bkbible.fhl.net/json/";
+
+var pageState={
+    //Input Parameters
+    //For qb.php
+    engs:"Gen",
+    chineses:"創",
+    chap:1,
+    sec:1,
+    version:["nstrunv"],    
+    strong:0,
+    gb:0,
+    //For sc.php
+    book:3,
+    //Return Values
+    cname:["和合本"],
+    //For fhlInfoContent
+    titleId:"fhlInfoComment",
+};
+
+var book=new Array( "創","出","利","民","申","書","士","得","撒上","撒下","王上","王下",
+                    "代上","代下","拉","尼","斯","伯","詩","箴","傳","歌","賽","耶",
+                    "哀","結","但","何","珥","摩","俄","拿","彌","鴻","哈","番","該","亞","瑪",
+                    "太","可","路","約","徒","羅","林前","林後","加","弗","腓","西",
+                    "帖前","帖後","提前","提後","多","門","來","雅",
+                    "彼前","彼後","約一","約二","約三","猶","啟");
+
+var bookFullName=new Array( "創世記","出埃及記","利未記","民數記","申命記","約書亞記","士師記",
+                            "路得記","撒母耳記上","撒母耳記下","列王紀上","列王紀下",
+                            "歷代志上","歷代志下","以斯拉記","尼希米記","以斯帖記","約伯記",
+                            "詩篇","箴言","傳道書","雅歌","以賽亞書","耶利米書",
+                            "耶利米哀歌","以西結書","但以理書","何西阿書","約珥書","阿摩司書",
+                            "俄巴底亞書","約拿書","彌迦書","那鴻書","哈巴谷書",
+                            "西番雅書","哈該書","撒迦利亞書","瑪拉基書",
+                            "馬太福音","馬可福音","路加福音","約翰福音","使徒行傳","羅馬書",
+                            "哥林多前書","哥林多後書","加拉太書","以弗所書","腓立比書","歌羅西書",
+                            "帖撒羅尼迦前書","帖撒羅尼迦後書","提摩太前書","提摩太後書",
+                            "提多書","腓利門書","希伯來書","雅各書",
+                            "彼得前書","彼得後書","約翰壹書","約翰貳書","約翰參書","猶大書","啟示錄");    
+var bookChapters=new Array( 50,40,27,36,34,24,21,4,31,24,22,25,
+                            29,36,10,13,10,42,150,31,12,8,66,52,
+                            5,48,12,14,3,9,1,4,7,3,3,3,2,14,4,
+                            28,16,24,21,28,16,16,13,6,6,4,4,
+                            5,3,6,4,3,1,13,5,
+                            5,3,5,1,1,1,22                            
+                            );
+var bookEng=new Array("Gen","Ex","Lev","Num","Deut","Josh","Judg","Ruth","1+Sam","2+Sam",
+                "1+Kin","2+Kin","1+Chr","2+Chr","Ezra","Neh","Esth","Job","Ps","Prov",
+                "Eccl","Song","Is","Jer","Lam","Ezek","Dan","Hos","Joel","Amos","Obad",
+                "Jon","Mic","Nah","Hab","Zeph","Hag","Zech","Mal",
+                "Matt","Mark","Luke","John","Acts","Rom","1+Cor","2+Cor","Gal","Eph",
+                "Phil","Col","1+Thess","2+Thess","1+Tim","2+Tim","Titus","Philem",
+                "Heb","James","1+Pet","2+Pet","1+John","2+John","3+John","Jude","Rev");    
+
+function getAjaxUrl(func,ps,idx){
+  var paramArr=new Array("engs","chineses","chap","sec","version",
+                          "strong","gb","book");
+  var urlParams={
+    sc:[0,2,3,6,7],
+    qb:[1,2,4,5,6]
+  };  
+  var getFullAjaxUrl=function(func,ps,idx){
+    var ret=urlJSON+func+".php?";
+    for(var i=0;i<urlParams[func].length;i++){      
+      if(paramArr[urlParams[func][i]]!="version"){
+        ret+=paramArr[urlParams[func][i]];
+        ret+="=";
+        ret+=ps[paramArr[urlParams[func][i]]];
+        ret+="&";
+      }else{
+        ret+=paramArr[urlParams[func][i]];
+        ret+="=";
+        ret+=ps[paramArr[urlParams[func][i]]][idx];
+        ret+="&";
+      }      
+    };
+    
+    ret=ret.substring(0,ret.length-1);
+    //console.log(ret);
+    return ret;
+  }
+  return getFullAjaxUrl(func,ps,idx);
+}
+
+function getBookFunc(func,bookName){
+  var i;
+  for(i=0;i<book.length;i++)
+    if(book[i]==bookName)
+      break;
+  var ret;
+  switch(func){
+    case "index":
+      ret=i;
+      break;
+    case "bookFullName":
+      ret=bookFullName[i];
+      break;
+    case "bookChapters":
+      ret=bookChapters[i];
+      break;
+    case "bookEng":
+      ret=bookEng[i];
+      break;
+    default:
+      ret="failed";
+      break;
+  }
+  return ret;
+}
+
+/***** Start of fhlToolbar *****/
+var fhlToolbar={
+  init:function(ps){
+    bookSelect.init(ps,$('#bookSelect'));    
+    bookSelect.registerEvents(ps);
+    versionSelect.init(ps);
+    versionSelect.registerEvents(ps);   
+  }
+};
+
+var bookSelectName={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.render(ps,this.dom);
+  },
+  registerEvents:function(ps){
+    var that=this.dom;
+    this.dom.find('li').click(function(){
+      var idx=getBookFunc("index",$(this).attr('chineses'));
+      var offset=that.offset();
+      offset.left+=that.width();
+      bookSelectChapter.init(ps,$('#bookSelectChapter'),idx,offset);
+      bookSelectChapter.registerEvents(ps);
+      that.find('li').removeClass('selected');
+      $(this).addClass('selected');      
+    });
+  },
+  render:function(ps,dom){
+    var html="<ul>";
+    for(var i=0;i<bookFullName.length;i++)
+      html+="<li>"+bookFullName[i]+"</li>";
+    //Add 12 null items to do column count
+    for(var i=0;i<11;i++)
+      html+="<li>&nbsp</li>";
+    html+="</ul>";    
+    dom.html(html);            
+    for(var i=0;i<bookFullName.length;i++){
+      dom.find('li:eq('+i+')').attr('chineses',book[i]);
+    }
+  }
+};
+
+var bookSelectChapter={
+  init:function(ps,dom,idx,offset){
+    this.dom=dom;
+    this.idx=idx;
+    this.dom.offset(offset);
+    this.render(ps,this.dom,this.idx);
+  },
+  registerEvents:function(ps){
+    var that=this;
+    this.dom.find('li').click(function(){
+      ps.chineses=book[that.idx];
+      ps.engs=bookEng[that.idx];
+      ps.chap=parseInt($(this).attr('chap'));
+      ps.sec=1;
+      bookSelect.render(ps,$('#bookSelect'));
+      fhlLecture.render(ps,$('#fhlLecture'));
+      fhlInfo.render(ps);
+      bookSelectPopUp.hide();
+    });
+  },
+  render:function(ps,dom,idx){
+    var numOfChapters=bookChapters[idx];
+    var html="<ul>";
+    for(var i=1;i<=numOfChapters;i++){
+      html+="<li>"+i+"</li>";
+    }
+    dom.html(html);
+    for(var i=0;i<numOfChapters;i++){
+      dom.find('li:eq('+i+')').attr('chap',i+1);
+    }    
+  }
+};
+var bookSelectPopUp={
+  init:function(ps,dom,offset){
+    this.dom=dom;
+    this.dom.offset(offset);
+    bookSelectName.init(ps,$('#bookSelectName'));    
+    bookSelectName.registerEvents(ps);
+    this.dom.hide();
+  },
+  registerEvents:function(ps){
+    this.dom.mouseleave(function(){
+      $(this).hide();
+    });
+  },  
+  show:function(){
+    this.dom.show();
+  },
+  hide:function(){
+    this.dom.hide();
+  }
+};
+
+var bookSelect={
+  init:function(ps,dom){    
+    this.dom=dom;
+    this.render(ps,this.dom);
+    //position of Popup
+    var offset=this.dom.offset();
+    offset.top+=this.dom.height();
+    bookSelectPopUp.init(ps,$('#bookSelectPopUp'),offset);
+    bookSelectPopUp.registerEvents(ps);    
+  },
+  registerEvents:function(ps){
+    this.dom.click(function(){
+      $('#versionSelectPopUp').hide();
+      bookSelectPopUp.show();      
+    });
+  },
+  render:function(ps,dom){
+    var bookName=getBookFunc("bookFullName",ps.chineses);
+    if(bookName!="failed"){
+      var html=bookName;
+      html+="&nbsp&nbsp"+ps.chap;
+      dom.html(html);
+    }
+  }
+};
+
+var versionSelect={
+  init:function(ps){
+
+  },
+  registerEvents:function(ps){
+
+  },
+  render:function(ps){
+
+  },
+};
+/***** End of fhlToolbar *****/
+
+/***** Start of fhlLecture *****/
+var fhlLecture={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.render(ps,dom);
+  },
+  registerEvents:function(ps){
+    var that=this.dom;
+    that.find('.lec').click(function(){
+      ps.sec=parseInt($(this).attr('sec'));
+      $(that).find('.lec').removeClass('selected');
+      $(this).addClass('selected');
+      fhlInfo.render(ps);
+    });
+  },
+  render:function(ps,dom){
+    var that=this;
+    if(ps.version.length==1){
+      var ajaxUrl=getAjaxUrl("qb",ps,0);
+      //console.log(ajaxUrl);
+      $.ajax({
+        url:ajaxUrl
+      }).done(function(d,s,j){
+        if(j){
+          rsp=JSON.parse(j.responseText);
+          var html="<div>";
+          html+="<div class=lecTitle></div>";
+          html+="<div class=lecContent>"+ps.cname[0]+"</div>";
+          html+="</div>";
+          for(var i=0;i<rsp.record_count;i++){
+            var r=rsp.record[i];
+            html+="<div class=lec>";
+            html+="<div class=lecTitle>"+r.chap+":"+r.sec+"</div>";
+            html+="<div class=lecContent>"+r.bible_text+"</div>";
+            html+="</div>";
+          }
+          dom.html(html);
+          for(var i=0;i<rsp.record_count;i++){
+            var r=rsp.record[i];
+            dom.find('.lec:eq('+i+')').attr('chap',r.chap);
+            dom.find('.lec:eq('+i+')').attr('sec',r.sec);
+          } 
+          that.registerEvents(ps);         
+        }
+      });
+    }
+    
+  },
+};
+/***** End of fhlLecture *****/
+
+/***** Start of fhlInfo *****/
+var fhlInfo={
+  init:function(ps){
+    fhlInfoTitle.init(ps,$('#fhlInfoTitle'));
+    fhlInfoTitle.registerEvents(ps);
+    fhlInfoContent.init(ps,$('#fhlInfoContent'));    
+    fhlInfoContent.registerEvents(ps);
+  },
+  render:function(ps){
+    //fhlInfoTitle.render(ps,$('#fhlInfoTitle'));
+    fhlInfoContent.render(ps,$('#fhlInfoContent'));
+  }
+};
+
+var fhlInfoTitle={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.title=[
+              {"name":"原文","id":"fhlInfoParsing"},
+              {"name":"注釋","id":"fhlInfoComment"},
+              {"name":"講道","id":"fhlInfoPreach"},
+              {"name":"串珠","id":"fhlInfoTsk"},
+              {"name":"典藏","id":"fhlInfoOb"},
+              {"name":"搜尋","id":"fhlInfoSearch"}
+      ];    
+    this.render(ps,this.dom);    
+  },
+  registerEvents:function(ps){
+    //select all elements of info title
+    var selectAll="";
+    for(var i=0;i<this.title.length;i++){
+      selectAll+="#"+this.title[i].id+",";      
+    }    
+    selectAll=selectAll.substring(0,selectAll.length-1);
+    $(selectAll).click(function(){      
+      $(selectAll).removeClass('selected');
+      $(this).addClass('selected');
+      ps.titleId=$(this).attr('id');
+      fhlInfoContent.render(ps,$('#fhlInfoContent'));
+    });
+  },  
+  render:function(ps,dom){
+    var html="<ul>";
+    for(var i=0;i<this.title.length;i++){
+      html+="<li>"+this.title[i].name+"</li>";
+    }
+    html+="</ul>";
+    dom.html(html);
+    for(var i=0;i<this.title.length;i++){
+      dom.find('li:eq('+i+')').attr('id',this.title[i].id);
+    }  
+    $('#'+ps.titleId).addClass('selected');  
+  }
+};
+
+var fhlInfoContent={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.render(ps,this.dom);
+  },
+  registerEvents:function(ps){
+  },
+  render:function(ps,dom){
+    switch(ps.titleId){
+      case "fhlInfoParsing":
+        var html=ps.titleId;
+        dom.html(html);
+        break;
+      case "fhlInfoComment":
+        var html="";
+        var ajaxUrl=getAjaxUrl("sc",ps);
+        //console.log(ajaxUrl);
+        $.ajax({
+          url:ajaxUrl
+        }).done(function(d,s,j){
+          if(j){                  
+            function parseComment(t){                    
+              t=t.replace(/\n/g,"</br>");
+              t=t.replace(/ /g,"&nbsp");
+              var pt,pt1;
+              var tok;
+              while(true){
+                pt=t.indexOf("#");
+                pt1=t.indexOf("|");
+                if(pt<0||pt1<0||pt1<=pt)
+                  break;
+                tok=t.substring(pt+1,pt1);
+                t=t.substring(0,pt)+'<a href="">'+tok+"</a>"+t.substring(pt1+1);
+              }
+              return t;
+            }                      
+            var jsonObj=JSON.parse(j.responseText);
+            //console.log(j.responseText);
+            var html=jsonObj.record[0].title+"</br>";
+            html+=jsonObj.record[0].com_text;              
+            html=parseComment(html);
+            //console.log(html);
+            dom.html(html);
+          }
+        });
+        break;
+      case "fhlInfoPreach":
+        var html=ps.titleId;
+        dom.html(html);      
+        break;
+      case "fhlInfoTsk":
+        var html=ps.titleId;
+        dom.html(html);      
+        break;
+      case "fhlInfoOb":
+        var html=ps.titleId;
+        dom.html(html);      
+        break;
+      case "fhlInfoSearch":
+        var html=ps.titleId;
+        dom.html(html);      
+        break;                                        
+    }
+  }
+};
+/***** End of fhlInfo *****/
+</script>
+</head>
+<body>
+<!-- Layer 1-->
+<div id="fhlTopMenu">
+	<img id="logoFHL" src="./images/logoTopMenuFHL.png"/>
+</div>
+<div id="fhlToolbar" class="toolbar">
+  <div id="bookSelect"></div>
+  <div id="versionSelect">versionSelect</div>
+  <div id="snSelect">snSelect</div>  
+  <div id="gbSelect">gbSelect</div>  
+  <div id="realTimeSelect">realTimeShowPopUpSelect</div>
+  <div id="searchTool">searchTool</div>
+  <div id="fontSizeTool">fontSizeTool</div>
+  <div id="mapTool">mapTool</div>
+  <div id="imageTool">imageTool</div>  
+</div>
+<div id="fhlLecture">
+</div>
+<div id="fhlInfo">
+  <div id="fhlInfoTitle"></div>
+  <div id="fhlInfoContent"></div>
+</div>
+<!-- Layer 2 windows that hide after mouse leave-->
+<div id="bookSelectPopUp">
+  <div id="bookSelectName"></div>
+  <div id="bookSelectChapter"></div>
+</div>
+<div id="versionSelectPopUp">  
+</div>
+<div id="parsingPopUp"></div>
+<!-- Layer 3 windows that exists after mouse leave-->
+<div id="dictionaryPopUp"></div>
+</body>
+</html>

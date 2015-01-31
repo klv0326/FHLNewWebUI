@@ -93,8 +93,27 @@
 
 #versionSelectPopUp {
   position: fixed;
+  font: 18px/18px bold ,Microsoft JhengHei;
   background-color: #B0B0B0;
   z-index: 101;/*Layer 2*/
+}
+#versionSelectPopUp ul { 
+  list-style: none; 
+  padding:2px;
+  margin:0;
+}
+#versionSelectPopUp li {    
+  cursor: pointer;
+  white-space: nowrap;
+  padding:0;
+  margin:0;
+}
+#versionSelectPopUp li:hover{    
+  background-color: white;
+}
+#versionSelectPopUp li.selected{    
+  background-color: black;
+  color:white;
 }
 
 #fhlLecture {
@@ -127,6 +146,7 @@
   width: 80%;  
   vertical-align: middle;  
   padding-top:10px;
+  margin-right:5px;
 }
 
 #fhlInfo {

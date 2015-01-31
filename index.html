@@ -23,13 +23,13 @@ var pageState={
     chineses:"創",
     chap:1,
     sec:1,
-    version:["nstrunv"],    
+    version:["unv","recover"],    
     strong:0,
     gb:0,
     //For sc.php
     book:3,
     //Return Values
-    cname:["和合本"],
+    cname:["和合本","恢復本"],
     //For fhlInfoContent
     titleId:"fhlInfoComment",
 };
@@ -77,18 +77,18 @@ function getAjaxUrl(func,ps,idx){
   };  
   var getFullAjaxUrl=function(func,ps,idx){
     var ret=urlJSON+func+".php?";
-    for(var i=0;i<urlParams[func].length;i++){      
-      if(paramArr[urlParams[func][i]]!="version"){
+    for(var i=0;i<urlParams[func].length;i++){
+      if(paramArr[urlParams[func][i]]=="version"){
         ret+=paramArr[urlParams[func][i]];
         ret+="=";
-        ret+=ps[paramArr[urlParams[func][i]]];
+        ret+=encodeURIComponent(ps[paramArr[urlParams[func][i]]][idx]);
         ret+="&";
       }else{
         ret+=paramArr[urlParams[func][i]];
         ret+="=";
-        ret+=ps[paramArr[urlParams[func][i]]][idx];
-        ret+="&";
-      }      
+        ret+=encodeURIComponent(ps[paramArr[urlParams[func][i]]]);
+        ret+="&";        
+      }
     };
     
     ret=ret.substring(0,ret.length-1);
@@ -129,75 +129,37 @@ var fhlToolbar={
   init:function(ps){
     bookSelect.init(ps,$('#bookSelect'));    
     bookSelect.registerEvents(ps);
-    versionSelect.init(ps);
+    versionSelect.init(ps,$('#versionSelect'));
     versionSelect.registerEvents(ps);   
   }
 };
 
-var bookSelectName={
-  init:function(ps,dom){
+var bookSelect={
+  init:function(ps,dom){    
     this.dom=dom;
     this.render(ps,this.dom);
+    //position of Popup
+    var offset=this.dom.offset();
+    offset.top+=this.dom.height();
+    bookSelectPopUp.init(ps,$('#bookSelectPopUp'),offset);
+    bookSelectPopUp.registerEvents(ps);    
   },
   registerEvents:function(ps){
-    var that=this.dom;
-    this.dom.find('li').click(function(){
-      var idx=getBookFunc("index",$(this).attr('chineses'));
-      var offset=that.offset();
-      offset.left+=that.width();
-      bookSelectChapter.init(ps,$('#bookSelectChapter'),idx,offset);
-      bookSelectChapter.registerEvents(ps);
-      that.find('li').removeClass('selected');
-      $(this).addClass('selected');      
+    this.dom.click(function(){
+      versionSelectPopUp.hide();
+      bookSelectPopUp.show();      
     });
   },
   render:function(ps,dom){
-    var html="<ul>";
-    for(var i=0;i<bookFullName.length;i++)
-      html+="<li>"+bookFullName[i]+"</li>";
-    //Add 12 null items to do column count
-    for(var i=0;i<11;i++)
-      html+="<li>&nbsp</li>";
-    html+="</ul>";    
-    dom.html(html);            
-    for(var i=0;i<bookFullName.length;i++){
-      dom.find('li:eq('+i+')').attr('chineses',book[i]);
+    var bookName=getBookFunc("bookFullName",ps.chineses);
+    if(bookName!="failed"){
+      var html=bookName;
+      html+="&nbsp&nbsp"+ps.chap;
+      dom.html(html);
     }
   }
 };
 
-var bookSelectChapter={
-  init:function(ps,dom,idx,offset){
-    this.dom=dom;
-    this.idx=idx;
-    this.dom.offset(offset);
-    this.render(ps,this.dom,this.idx);
-  },
-  registerEvents:function(ps){
-    var that=this;
-    this.dom.find('li').click(function(){
-      ps.chineses=book[that.idx];
-      ps.engs=bookEng[that.idx];
-      ps.chap=parseInt($(this).attr('chap'));
-      ps.sec=1;
-      bookSelect.render(ps,$('#bookSelect'));
-      fhlLecture.render(ps,$('#fhlLecture'));
-      fhlInfo.render(ps);
-      bookSelectPopUp.hide();
-    });
-  },
-  render:function(ps,dom,idx){
-    var numOfChapters=bookChapters[idx];
-    var html="<ul>";
-    for(var i=1;i<=numOfChapters;i++){
-      html+="<li>"+i+"</li>";
-    }
-    dom.html(html);
-    for(var i=0;i<numOfChapters;i++){
-      dom.find('li:eq('+i+')').attr('chap',i+1);
-    }    
-  }
-};
 var bookSelectPopUp={
   init:function(ps,dom,offset){
     this.dom=dom;
@@ -219,46 +181,206 @@ var bookSelectPopUp={
   }
 };
 
-var bookSelect={
-  init:function(ps,dom){    
+var bookSelectName={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.render(ps,this.dom);
+  },
+  registerEvents:function(ps){
+    var that=this.dom;
+    this.dom.find('li').click(function(){
+      var idx=getBookFunc("index",$(this).attr('chineses'));
+      var offset=that.offset();
+      offset.left+=that.width();
+      bookSelectChapter.init(ps,$('#bookSelectChapter'),idx,offset);
+      bookSelectChapter.registerEvents(ps);
+      that.find('li').removeClass('selected');
+      $(this).addClass('selected');
+    });
+  },
+  render:function(ps,dom){
+    var html="<ul>";
+    for(var i=0;i<bookFullName.length;i++)
+      html+="<li>"+bookFullName[i]+"</li>";
+    //Add 12 null items to do column count
+    for(var i=0;i<11;i++)
+      html+="<li>&nbsp</li>";
+    html+="</ul>";    
+    dom.html(html);
+    for(var i=0;i<bookFullName.length;i++){
+      dom.find('li:eq('+i+')').attr('chineses',book[i]);
+    }
+  }
+};
+
+var bookSelectChapter={
+  init:function(ps,dom,idx,offset){
+    this.dom=dom;
+    this.idx=idx;
+    this.dom.offset(offset);
+    this.render(ps,this.dom,this.idx);
+  },
+  registerEvents:function(ps){
+    var that=this;
+    this.dom.find('li').click(function(){
+      ps.chineses=book[that.idx];
+      ps.engs=bookEng[that.idx];
+      ps.chap=parseInt($(this).attr('chap'));
+      ps.sec=1;
+      bookSelect.render(ps,bookSelect.dom);
+      fhlLecture.render(ps,fhlLecture.dom);
+      fhlInfo.render(ps);
+      bookSelectPopUp.hide();
+    });
+  },
+  render:function(ps,dom,idx){
+    var numOfChapters=bookChapters[idx];
+    var html="<ul>";
+    for(var i=1;i<=numOfChapters;i++){
+      html+="<li>"+i+"</li>";
+    }
+    dom.html(html);
+    for(var i=0;i<numOfChapters;i++){
+      dom.find('li:eq('+i+')').attr('chap',i+1);
+    }    
+  }
+};
+
+
+var versionSelect={
+  init:function(ps,dom){
     this.dom=dom;
     this.render(ps,this.dom);
     //position of Popup
     var offset=this.dom.offset();
     offset.top+=this.dom.height();
-    bookSelectPopUp.init(ps,$('#bookSelectPopUp'),offset);
-    bookSelectPopUp.registerEvents(ps);    
+    versionSelectPopUp.init(ps,$('#versionSelectPopUp'),offset);     
   },
   registerEvents:function(ps){
     this.dom.click(function(){
-      $('#versionSelectPopUp').hide();
-      bookSelectPopUp.show();      
+      bookSelectPopUp.hide();  
+      versionSelectPopUp.show();
     });
   },
   render:function(ps,dom){
-    var bookName=getBookFunc("bookFullName",ps.chineses);
-    if(bookName!="failed"){
-      var html=bookName;
-      html+="&nbsp&nbsp"+ps.chap;
-      dom.html(html);
-    }
+    dom.html("譯本設定");
   }
 };
-
-var versionSelect={
-  init:function(ps){
-
+var versionSelectPopUp={
+  init:function(ps,dom,offset){
+    this.dom=dom;
+    this.dom.offset(offset);
+    var that=this;    
+    var ajaxUrl=urlJSON+"abv.php";
+    $.ajax({
+      url:ajaxUrl
+    }).done(function(d,s,j){
+      if(j){
+        var jsonObj=JSON.parse(j.responseText);
+        that.data=jsonObj;
+      }    
+      that.render(ps,dom,that.data);  
+    });        
+    this.dom.hide();
   },
   registerEvents:function(ps){
-
+    var that=this;
+    this.dom.mouseleave(function(){
+      $(this).hide();
+    });
+    this.dom.find('li').click(function(){
+      $(this).toggleClass('selected');
+      if($(this).hasClass('selected')){
+        ps.version.push($(this).attr('book'));
+        ps.cname.push($(this).attr('cname'));
+      }else{
+        var idx=ps.version.indexOf($(this).attr('book'));
+        ps.version.splice(idx,1);
+        ps.cname.splice(idx,1);
+      }
+      //Set Default version?      
+      if(ps.version.length==0){
+        var o=that.dom.find('li:eq(0)');
+        ps.version.push(o.attr('book'));
+        ps.cname.push(o.attr('cname'));
+      }
+      that.render(ps,that.dom,that.data);
+      fhlLecture.render(ps,fhlLecture.dom);
+    });
+  },  
+  render:function(ps,dom,data){
+    var that=this;
+    var html="<ul>";
+    for(var i=0;i<data.record_count;i++){
+      var o=data.record[i];
+      html+="<li>"+o.cname+"</li>";
+    }
+    html+="</ul>";
+    dom.html(html);
+    for(var i=0;i<data.record_count;i++){
+      var o=data.record[i];
+      dom.find('li:eq('+i+')').attr(o);
+    }        
+    dom.find('li').removeClass('selected');
+    for(var i=0;i<ps.version.length;i++){
+      var v=ps.version[i];
+      var li=dom.find('li[book="'+v+'"]');
+      if(li!=null){
+        li.each(function(){
+          $(this).addClass('selected');
+          var html=$(this).html();
+          html+="&#x2713";
+          $(this).html(html);
+        });
+      }
+    }
+    that.registerEvents(ps);    
   },
-  render:function(ps){
-
+  show:function(){
+    this.dom.show();
   },
+  hide:function(){
+    this.dom.hide();
+  }
 };
 /***** End of fhlToolbar *****/
 
 /***** Start of fhlLecture *****/
+function setCSS(col,ps){
+  var totalWidth=80;  
+  $('.lecContent').css('width',(totalWidth/col)+"%");
+  $('.lecVersion').css('width',(totalWidth/col)+"%");
+}
+
+function getBibleText(col,ps,cbk,defCbk){
+  var sem=col;
+  //console.log("enter getBibleText");
+  for(var i=0;i<col;i++){
+    //console.log("launch ajax"+i);
+    var ajaxUrl=getAjaxUrl("qb",ps,i);    
+    $.ajax({
+      url:ajaxUrl
+    }).done(function(d,s,j){
+      if(j){
+        console.log("ajax done");
+        console.log(j.responseText);
+        var jsonObj=JSON.parse(j.responseText);
+        console.log("ajax done 2");
+        cbk(jsonObj);
+        console.log("ajax done 3");
+        sem--;
+        console.log("ajax done 4");
+      }
+    });
+  }  
+  var def=setInterval(function(){
+    if(sem==0){
+      defCbk();
+      clearInterval(def);
+    }
+  },100);
+}
+
 var fhlLecture={
   init:function(ps,dom){
     this.dom=dom;
@@ -267,6 +389,7 @@ var fhlLecture={
   registerEvents:function(ps){
     var that=this.dom;
     that.find('.lec').click(function(){
+      console.log('lec clicked');
       ps.sec=parseInt($(this).attr('sec'));
       $(that).find('.lec').removeClass('selected');
       $(this).addClass('selected');
@@ -275,37 +398,39 @@ var fhlLecture={
   },
   render:function(ps,dom){
     var that=this;
-    if(ps.version.length==1){
-      var ajaxUrl=getAjaxUrl("qb",ps,0);
-      //console.log(ajaxUrl);
-      $.ajax({
-        url:ajaxUrl
-      }).done(function(d,s,j){
-        if(j){
-          rsp=JSON.parse(j.responseText);
-          var html="<div>";
-          html+="<div class=lecTitle></div>";
-          html+="<div class=lecContent>"+ps.cname[0]+"</div>";
-          html+="</div>";
-          for(var i=0;i<rsp.record_count;i++){
-            var r=rsp.record[i];
-            html+="<div class=lec>";
-            html+="<div class=lecTitle>"+r.chap+":"+r.sec+"</div>";
-            html+="<div class=lecContent>"+r.bible_text+"</div>";
-            html+="</div>";
-          }
-          dom.html(html);
-          for(var i=0;i<rsp.record_count;i++){
-            var r=rsp.record[i];
-            dom.find('.lec:eq('+i+')').attr('chap',r.chap);
-            dom.find('.lec:eq('+i+')').attr('sec',r.sec);
-          } 
-          that.registerEvents(ps);         
+    var htmlTitle="<div class=lecTitle></div>";
+    var htmlContent="";
+    var col=ps.version.length;
+    var rspArr=new Array();
+    var idx=0;
+    getBibleText(col,ps,function(o){
+        rspArr.push(o);
+    },function(){                
+      for(var i=0;i<rspArr.length;i++){
+        var o=rspArr[i];
+        htmlTitle+="<div class=lecContent>"+o.v_name+"</div>";
+      }
+      for(var i=0;i<rspArr[0].record_count;i++){
+        var r=rspArr[0].record[i];
+        htmlContent+="<div class=lec>";
+        htmlContent+="<div class=lecTitle>"+r.chap+":"+r.sec+"</div>";
+        for(j=0;j<rspArr.length;j++){
+          var r=rspArr[j].record[i];
+          htmlContent+="<div class=lecContent>"+r.bible_text+"</div>";
         }
-      });
-    }
-    
-  },
+        htmlContent+="</div>";        
+      }
+      var html=htmlTitle+htmlContent;
+      dom.html(html);
+      for(var i=0;i<rspArr[0].record_count;i++){
+        var r=rspArr[0].record[i];
+        dom.find('.lec:eq('+i+')').attr('chap',r.chap);
+        dom.find('.lec:eq('+i+')').attr('sec',r.sec);
+      }
+      setCSS(col,ps);
+      that.registerEvents(ps);
+    });
+  }
 };
 /***** End of fhlLecture *****/
 
@@ -319,7 +444,7 @@ var fhlInfo={
   },
   render:function(ps){
     //fhlInfoTitle.render(ps,$('#fhlInfoTitle'));
-    fhlInfoContent.render(ps,$('#fhlInfoContent'));
+    fhlInfoContent.render(ps,fhlInfoContent.dom);
   }
 };
 
@@ -347,7 +472,7 @@ var fhlInfoTitle={
       $(selectAll).removeClass('selected');
       $(this).addClass('selected');
       ps.titleId=$(this).attr('id');
-      fhlInfoContent.render(ps,$('#fhlInfoContent'));
+      fhlInfoContent.render(ps,fhlInfoContent.dom);
     });
   },  
   render:function(ps,dom){

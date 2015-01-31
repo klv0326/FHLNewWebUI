@@ -8,9 +8,9 @@
 <script>
 var URL_PRE="https://bkbible.fhl.net/json/";
 //var test_url=URL_PRE+"sc.php?chineses=羅&chap=1&sec=&version=nstrunv&strong=0&gb=0";
-//var test_url=URL_PRE+"qb.php?chineses=詩&chap=119&sec=&version=nstrunv&strong=0&gb=0";
+var test_url=URL_PRE+"qb.php?chineses=羅&chap=1&sec=&version=KJV&strong=0&gb=0";
 //var test_url=URL_PRE+"abv.php";
-var test_url=URL_PRE+"sc.php?engs=Ex&chap=1&sec=15&gb=0&book=3";
+//var test_url=URL_PRE+"sc.php?engs=Ex&chap=1&sec=15&gb=0&book=3";
 $(function(){
 	$('#btn').click(function(){
 		clickBtnAct();
@@ -18,23 +18,22 @@ $(function(){
 });
 
 function clickBtnAct(){	
+/*	
 	$.ajax({
 		url:test_url,
 		type:'get',
 		dataType:'jsonp',
 		success:
 	});.done(function(d,s,j){		
-		//var json=j.responseText;		
 		$('#json').text(d);
 	});		
-/*	
+*/		
 	$.ajax({
 		url:test_url,
 	}).done(function(d,s,j){		
 		var json=j.responseText;		
 		$('#json').text(json);
 	});			
-*/	
 /*	
 	$.ajax({
 		url:test_url,

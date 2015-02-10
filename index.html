@@ -28,6 +28,9 @@ var pageState={
     gb:0,
     //For sc.php
     book:3,
+    //For sd.php
+    N:0,
+    k:"",    
     //Return Values
     cname:["和合本"],
     //For fhlInfoContent
@@ -70,11 +73,12 @@ var bookEng=new Array("Gen","Ex","Lev","Num","Deut","Josh","Judg","Ruth","1+Sam"
 
 function getAjaxUrl(func,ps,idx){
   var paramArr=new Array("engs","chineses","chap","sec","version",
-                          "strong","gb","book");
+                          "strong","gb","book","N","k");
   var urlParams={
     sc:[0,2,3,6,7],
     qb:[1,2,4,5,6],
-    qp:[0,2,3,6]
+    qp:[0,2,3,6],
+    sd:[6,8,9]
   };  
   var getFullAjaxUrl=function(func,ps,idx){
     var ret=urlJSON+func+".php?";
@@ -437,6 +441,7 @@ var fhlInfo={
     fhlInfoTitle.registerEvents(ps);
     fhlInfoContent.init(ps,$('#fhlInfoContent'));    
     fhlInfoContent.registerEvents(ps);
+    parsingPopUp.init(ps,$('#parsingPopUp'));
   },
   render:function(ps){
     //fhlInfoTitle.render(ps,$('#fhlInfoTitle'));
@@ -491,8 +496,23 @@ var fhlInfoContent={
     this.render(ps,this.dom);
   },
   registerEvents:function(ps){
+    var that=this;
+    switch(ps.titleId){
+      case "fhlInfoParsing":
+        $('.parsing').mouseenter(function(){
+          var offset=$(this).offset();
+          offset.top+=$(this).height()+10;
+          ps.N=$(this).attr('N');
+          ps.k=$(this).attr('k');
+          parsingPopUp.render(ps,parsingPopUp.dom,offset);
+        });
+        break;
+      default:
+        break;
+    }
   },
   render:function(ps,dom){
+    var that=this;
     switch(ps.titleId){
       case "fhlInfoParsing":
         var html="";
@@ -576,19 +596,51 @@ var fhlInfoContent={
                         +"</span> <a href=\"javascript:spar('"+next_engs+"',"+next_chap+","+next_sec+",'"+div_name+"')"+
                         noverhead+"\">&gt;</a></span> "+parallel+"<br/>";
                    var nword=word.split("\n");
-                   var nexp=exp.split("\n");
-                   if (N==1)//OT
-                   {
-                      for (var ii=0;ii<nword.length;ii++)
-                        head_str=head_str+
-                        "<div class=\""+orig_font+"\"><div class=\"gs\">"+nword[nword.length-ii-1]+"</div></div><div "+align_str+">"+nexp[ii]+"</div>";
+                   var nexp=exp.split("\n");                                      
+                   if (N==1){//OT                                 
+                      var wid=1;                   
+                      for (var ii=0;ii<nword.length;ii++){                                                
+                        var t=nword[nword.length-ii-1].split(" ");
+                        //console.dir(t);                                                
+                        head_str+="<div>";
+                        for (var iii=0;iii<t.length;iii++){                          
+                          //console.log(t[iii]);
+                          if(t[iii].indexOf("-")==-1){
+                            var sn=jsonObj.record[wid].sn;
+                            head_str+="<span class=parsing N=1 k="+sn+">";
+                            head_str+=t[iii]+"&nbsp</span>";
+                            wid++;
+                          }else{
+                            var s=t[iii].split("-");
+                            for(iiii=0;iiii<s.length;iiii++){
+                              var sn=jsonObj.record[wid].sn;
+                              head_str+="<span class=parsing N=1 k="+sn+">";
+                              if(iiii==0)
+                                head_str+=s[iiii]+"-</span>";
+                              else
+                                head_str+=s[iiii]+"&nbsp</span>";
+                              wid++;
+                            }                            
+                          }
+                        }
+                        head_str+="</div>";
+                        head_str+="<div>"+nexp[ii]+"</div>";                        
+                      }
                    }
-                   else if (N==0)
-                   {
-                        for (var ii=0;ii<nword.length;ii++)
-                            head_str=head_str+
-                            "<div class=\""+orig_font+"\"><div class=\"gs\">"+nword[ii]+"</div></div><div "+align_str+">"+nexp[ii]+"</div>";
-                    }
+                   else if (N==0){
+                      var wid=1;
+                      for (var ii=0;ii<nword.length;ii++){
+                        var t=nword[ii].split(" ");
+                        head_str+="<div>";
+                        for (var iii=0;iii<t.length;iii++,wid++){
+                          var sn=jsonObj.record[wid].sn;
+                          head_str+="<span class=parsing N=0 k="+sn+">"
+                          head_str+=t[iii]+"&nbsp</span>";
+                        }
+                        head_str+="</div>";
+                        head_str+="<div>"+nexp[ii]+"</div>";                        
+                      }                          
+                   }
              }
              else
             {
@@ -644,8 +696,9 @@ var fhlInfoContent={
              var ptg="";
              if (N==0)
                 ptg="<td class=\"g0\">詞性</td>";
-            dom.html("<div style=\"height:25%;overflow:auto;\">"+head_str+"</div><div style=\"height:75%;overflow:auto;\"><hr/><table border=\"1\">"+
+            dom.html("<div style=\"height:25%;overflow:auto;\">"+head_str+"</div><div style=\"height:70%;overflow:auto;\"><hr/><table border=\"1\">"+
      "<tr><td class=\"g0\">原文字</td><td class=\"g0\">SN</td>"+ptg+"<td class=\"g0\">字彙分析</td><td class=\"g0\">原型</td><td class=\"g0\">原型簡義</td><td class=\"g0\">備註</td>"+body_str+"</table></div>");
+            that.registerEvents(ps);
           }//if j
         });
         //tjm      
@@ -700,6 +753,34 @@ var fhlInfoContent={
         dom.html(html);      
         break;                                        
     }
+  }
+};
+var parsingPopUp={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.dom.hide();
+  },
+  registerEvents:function(ps){
+    var that=this;
+    this.dom.mouseleave(function(){
+      that.dom.hide();
+    });    
+  },
+  render:function(ps,dom,offset){
+    var that=this;    
+    var ajaxUrl=getAjaxUrl('sd',ps);
+    $.ajax({
+      url:ajaxUrl
+    }).done(function(d,s,j){      
+      var jsonObj=JSON.parse(j.responseText);      
+      var html=jsonObj.record[0].dic_text;
+      html=html.replace(/\r\n/g,"</br>");
+      dom.html(html);                  
+      that.dom.show();
+      dom.offset(offset);
+      that.dom.scrollTop(0);
+      that.registerEvents(ps);
+    });    
   }
 };
 /***** End of fhlInfo *****/

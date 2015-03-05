@@ -116,17 +116,23 @@
   color:white;
 }
 
-#fhlLecture {
+#fhlLeftWindow {
   position: fixed;
-  overflow: auto;
-  background-color: white;  
+  overflow: hidden;
+  background-color: white;    
   font: 20px/20px bold ,Microsoft JhengHei;
   top: 130px;
   left: 0;  
   width:60%;
-  height: 80%;
+  height: 90%;  
+  z-index: 100;/*Layer 1*/  
+}
+#fhlLecture {
+  position: relative;  
+  height: 50%;
+  overflow:auto;
+  margin: 0px -20px 0px 0px;
   padding-right:20px;
-  z-index: 100;/*Layer 1*/
 }
 #fhlLecture .lec:hover{
   background-color: red;
@@ -147,6 +153,31 @@
   vertical-align: middle;  
   padding-top:10px;
   margin-right:5px;
+}
+#fhlLeftBottomWindow {
+  position: relative;  
+  overflow: auto;
+  height: 50%;
+}
+#fhlLeftBottomWindowTitle {
+  height: 10%;
+  margin:0;
+  padding:0;
+  font: 40px/40px bold,Microsoft JhengHei;
+  vertical-align: top;
+  text-align: left;
+  background-color: white;
+  color: black;
+}
+#fhlLeftBottomWindowTitle:hover {
+  background-color: black;
+  color: white;
+}
+
+#fhlLeftBottomWindowContent {
+  height: 90%;
+  margin:0;
+  padding:0;  
 }
 
 #fhlInfo {

@@ -6,11 +6,14 @@
 <script src="./libs/jquery-1.10.2.js"></script>
 <script src="./libs/xml2json.min.js"></script>
 <script>
+
+
 $(function(){
   //fhlTopMenu.init(pageState);
   //fhlTopMenu.render(pageState);
   fhlToolbar.init(pageState);
   fhlLecture.init(pageState,$('#fhlLecture'));
+  fhlLeftBottomWindow.init(pageState,$('#fhlLeftBottomWindow'));
   fhlInfo.init(pageState);  
 });
 
@@ -35,6 +38,8 @@ var pageState={
     cname:["和合本"],
     //For fhlInfoContent
     titleId:"fhlInfoComment",
+    //For fhlLeftBottomWindow
+    leftBtmWinShow:true,
 };
 
 var book=new Array( "創","出","利","民","申","書","士","得","撒上","撒下","王上","王下",
@@ -432,6 +437,45 @@ var fhlLecture={
     });
   }
 };
+
+var fhlLeftBottomWindow={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.render(ps,dom);
+    this.registerEvents(ps);
+  },
+  registerEvents:function(ps){
+    $('#fhlLeftBottomWindowTitle').click(function(){
+      if(ps.leftBtmWinShow==true){
+        var fhlLeftWindowH=$('#fhlLeftWindow').height();
+        $('#fhlLeftBottomWindow').height(fhlLeftWindowH*0.1);//50%->5%
+        var fhlLeftBottomWindowH=$('#fhlLeftBottomWindow').height();
+        $('#fhlLeftBottomWindowTitle').height(fhlLeftBottomWindowH);
+        $('#fhlLeftBottomWindowContent').height(0);
+        $('#fhlLecture').height(fhlLeftWindowH*0.9);
+        $('#fhlLeftBottomWindowContent').hide();
+        ps.leftBtmWinShow=false;
+      }else{
+        var fhlLeftWindowH=$('#fhlLeftWindow').height();
+        $('#fhlLeftBottomWindow').height(fhlLeftWindowH*0.5);//5%->50%
+        var fhlLeftBottomWindowH=$('#fhlLeftBottomWindow').height();
+        $('#fhlLeftBottomWindowTitle').height(fhlLeftBottomWindowH*0.1);
+        $('#fhlLeftBottomWindowContent').height(fhlLeftBottomWindowH*0.9);        
+        $('#fhlLecture').height(fhlLeftWindowH*0.5);
+        $('#fhlLeftBottomWindowContent').show();
+        ps.leftBtmWinShow=true;
+      }
+      var html=(ps.leftBtmWinShow==true)?"&#9661":"&#9651";
+      html+="fhlLeftBottomWindowTitle";
+      $('#fhlLeftBottomWindowTitle').html(html);
+    });
+  },
+  render:function(ps,dom){
+      var html=(ps.leftBtmWinShow==true)?"&#9661":"&#9651";
+      html+="fhlLeftBottomWindowTitle";
+      $('#fhlLeftBottomWindowTitle').html(html);
+  }
+};
 /***** End of fhlLecture *****/
 
 /***** Start of fhlInfo *****/
@@ -802,7 +846,14 @@ var parsingPopUp={
   <div id="mapTool">mapTool</div>
   <div id="imageTool">imageTool</div>  
 </div>
-<div id="fhlLecture">
+<div id="fhlLeftWindow">
+    <div id="fhlLecture"></div>
+    <div id="fhlLeftBottomWindow">
+      <div id="fhlLeftBottomWindowTitle"></div>
+      <div id="fhlLeftBottomWindowContent">
+        Content of fhlLeftBottomWindowContent
+      </div>
+    </div>
 </div>
 <div id="fhlInfo">
   <div id="fhlInfoTitle"></div>

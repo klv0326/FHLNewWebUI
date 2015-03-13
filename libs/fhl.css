@@ -116,11 +116,30 @@
   color:white;
 }
 
+.snBtn {
+  display: inline-block;
+  width:60px;
+  height:30px;
+  font: 24px/24px bold ,Microsoft JhengHei;
+  margin: 2px;
+  padding: 5px;
+  border-radius: 5px;    
+}
+
+.snBtn:hover{
+  background-color: red;  
+}
+
+.snBtn.selected{
+  background-color: black;
+  color: white;
+}
+
 #fhlLeftWindow {
   position: fixed;
   overflow: hidden;
   background-color: white;    
-  font: 20px/20px bold ,Microsoft JhengHei;
+  font: 20px/24px bold ,Microsoft JhengHei;
   top: 130px;
   left: 0;  
   width:60%;
@@ -152,8 +171,19 @@
   width: 80%;  
   vertical-align: middle;  
   padding-top:10px;
+  padding-bottom:10px;
   margin-right:5px;
 }
+.sn {
+  font: 14px/14px bold ,Microsoft JhengHei;
+  background-color: grey;
+  color:white;
+  border-radius: 5px;
+  padding:2px;
+  margin:2px;
+  cursor:pointer;
+}
+
 #fhlLeftBottomWindow {
   position: relative;  
   overflow: auto;

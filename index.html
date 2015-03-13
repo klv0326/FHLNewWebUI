@@ -27,7 +27,7 @@ var pageState={
     chap:1,
     sec:1,
     version:["unv"],    
-    strong:0,
+    strong:2,
     gb:0,
     //For sc.php
     book:3,
@@ -39,7 +39,7 @@ var pageState={
     //For fhlInfoContent
     titleId:"fhlInfoComment",
     //For fhlLeftBottomWindow
-    leftBtmWinShow:true,
+    leftBtmWinShow:false,    
 };
 
 var book=new Array( "創","出","利","民","申","書","士","得","撒上","撒下","王上","王下",
@@ -140,7 +140,9 @@ var fhlToolbar={
     bookSelect.init(ps,$('#bookSelect'));    
     bookSelect.registerEvents(ps);
     versionSelect.init(ps,$('#versionSelect'));
-    versionSelect.registerEvents(ps);   
+    versionSelect.registerEvents(ps);
+    snSelect.init(ps,$('#snSelect'));
+    snSelect.registerEvents(ps);
   }
 };
 
@@ -353,6 +355,29 @@ var versionSelectPopUp={
     this.dom.hide();
   }
 };
+
+var snSelect={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.render(ps,this.dom);
+  },
+  registerEvents:function(ps){
+    $('.snBtn').click(function(){
+      ps.strong=$(this).index();
+      $('.snBtn').removeClass('selected');
+      $('.snBtn').eq(ps.strong).addClass('selected');
+      fhlLecture.render(ps,fhlLecture.dom);
+    });
+  },
+  render:function(ps,dom){
+    var html="SN位置";
+    html+="<span class='snBtn'>無</span>";
+    html+="<span class='snBtn'>上面</span>";
+    html+="<span class='snBtn'>後面</span>";
+    dom.html(html);
+    $('.snBtn').eq(ps.strong).addClass('selected');
+  }
+};
 /***** End of fhlToolbar *****/
 
 /***** Start of fhlLecture *****/
@@ -387,6 +412,33 @@ function getBibleText(col,ps,cbk,defCbk){
   },100);
 }
 
+function checkOldNew(ps){
+//0 - Old 
+//1 - New
+  return (book.indexOf(ps.chineses)>=39)?0:1;  
+}
+
+function parseBibleText(text,ps,isOld){
+  var ret;
+  checkOldNew(ps);
+  switch(ps.strong){
+    case 0:
+      ret=text;
+      break;
+    case 2:
+      //console.log(text);
+      text=text.replace(/>/g,"</span>");
+      text=text.replace(/<W[a-zA-Z]*/g,"<span class='sn' N="+isOld+">");
+      //console.log(text);
+      ret=text;
+    default:
+      ret=text;
+      break;
+  }
+  return ret;
+
+}
+
 var fhlLecture={
   init:function(ps,dom){
     this.dom=dom;
@@ -400,6 +452,13 @@ var fhlLecture={
       $(this).addClass('selected');
       fhlInfo.render(ps);
     });
+    $('.sn').click(function(){
+      var offset=$(this).offset();
+      offset.top+=$(this).height()+10;
+      ps.N=$(this).attr('N');
+      ps.k=$(this).html();
+      parsingPopUp.render(ps,parsingPopUp.dom,offset);
+    });
   },
   render:function(ps,dom){
     var that=this;
@@ -411,6 +470,7 @@ var fhlLecture={
     getBibleText(col,ps,function(o){
         rspArr.push(o);
     },function(){                
+      var isOld=checkOldNew(ps);
       for(var i=0;i<rspArr.length;i++){
         var o=rspArr[i];
         htmlTitle+="<div class=lecContent>"+o.v_name+"</div>";
@@ -420,8 +480,9 @@ var fhlLecture={
         htmlContent+="<div class=lec>";
         htmlContent+="<div class=lecTitle>"+r.chap+":"+r.sec+"</div>";
         for(j=0;j<rspArr.length;j++){
-          var r=rspArr[j].record[i];
-          htmlContent+="<div class=lecContent>"+r.bible_text+"</div>";
+          var r=rspArr[j].record[i];          
+          var bibleText=parseBibleText(r.bible_text,ps,isOld);
+          htmlContent+="<div class=lecContent>"+bibleText+"</div>";
         }
         htmlContent+="</div>";        
       }
@@ -474,6 +535,23 @@ var fhlLeftBottomWindow={
       var html=(ps.leftBtmWinShow==true)?"&#9661":"&#9651";
       html+="fhlLeftBottomWindowTitle";
       $('#fhlLeftBottomWindowTitle').html(html);
+      if(ps.leftBtmWinShow==false){
+        var fhlLeftWindowH=$('#fhlLeftWindow').height();
+        $('#fhlLeftBottomWindow').height(fhlLeftWindowH*0.1);//50%->5%
+        var fhlLeftBottomWindowH=$('#fhlLeftBottomWindow').height();
+        $('#fhlLeftBottomWindowTitle').height(fhlLeftBottomWindowH);
+        $('#fhlLeftBottomWindowContent').height(0);
+        $('#fhlLecture').height(fhlLeftWindowH*0.9);
+        $('#fhlLeftBottomWindowContent').hide();
+      }else{
+        var fhlLeftWindowH=$('#fhlLeftWindow').height();
+        $('#fhlLeftBottomWindow').height(fhlLeftWindowH*0.5);//5%->50%
+        var fhlLeftBottomWindowH=$('#fhlLeftBottomWindow').height();
+        $('#fhlLeftBottomWindowTitle').height(fhlLeftBottomWindowH*0.1);
+        $('#fhlLeftBottomWindowContent').height(fhlLeftBottomWindowH*0.9);        
+        $('#fhlLecture').height(fhlLeftWindowH*0.5);
+        $('#fhlLeftBottomWindowContent').show();
+      }      
   }
 };
 /***** End of fhlLecture *****/
@@ -837,8 +915,8 @@ var parsingPopUp={
 </div>
 <div id="fhlToolbar" class="toolbar">
   <div id="bookSelect"></div>
-  <div id="versionSelect">versionSelect</div>
-  <div id="snSelect">snSelect</div>  
+  <div id="versionSelect"></div>
+  <div id="snSelect"></div>  
   <div id="gbSelect">gbSelect</div>  
   <div id="realTimeSelect">realTimeShowPopUpSelect</div>
   <div id="searchTool">searchTool</div>

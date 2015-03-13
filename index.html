@@ -626,8 +626,16 @@ var fhlInfoContent={
           offset.top+=$(this).height()+10;
           ps.N=$(this).attr('N');
           ps.k=$(this).attr('k');
-          parsingPopUp.render(ps,parsingPopUp.dom,offset);
+          var par=decodeURIComponent($(this).attr('par'));
+          parsingPopUp.render(ps,parsingPopUp.dom,offset,par);
         });
+        $('.parsingTable').mouseenter(function(){
+          var offset=$(this).offset();
+          offset.top+=$(this).height()+10;
+          ps.N=$(this).attr('N');
+          ps.k=$(this).attr('k');
+          parsingPopUp.render(ps,parsingPopUp.dom,offset,"psn");
+        });        
         break;
       default:
         break;
@@ -707,7 +715,7 @@ var fhlInfoContent={
                     var chinesef=jsonObj.record[i].chinesef;
                     var chap=jsonObj.record[i].chap;
                     var sec=jsonObj.record[i].sec;
-                    var poverhead="",noverhead="";
+                    var poverhead="",noverhead="";                    
                     if (prev_chineses!=chineses||prev_chap!=chap)
                         poverhead=";Gclick=false;Gsec="+prev_sec+";read_bible('"+chineses+"',"+prev_chap+");";
                     if (next_chineses!=chineses||next_chap!=chap)
@@ -729,14 +737,24 @@ var fhlInfoContent={
                           //console.log(t[iii]);
                           if(t[iii].indexOf("-")==-1){
                             var sn=jsonObj.record[wid].sn;
-                            head_str+="<span class=parsing N=1 k="+sn+">";
+                            var wform=jsonObj.record[wid].wform;
+                            var orig=jsonObj.record[wid].orig;
+                            var remark=jsonObj.record[wid].remark;
+                            var exp1=jsonObj.record[wid].exp;
+                            var par=encodeURIComponent(wform+'|'+orig+'|'+exp1+'|'+remark+'|');
+                            head_str+="<span class=parsing N=1 k="+sn+" par="+par+">";
                             head_str+=t[iii]+"&nbsp</span>";
                             wid++;
                           }else{
                             var s=t[iii].split("-");
                             for(iiii=0;iiii<s.length;iiii++){
                               var sn=jsonObj.record[wid].sn;
-                              head_str+="<span class=parsing N=1 k="+sn+">";
+                              var wform=jsonObj.record[wid].wform;
+                              var orig=jsonObj.record[wid].orig;
+                              var remark=jsonObj.record[wid].remark;
+                              var exp1=jsonObj.record[wid].exp;
+                              var par=encodeURIComponent(wform+'|'+orig+'|'+exp1+'|'+remark+'|');
+                              head_str+="<span class=parsing N=1 k="+sn+" par="+par+">";
                               if(iiii==0)
                                 head_str+=s[iiii]+"-</span>";
                               else
@@ -756,7 +774,13 @@ var fhlInfoContent={
                         head_str+="<div>";
                         for (var iii=0;iii<t.length;iii++,wid++){
                           var sn=jsonObj.record[wid].sn;
-                          head_str+="<span class=parsing N=0 k="+sn+">"
+                          var pro=jsonObj.record[wid].pro;
+                          var wform=jsonObj.record[wid].wform;
+                          var orig=jsonObj.record[wid].orig;
+                          var remark=jsonObj.record[wid].remark;
+                          var exp1=jsonObj.record[wid].exp;
+                          var par=encodeURIComponent(pro+'|'+wform+'|'+orig+'|'+exp1+'|'+remark+'|');
+                          head_str+="<span class=parsing N=0 k="+sn+" par="+par+">";
                           head_str+=t[iii]+"&nbsp</span>";
                         }
                         head_str+="</div>";
@@ -808,7 +832,7 @@ var fhlInfoContent={
                     pt=remark.indexOf("[#");
                     pt1=remark.indexOf("#]");
                 }
-                body_str=body_str+"<tr bgcolor=\""+clrstr+"\"><td class=\""+orig_font+"\">"+word+"</td><td class=\"g0\"><span class=\"psn\"><a href=\"javascript:sdic("+N+",'"+sn+"');\">"+sn+"</a></span></td><td class=\"g0\">";
+                body_str=body_str+"<tr bgcolor=\""+clrstr+"\"><td class=\""+orig_font+"\">"+word+"</td><td class=\"g0\"><span class=\"parsingTable\" N="+N+" k="+sn+">"+sn+"</span></td><td class=\"g0\">";
                 if (N==0)
                     body_str=body_str+pro+"</td><td class=\"g0\">";
                 body_str=body_str+wform+"</td><td class=\""+orig_font+"\">"+orig+"</td><td class=\"g0\">"+exp+"</td><td class=\"g0\">"
@@ -886,23 +910,62 @@ var parsingPopUp={
     var that=this;
     this.dom.mouseleave(function(){
       that.dom.hide();
-    });    
+    });
+    this.dom.mousedown(function(e){
+      if(e.which==3){
+        that.dom.unbind('mouseleave');
+      }
+    });
   },
-  render:function(ps,dom,offset){
+  render:function(ps,dom,offset,par){
     var that=this;    
-    var ajaxUrl=getAjaxUrl('sd',ps);
-    $.ajax({
-      url:ajaxUrl
-    }).done(function(d,s,j){      
-      var jsonObj=JSON.parse(j.responseText);      
-      var html=jsonObj.record[0].dic_text;
-      html=html.replace(/\r\n/g,"</br>");
+    if(par=="psn"){
+      var ajaxUrl=getAjaxUrl('sd',ps);
+      $.ajax({
+        url:ajaxUrl
+      }).done(function(d,s,j){      
+        var jsonObj=JSON.parse(j.responseText);      
+        var html=jsonObj.record[0].dic_text;
+        html=html.replace(/\r\n/g,"</br>");
+        dom.html(html);                  
+        that.dom.show();
+        dom.offset(offset);
+        that.registerEvents(ps);
+      });            
+    }else if(par!=null){      
+      var html=par;      
       dom.html(html);                  
       that.dom.show();
       dom.offset(offset);
-      that.dom.scrollTop(0);
+      //that.dom.scrollTop(0);      
       that.registerEvents(ps);
-    });    
+    }else{
+      var ajaxUrl=getAjaxUrl('sd',ps);
+      $.ajax({
+        url:ajaxUrl
+      }).done(function(d,s,j){      
+        var jsonObj=JSON.parse(j.responseText);      
+        var html=jsonObj.record[0].dic_text;
+        html=html.replace(/\r\n/g,"</br>");
+        dom.html(html);                  
+        var lecTop=164;
+        var leftWinH=$('#fhlLeftWindow').height();
+        var lecH=$('#fhlLecture').height();
+        var scrollY=$('#fhlLecture').scrollTop();
+        var scrollH=$('#fhlLecture')[0].scrollHeight;
+        var domH=dom.height();
+        console.log("top:"+offset.top+",domH:"+domH+",leftWinH:"+leftWinH+",lecH:"+lecH);
+        console.log("scrollH:"+scrollH+",scrollY:"+scrollY);        
+
+        if((offset.top+domH)>leftWinH){
+          $('#fhlLecture').scrollTop(scrollY+offset.top-lecTop);
+          offset.top-=offset.top-lecTop;
+        }
+        that.dom.show();
+        dom.offset(offset);
+        that.registerEvents(ps);
+      });
+    }
   }
 };
 /***** End of fhlInfo *****/

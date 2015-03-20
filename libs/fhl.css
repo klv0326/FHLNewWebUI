@@ -90,6 +90,9 @@
 #bookSelectChapter li:hover{
   background-color: white;
 }
+.chapNext:hover,.chapBack:hover{
+  color:red;
+}
 
 #versionSelectPopUp {
   position: fixed;

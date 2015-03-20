@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"fhlLe",
+				"fhlLecture"
+			],
+			[
 				"ch",
 				"chineses"
 			],
@@ -26,10 +30,6 @@
 			[
 				"fhlLeft",
 				"fhlLeftBottomWindowContent"
-			],
-			[
-				"fhlLe",
-				"fhlLeftBottomWindow"
 			],
 			[
 				"fhlLE",
@@ -211,7 +211,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 31397,
+				"buffer_size": 35484,
 				"line_ending": "Windows"
 			}
 		},
@@ -219,7 +219,7 @@
 			"file": "libs/fhl.css",
 			"settings":
 			{
-				"buffer_size": 5164,
+				"buffer_size": 5255,
 				"line_ending": "Windows"
 			}
 		}
@@ -235,7 +235,7 @@
 	},
 	"console":
 	{
-		"height": 0.0,
+		"height": 216.0,
 		"history":
 		[
 		]
@@ -251,10 +251,12 @@
 	},
 	"file_history":
 	[
+		"/D/GitHub/kevin/index.html",
+		"/D/GitHub/FHLNewWebUI/index.html",
+		"/D/GitHub/FHLNewWebUI/libs/fhl.css",
 		"/D/GitHub/FHLNewWebUI/test.html",
 		"/D/GitHub/yw/InternalQuotation/jquery-1.10.2.js",
 		"/D/GitHub/yw/InternalQuotation/data.js",
-		"/D/GitHub/FHLNewWebUI/index.html",
 		"/C/Users/KevinWang/Desktop/fhl/PureJQueryArch/libs/fhl-pc.css",
 		"/C/Users/KevinWang/Desktop/fhl/PureJQueryArch/main.html",
 		"/C/Users/KevinWang/Desktop/fhl/PureJQueryArch/test.html",
@@ -295,6 +297,31 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"ps.strong",
+			"getAjaxUrl",
+			"fhlInfoContent",
+			"fhlInfo",
+			"bookSelectPopUp",
+			"getBookFunc",
+			"bookSelectPopUp",
+			"bookSelect",
+			"Select",
+			"sn",
+			".sn",
+			"Lecture",
+			"psn",
+			".psn",
+			".parsing",
+			"sdic",
+			".parsing",
+			"parsing",
+			"::after",
+			"parsingPopUp",
+			"parsing",
+			"ps.par",
+			"ps.N",
+			"t[iii",
+			"parsingPopUp",
 			"isNew",
 			"isnew",
 			"parsingPopUp",
@@ -397,32 +424,7 @@
 			"versionSelectPopUp",
 			"versionSelect",
 			"version",
-			"bookSelect",
-			"versionSelect",
-			"Popup",
-			"console.log",
-			"fhlInfoTitle.",
-			"fhlInfoTitle",
-			"fhlInfoContent",
-			"fhlInfo",
-			"fhlInfo.render",
-			"fhlInfo",
-			"fhlInfo\n",
-			"fhlInfoTitle.",
-			"ps.titleId",
-			"fhlInfoTitle",
-			"fhlInfo.render",
-			"fhlInfoTitle",
-			"fhlInfo",
-			"parseComment",
-			"fhlInfoContent",
-			"fhlInfo",
-			"fhlLecture",
-			"fhlInfo.render",
-			"fhlInfo",
-			"fhlInfoContent",
-			"fhlLecture",
-			"console.log"
+			"bookSelect"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -443,7 +445,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -452,15 +454,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 31397,
+						"buffer_size": 35484,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								12515,
-								12515
+								433,
+								433
 							]
 						],
 						"settings":
@@ -470,10 +472,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 11750.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
@@ -482,15 +484,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5164,
+						"buffer_size": 5255,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3252,
-								3252
+								1723,
+								1723
 							]
 						],
 						"settings":
@@ -500,10 +502,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4437.0,
+						"translation.y": 2138.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"type": "text"
 				}
 			]

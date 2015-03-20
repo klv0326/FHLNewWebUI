@@ -27,7 +27,7 @@ var pageState={
     chap:1,
     sec:1,
     version:["unv"],    
-    strong:2,
+    strong:0,
     gb:0,
     //For sc.php
     book:3,
@@ -137,8 +137,7 @@ function getBookFunc(func,bookName){
 /***** Start of fhlToolbar *****/
 var fhlToolbar={
   init:function(ps){
-    bookSelect.init(ps,$('#bookSelect'));    
-    bookSelect.registerEvents(ps);
+    bookSelect.init(ps,$('#bookSelect'));        
     versionSelect.init(ps,$('#versionSelect'));
     versionSelect.registerEvents(ps);
     snSelect.init(ps,$('#snSelect'));
@@ -157,17 +156,60 @@ var bookSelect={
     bookSelectPopUp.registerEvents(ps);    
   },
   registerEvents:function(ps){
-    this.dom.click(function(){
+    var that=this;
+    $('.chapSelect').click(function(){
       versionSelectPopUp.hide();
       bookSelectPopUp.show();      
+    });
+    $('.chapBack').click(function(){
+      versionSelectPopUp.hide();
+      var idx=getBookFunc("index",ps.chineses);
+      if(ps.chap==1){
+        ps.chineses=book[idx-1];
+        ps.engs=bookEng[idx-1];
+        ps.chap=bookChapters[idx-1];
+      }else{
+        ps.chap--;        
+      }
+      that.render(ps,that.dom);
+      fhlLecture.render(ps,fhlLecture.dom);
+      fhlInfo.render(ps);
+      bookSelectPopUp.hide();      
+    });
+    $('.chapNext').click(function(){      
+      versionSelectPopUp.hide();
+      var idx=getBookFunc("index",ps.chineses);
+      if(ps.chap==bookChapters[idx]){//if last chapter
+        ps.chineses=book[idx+1];//book+1
+        ps.engs=bookEng[idx+1];
+        ps.chap=1;
+      }else{
+        ps.chap++;
+      }
+      that.render(ps,that.dom);
+      fhlLecture.render(ps,fhlLecture.dom);
+      fhlInfo.render(ps);
+      bookSelectPopUp.hide();
     });
   },
   render:function(ps,dom){
     var bookName=getBookFunc("bookFullName",ps.chineses);
     if(bookName!="failed"){
-      var html=bookName;
-      html+="&nbsp&nbsp"+ps.chap;
+      var html="";
+      if(ps.chineses==book[0]&&ps.chap==1){
+        html+="";
+      }else{
+        html+="<span class='chapBack'>&lt</span>";
+      }      
+      html+="<span class='chapSelect'>"+bookName;
+      html+="&nbsp&nbsp"+ps.chap+"</span>";
+      if(ps.chineses==book[65]&&ps.chap==22){
+        html+="";
+      }else{
+        html+="<span class='chapNext'>&gt</span>";
+      }            
       dom.html(html);
+      this.registerEvents(ps);
     }
   }
 };
@@ -372,7 +414,6 @@ var snSelect={
   render:function(ps,dom){
     var html="SN位置";
     html+="<span class='snBtn'>無</span>";
-    html+="<span class='snBtn'>上面</span>";
     html+="<span class='snBtn'>後面</span>";
     dom.html(html);
     $('.snBtn').eq(ps.strong).addClass('selected');
@@ -425,8 +466,9 @@ function parseBibleText(text,ps,isOld){
     case 0:
       ret=text;
       break;
-    case 2:
+    case 1:
       //console.log(text);
+      text=text.replace(/[{}]/g,"");
       text=text.replace(/>/g,"</span>");
       text=text.replace(/<W[a-zA-Z]*/g,"<span class='sn' N="+isOld+">");
       //console.log(text);

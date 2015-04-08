@@ -20,7 +20,7 @@
   left: 0;
   width: 100%;/*The same as fhlTopMenu*/
   height: 80px;  
-  z-index: 100;/*Layer 1*/
+  z-index: 100;/*Layer 1*/  
 }
 #fhlToolbar div{
   cursor:pointer;
@@ -28,7 +28,7 @@
   padding:0px 10px 0px 10px;
   text-align: center;  
   position: relative; 
-  float:left;    
+  float:left;      
 }
 #fhlToolbar div:hover{
   background-color: #C0C0C0;
@@ -90,6 +90,7 @@
 #bookSelectChapter li:hover{
   background-color: white;
 }
+
 .chapNext:hover,.chapBack:hover{
   color:red;
 }
@@ -119,7 +120,7 @@
   color:white;
 }
 
-.snBtn {
+.menuBtn {
   display: inline-block;
   width:60px;
   height:30px;
@@ -129,11 +130,11 @@
   border-radius: 5px;    
 }
 
-.snBtn:hover{
+.menuBtn:hover{
   background-color: red;  
 }
 
-.snBtn.selected{
+.menuBtn.selected{
   background-color: black;
   color: white;
 }
@@ -271,16 +272,4 @@
   padding: 20px;
   border: 1px solid black;
   z-index: 101;/*Layer 2*/
-}
-
-#parsingPopUp::after {
-      content: "";
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-width: 10px;
-      border-style: solid;
-      border-color: transparent transparent yellow transparent;
-      top: -19px;
-      left: 10px;
 }

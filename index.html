@@ -27,7 +27,7 @@ var pageState={
     chap:1,
     sec:1,
     version:["unv"],    
-    strong:0,
+    strong:1,
     gb:0,
     //For sc.php
     book:3,
@@ -36,6 +36,8 @@ var pageState={
     k:"",    
     //Return Values
     cname:["和合本"],
+    //For popups
+    realTimePopUp:1,
     //For fhlInfoContent
     titleId:"fhlInfoComment",
     //For fhlLeftBottomWindow
@@ -142,6 +144,10 @@ var fhlToolbar={
     versionSelect.registerEvents(ps);
     snSelect.init(ps,$('#snSelect'));
     snSelect.registerEvents(ps);
+    gbSelect.init(ps,$('#gbSelect'));
+    gbSelect.registerEvents(ps);  
+    realTimePopUpSelect.init(ps,$('#realTimePopUpSelect'));
+    realTimePopUpSelect.registerEvents(ps);
   }
 };
 
@@ -199,14 +205,14 @@ var bookSelect={
       if(ps.chineses==book[0]&&ps.chap==1){
         html+="";
       }else{
-        html+="<span class='chapBack'>&lt</span>";
+        html+="<span class='chapBack'>&#x25C0</span>";
       }      
       html+="<span class='chapSelect'>"+bookName;
       html+="&nbsp&nbsp"+ps.chap+"</span>";
       if(ps.chineses==book[65]&&ps.chap==22){
         html+="";
       }else{
-        html+="<span class='chapNext'>&gt</span>";
+        html+="<span class='chapNext'>&#x25B6</span>";
       }            
       dom.html(html);
       this.registerEvents(ps);
@@ -413,12 +419,55 @@ var snSelect={
   },
   render:function(ps,dom){
     var html="SN位置";
-    html+="<span class='snBtn'>無</span>";
-    html+="<span class='snBtn'>後面</span>";
+    html+="<span class='snBtn menuBtn'>無</span>";
+    html+="<span class='snBtn menuBtn'>後面</span>";
     dom.html(html);
     $('.snBtn').eq(ps.strong).addClass('selected');
   }
 };
+var gbSelect={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.render(ps,this.dom);
+  },
+  registerEvents:function(ps){
+    $('.gbBtn').click(function(){
+      ps.gb=$(this).index();
+      $('.gbBtn').removeClass('selected');
+      $('.gbBtn').eq(ps.gb).addClass('selected');
+      fhlLecture.render(ps,fhlLecture.dom);
+    });
+  },
+  render:function(ps,dom){
+    var html="";
+    html+="<span class='gbBtn menuBtn'>繁</span>";
+    html+="<span class='gbBtn menuBtn'>簡</span>";
+    dom.html(html);
+    $('.gbBtn').eq(ps.gb).addClass('selected');
+  }
+};
+var realTimePopUpSelect={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.render(ps,this.dom);
+  },
+  registerEvents:function(ps){
+    $('.rtBtn').click(function(){
+      ps.realTimePopUp=$(this).index();
+      $('.rtBtn').removeClass('selected');
+      $('.rtBtn').eq(ps.realTimePopUp).addClass('selected');
+      fhlLecture.render(ps,fhlLecture.dom);
+    });
+  },
+  render:function(ps,dom){
+    var html="即時顯示";
+    html+="<span class='rtBtn menuBtn'>關</span>";
+    html+="<span class='rtBtn menuBtn'>開</span>";
+    dom.html(html);
+    $('.rtBtn').eq(ps.realTimePopUp).addClass('selected');
+  }
+};
+
 /***** End of fhlToolbar *****/
 
 /***** Start of fhlLecture *****/
@@ -494,13 +543,26 @@ var fhlLecture={
       $(this).addClass('selected');
       fhlInfo.render(ps);
     });
-    $('.sn').click(function(){
-      var offset=$(this).offset();
-      offset.top+=$(this).height()+10;
-      ps.N=$(this).attr('N');
-      ps.k=$(this).html();
-      parsingPopUp.render(ps,parsingPopUp.dom,offset);
-    });
+    if(ps.realTimePopUp==1){
+      $('.sn').mouseenter(function(){
+        var offset=$(this).offset();
+        offset.top+=$(this).height()+10;
+        ps.N=$(this).attr('N');
+        ps.k=$(this).html();
+        parsingPopUp.render(ps,parsingPopUp.dom,offset);
+      });
+    }else{
+      $('.sn').click(function(){
+        var offset=$(this).offset();
+        offset.top+=$(this).height()+10;
+        ps.N=$(this).attr('N');
+        ps.k=$(this).html();
+        parsingPopUp.render(ps,parsingPopUp.dom,offset);
+      });      
+    }
+    /*$('.sn').mouseleave(function(){
+      parsingPopUp.dom.hide();
+    });*/
   },
   render:function(ps,dom){
     var that=this;
@@ -663,21 +725,45 @@ var fhlInfoContent={
     var that=this;
     switch(ps.titleId){
       case "fhlInfoParsing":
-        $('.parsing').mouseenter(function(){
-          var offset=$(this).offset();
-          offset.top+=$(this).height()+10;
-          ps.N=$(this).attr('N');
-          ps.k=$(this).attr('k');
-          var par=decodeURIComponent($(this).attr('par'));
-          parsingPopUp.render(ps,parsingPopUp.dom,offset,par);
-        });
-        $('.parsingTable').mouseenter(function(){
-          var offset=$(this).offset();
-          offset.top+=$(this).height()+10;
-          ps.N=$(this).attr('N');
-          ps.k=$(this).attr('k');
-          parsingPopUp.render(ps,parsingPopUp.dom,offset,"psn");
-        });        
+        if(ps.realTimePopUp==1){
+          $('.parsing').mouseenter(function(){
+            var offset=$(this).offset();
+            offset.top+=$(this).height()+10;
+            ps.N=$(this).attr('N');
+            ps.k=$(this).attr('k');
+            var par=decodeURIComponent($(this).attr('par'));
+            parsingPopUp.render(ps,parsingPopUp.dom,offset,par);
+          });
+          /*$('.parsing').mouseleave(function(){
+            parsingPopUp.dom.hide();
+          });*/
+          $('.parsingTable').mouseenter(function(){
+            var offset=$(this).offset();
+            offset.top+=$(this).height()+10;
+            ps.N=$(this).attr('N');
+            ps.k=$(this).attr('k');
+            parsingPopUp.render(ps,parsingPopUp.dom,offset,"psn");
+          });
+          /*$('.parsingTable').mouseleave(function(){
+            parsingPopUp.dom.hide();
+          });*/
+        }else{
+          $('.parsing').click(function(){
+            var offset=$(this).offset();
+            offset.top+=$(this).height()+10;
+            ps.N=$(this).attr('N');
+            ps.k=$(this).attr('k');
+            var par=decodeURIComponent($(this).attr('par'));
+            parsingPopUp.render(ps,parsingPopUp.dom,offset,par);
+          });
+          $('.parsingTable').click(function(){
+            var offset=$(this).offset();
+            offset.top+=$(this).height()+10;
+            ps.N=$(this).attr('N');
+            ps.k=$(this).attr('k');
+            parsingPopUp.render(ps,parsingPopUp.dom,offset,"psn");
+          });                    
+        }
         break;
       default:
         break;
@@ -952,6 +1038,10 @@ var parsingPopUp={
     var that=this;
     this.dom.mouseleave(function(){
       that.dom.hide();
+      that.dom.css({
+        overflow:'hidden',
+        height: 'auto'
+      });
     });
     this.dom.mousedown(function(e){
       if(e.which==3){
@@ -970,6 +1060,18 @@ var parsingPopUp={
         var html=jsonObj.record[0].dic_text;
         html=html.replace(/\r\n/g,"</br>");
         dom.html(html);                  
+        var lecTop=164;
+        var lecTopOffset=120;
+        var RightWinH=$('#fhlInfo').height();
+        var domH=dom.height();
+        console.log("top:"+offset.top+",domH:"+domH+",RightWinH:"+RightWinH);
+
+        if(domH>RightWinH){
+          //set css to auto scroll
+        }else if(offset.top+domH>RightWinH){
+          offset.top-=(offset.top>domH)?domH:offset.top;
+          offset.left+=70;
+        }    
         that.dom.show();
         dom.offset(offset);
         that.registerEvents(ps);
@@ -991,6 +1093,7 @@ var parsingPopUp={
         html=html.replace(/\r\n/g,"</br>");
         dom.html(html);                  
         var lecTop=164;
+        var lecTopOffset=120;
         var leftWinH=$('#fhlLeftWindow').height();
         var lecH=$('#fhlLecture').height();
         var scrollY=$('#fhlLecture').scrollTop();
@@ -999,10 +1102,21 @@ var parsingPopUp={
         console.log("top:"+offset.top+",domH:"+domH+",leftWinH:"+leftWinH+",lecH:"+lecH);
         console.log("scrollH:"+scrollH+",scrollY:"+scrollY);        
 
-        if((offset.top+domH)>leftWinH){
+        if(domH>leftWinH){
+          //set css to auto scroll
+        }else if(offset.top+domH>leftWinH){
+          offset.top-=(offset.top>domH)?domH:offset.top;
+          offset.left+=50;
+        }
+/*
+        if((offset.top+domH+scrollY)>scrollH){
+
+        }
+        else if((offset.top+domH)>leftWinH){
           $('#fhlLecture').scrollTop(scrollY+offset.top-lecTop);
           offset.top-=offset.top-lecTop;
         }
+*/
         that.dom.show();
         dom.offset(offset);
         that.registerEvents(ps);
@@ -1023,7 +1137,7 @@ var parsingPopUp={
   <div id="versionSelect"></div>
   <div id="snSelect"></div>  
   <div id="gbSelect">gbSelect</div>  
-  <div id="realTimeSelect">realTimeShowPopUpSelect</div>
+  <div id="realTimePopUpSelect">realTimeShowPopUpSelect</div>
   <div id="searchTool">searchTool</div>
   <div id="fontSizeTool">fontSizeTool</div>
   <div id="mapTool">mapTool</div>

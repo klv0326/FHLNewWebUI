@@ -924,6 +924,18 @@ var fhlInfoContent={
           fhlLecture.selectLecture(null,null,ps.sec);
         });        
         break;
+      case "fhlInfoComment":
+        $('.commentSecBack, .commentSecNext, .commentBackground').click(function(){
+          var oldEngs=ps.engs;
+          var oldChap=ps.chap;
+          ps.engs=$(this).attr('engs');
+          var idx=getBookFunc('indexByEngs',ps.engs);
+          ps.chineses=book[idx];
+          ps.chap=$(this).attr('chap');
+          ps.sec=$(this).attr('sec');
+          fhlInfo.render(ps);
+        });
+        break;
       default:
         break;
     }
@@ -1176,15 +1188,53 @@ var fhlInfoContent={
                 t=t.substring(0,pt)+'<a href="">'+tok+"</a>"+t.substring(pt1+1);
               }
               return t;
-            }                      
+            }
             var jsonObj=JSON.parse(j.responseText);
             //console.log(j.responseText);
-            var html=jsonObj.record[0].title+"</br>";
-            html+=jsonObj.record[0].com_text;              
-            html=parseComment(html);
+            
             //console.log(html);
-            dom.html(html);
+            
+            var prev_engs;
+            var prev_chap;
+            var prev_sec;
+            var next_engs;
+            var next_chap;
+            var next_sec;
+            var head_str="";
 
+            if(jsonObj.hasOwnProperty('prev')){
+                prev_engs=jsonObj.prev.engs;
+                prev_chap=jsonObj.prev.chap;
+                prev_sec=jsonObj.prev.sec;
+                head_str+="<span class='commentSecBack' ";
+                head_str+="engs="+prev_engs+" chap="+prev_chap+" sec="+prev_sec;
+                head_str+=">&#x25C0</span>";
+            } 
+              
+            head_str+=jsonObj.record[0].title;
+              
+            if(jsonObj.hasOwnProperty('next')){
+                next_engs=jsonObj.next.engs;
+                next_chap=jsonObj.next.chap;
+                next_sec=jsonObj.next.sec;
+                head_str+="<span class='commentSecNext' ";
+                head_str+="engs="+next_engs+" chap="+next_chap+" sec="+next_sec;
+                head_str+=">&#x25B6</span>";
+            }
+            
+            if(ps.chap!=0&&ps.sec!=0){
+                head_str+="&nbsp;&nbsp;<span class='commentBackground' ";
+                head_str+="engs="+ps.engs+" chap="+0+" sec="+0;
+                head_str+=">背景</span>";
+            }
+            
+            head_str+="</br>";
+
+            var html=jsonObj.record[0].com_text;
+            html=parseComment(html);
+            
+            dom.html(head_str+html);
+            that.registerEvents(ps);
           }
         });
         break;

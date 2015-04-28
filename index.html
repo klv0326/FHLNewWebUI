@@ -27,7 +27,7 @@ var pageState={
     chap:1,
     sec:1,
     version:["unv"],    
-    strong:1,
+    strong:0,
     gb:0,
     //For sc.php
     book:3,
@@ -37,11 +37,13 @@ var pageState={
     //Return Values
     cname:["和合本"],
     //For popups
-    realTimePopUp:1,
+    realTimePopUp:0,
     //For fhlInfoContent
     titleId:"fhlInfoComment",
     //For fhlLeftBottomWindow
-    leftBtmWinShow:false,    
+    leftBtmWinShow:false,
+    //For audio
+    audio:0,
 };
 
 var book=new Array( "創","出","利","民","申","書","士","得","撒上","撒下","王上","王下",
@@ -113,11 +115,15 @@ function getAjaxUrl(func,ps,idx){
 function getBookFunc(func,bookName){
   var i;
   for(i=0;i<book.length;i++)
-    if(book[i]==bookName)
-      break;
+    if(book[i]==bookName)break;
   var ret;
   switch(func){
     case "index":
+      ret=i;
+      break;
+    case "indexByEngs":
+      for(i=0;i<bookEng.length;i++)
+        if(bookEng[i]==bookName)break;
       ret=i;
       break;
     case "bookFullName":
@@ -144,10 +150,12 @@ var fhlToolbar={
     versionSelect.registerEvents(ps);
     snSelect.init(ps,$('#snSelect'));
     snSelect.registerEvents(ps);
-    gbSelect.init(ps,$('#gbSelect'));
-    gbSelect.registerEvents(ps);  
-    realTimePopUpSelect.init(ps,$('#realTimePopUpSelect'));
-    realTimePopUpSelect.registerEvents(ps);
+    searchTool.init(ps,$('#searchTool'));
+    searchTool.registerEvents(ps);
+    bibleAudio.init(ps,$('#bibleAudio'));
+    bibleAudio.registerEvents(ps);
+    setting.init(ps,$('#setting'));
+    setting.registerEvents(ps);
   }
 };
 
@@ -164,11 +172,11 @@ var bookSelect={
   registerEvents:function(ps){
     var that=this;
     $('.chapSelect').click(function(){
-      versionSelectPopUp.hide();
-      bookSelectPopUp.show();      
+      versionSelectPopUp.dom.hide();
+      bookSelectPopUp.dom.show();      
     });
     $('.chapBack').click(function(){
-      versionSelectPopUp.hide();
+      versionSelectPopUp.dom.hide();
       var idx=getBookFunc("index",ps.chineses);
       if(ps.chap==1){
         ps.chineses=book[idx-1];
@@ -180,10 +188,10 @@ var bookSelect={
       that.render(ps,that.dom);
       fhlLecture.render(ps,fhlLecture.dom);
       fhlInfo.render(ps);
-      bookSelectPopUp.hide();      
+      bookSelectPopUp.dom.hide();      
     });
     $('.chapNext').click(function(){      
-      versionSelectPopUp.hide();
+      versionSelectPopUp.dom.hide();
       var idx=getBookFunc("index",ps.chineses);
       if(ps.chap==bookChapters[idx]){//if last chapter
         ps.chineses=book[idx+1];//book+1
@@ -195,7 +203,7 @@ var bookSelect={
       that.render(ps,that.dom);
       fhlLecture.render(ps,fhlLecture.dom);
       fhlInfo.render(ps);
-      bookSelectPopUp.hide();
+      bookSelectPopUp.dom.hide();
     });
   },
   render:function(ps,dom){
@@ -229,15 +237,10 @@ var bookSelectPopUp={
     this.dom.hide();
   },
   registerEvents:function(ps){
+    var that=this;
     this.dom.mouseleave(function(){
-      $(this).hide();
+      that.dom.hide();
     });
-  },  
-  show:function(){
-    this.dom.show();
-  },
-  hide:function(){
-    this.dom.hide();
   }
 };
 
@@ -290,7 +293,7 @@ var bookSelectChapter={
       bookSelect.render(ps,bookSelect.dom);
       fhlLecture.render(ps,fhlLecture.dom);
       fhlInfo.render(ps);
-      bookSelectPopUp.hide();
+      bookSelectPopUp.dom.hide();
     });
   },
   render:function(ps,dom,idx){
@@ -318,12 +321,12 @@ var versionSelect={
   },
   registerEvents:function(ps){
     this.dom.click(function(){
-      bookSelectPopUp.hide();  
-      versionSelectPopUp.show();
+      bookSelectPopUp.dom.hide();  
+      versionSelectPopUp.dom.show();
     });
   },
   render:function(ps,dom){
-    dom.html("譯本設定");
+    dom.html("聖經版本");
   }
 };
 var versionSelectPopUp={
@@ -346,7 +349,7 @@ var versionSelectPopUp={
   registerEvents:function(ps){
     var that=this;
     this.dom.mouseleave(function(){
-      $(this).hide();
+      that.dom.hide();
     });
     this.dom.find('li').click(function(){
       $(this).toggleClass('selected');
@@ -395,12 +398,6 @@ var versionSelectPopUp={
       }
     }
     that.registerEvents(ps);    
-  },
-  show:function(){
-    this.dom.show();
-  },
-  hide:function(){
-    this.dom.hide();
   }
 };
 
@@ -418,11 +415,93 @@ var snSelect={
     });
   },
   render:function(ps,dom){
-    var html="SN位置";
-    html+="<span class='snBtn menuBtn'>無</span>";
-    html+="<span class='snBtn menuBtn'>後面</span>";
+    var html="SN ";
+    html+="<span class='snBtn menuBtn'>關</span>";
+    html+="<span class='snBtn menuBtn'>開</span>";
     dom.html(html);
     $('.snBtn').eq(ps.strong).addClass('selected');
+  }
+};
+var searchTool={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.render(ps,this.dom);
+  },
+  registerEvents:function(ps){
+  },
+  render:function(ps,dom){
+    var html="";
+    html+="<input type=text class='searchBox'></input>";
+    html+="<span class='searchBtn'>搜尋</span>";
+    dom.html(html);
+  }
+};
+
+var bibleAudio={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.render(ps,this.dom);  
+  },
+  registerEvents:function(ps){
+
+  },
+  render:function(ps,dom){
+    var html="有聲聖經 ";
+    if(ps.chineses==book[0]&&ps.chap==1){
+      html+="";
+    }else{
+      html+="<img class='menuImage' src='./images/lastChapter.png'/>";    
+    }      
+    if(ps.audio==0){
+      html+="<img class='menuImage' src='./images/audioPlay.png'/>";    
+    }else{
+      html+="<img class='menuImage' src='./images/audioPause.png'/>";    
+    }    
+    if(ps.chineses==book[65]&&ps.chap==22){
+      html+="";
+    }else{
+      html+="<img class='menuImage' src='./images/nextChapter.png'/>";
+    }    
+    dom.html(html);
+  }
+}
+
+var setting={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.render(ps,this.dom);
+    //position of Popup
+    var offset=this.dom.offset();
+    offset.top+=this.dom.height();
+    settingPopUp.init(ps,$('#settingPopUp'),offset);
+    settingPopUp.registerEvents(ps);
+  },
+  registerEvents:function(ps){
+    this.dom.click(function(){
+      bookSelectPopUp.dom.hide();  
+      versionSelectPopUp.dom.hide();
+      settingPopUp.dom.show();
+    });
+  },
+  render:function(ps,dom){
+    dom.html("設定");
+  }
+};
+var settingPopUp={
+  init:function(ps,dom,offset){
+    this.dom=dom;
+    this.dom.offset(offset);
+    gbSelect.init(ps,$('#gbSelect'));
+    gbSelect.registerEvents(ps);
+    realTimePopUpSelect.init(ps,$('#realTimePopUpSelect'));
+    realTimePopUpSelect.registerEvents(ps);
+    this.dom.hide();
+  },
+  registerEvents:function(ps){    
+    var that=this;
+    this.dom.mouseleave(function(){
+      that.dom.hide();
+    });
   }
 };
 var gbSelect={
@@ -439,9 +518,9 @@ var gbSelect={
     });
   },
   render:function(ps,dom){
-    var html="";
-    html+="<span class='gbBtn menuBtn'>繁</span>";
-    html+="<span class='gbBtn menuBtn'>簡</span>";
+    var html="中文 ";
+    html+="<span class='gbBtn subMenuBtn'>繁</span>";
+    html+="<span class='gbBtn subMenuBtn'>簡</span>";
     dom.html(html);
     $('.gbBtn').eq(ps.gb).addClass('selected');
   }
@@ -460,9 +539,9 @@ var realTimePopUpSelect={
     });
   },
   render:function(ps,dom){
-    var html="即時顯示";
-    html+="<span class='rtBtn menuBtn'>關</span>";
-    html+="<span class='rtBtn menuBtn'>開</span>";
+    var html="即時顯示 ";
+    html+="<span class='rtBtn subMenuBtn'>關</span>";
+    html+="<span class='rtBtn subMenuBtn'>開</span>";
     dom.html(html);
     $('.rtBtn').eq(ps.realTimePopUp).addClass('selected');
   }
@@ -508,7 +587,7 @@ function checkOldNew(ps){
   return (book.indexOf(ps.chineses)>=39)?0:1;  
 }
 
-function parseBibleText(text,ps,isOld){
+function parseBibleText(text,ps,isOld,bibleVersion){
   var ret;
   checkOldNew(ps);
   switch(ps.strong){
@@ -517,23 +596,56 @@ function parseBibleText(text,ps,isOld){
       break;
     case 1:
       //console.log(text);
-      text=text.replace(/[{}]/g,"");
-      text=text.replace(/>/g,"</span>");
-      text=text.replace(/<W[a-zA-Z]*/g,"<span class='sn' N="+isOld+">");
+      if(bibleVersion=="和合本"||bibleVersion=="KJV"){
+        text=text.replace(/[{}]/g,"");
+        text=text.replace(/>/g,"</span>");
+        text=text.replace(/<W[a-zA-Z]*/g,"<span class='sn' N="+isOld+">");
+      }
       //console.log(text);
       ret=text;
+      break;
     default:
       ret=text;
       break;
   }
   return ret;
+}
 
+function getRecord(r,b,c,s){
+  var ret=null;
+  for(var i=0;i<r.length;i++){
+    if(r[i]==null)
+      break;
+    if(r[i].chap==c&&r[i].sec==s){
+      ret=r[i];
+      break;
+    }
+  }
+  return ret;
+}
+
+function sortBibleVersion(r,ps){
+  var tmpArr=new Array();
+  for(var i=0;i<ps.version.length;i++){
+    var version=ps.version[i];
+    for(var j=0;j<r.length;j++){
+      if(version==r[j].version){
+        tmpArr.push(r[j]);
+      }
+    }
+  }
+  return tmpArr;
 }
 
 var fhlLecture={
   init:function(ps,dom){
     this.dom=dom;
     this.render(ps,dom);
+  },
+  selectLecture:function(book,chap,sec){
+    var that=this.dom;
+    that.find('.lec').removeClass('selected');
+    that.find('.lec'+'[sec="'+sec+'"]').addClass('selected');
   },
   registerEvents:function(ps){
     var that=this.dom;
@@ -575,30 +687,48 @@ var fhlLecture={
         rspArr.push(o);
     },function(){                
       var isOld=checkOldNew(ps);
+      var maxRecordCnt=0;
+      var maxRecordIdx=0;
+      rspArr=sortBibleVersion(rspArr,ps);
       for(var i=0;i<rspArr.length;i++){
         var o=rspArr[i];
         htmlTitle+="<div class=lecContent>"+o.v_name+"</div>";
-      }
-      for(var i=0;i<rspArr[0].record_count;i++){
-        var r=rspArr[0].record[i];
+        if(rspArr[i].record_count>maxRecordCnt){
+          maxRecordCnt=rspArr[i].record_count;
+          maxRecordIdx=i;          
+          //console.log("maxRecordCnt:"+maxRecordCnt+",maxRecordIdx:"+maxRecordIdx);
+        }        
+      }        
+      for(var i=0;i<maxRecordCnt;i++){
+        var maxR=rspArr[maxRecordIdx].record[i];
         htmlContent+="<div class=lec>";
-        htmlContent+="<div class=lecTitle>"+r.chap+":"+r.sec+"</div>";
+        htmlContent+="<div class=lecTitle>"+maxR.chap+":"+maxR.sec+"</div>";
         for(j=0;j<rspArr.length;j++){
-          var r=rspArr[j].record[i];          
-          var bibleText=parseBibleText(r.bible_text,ps,isOld);
+          var chap=maxR.chap,sec=maxR.sec;                
+          var rec=getRecord(rspArr[j].record,null,chap,sec);
+          //var r=rspArr[j].record[i];
+          if(rec!=null){
+            var bibleText=parseBibleText(rec.bible_text,ps,isOld,rspArr[j].v_name);
+            if(bibleText=="a")
+                bibleText="【併入上節】";
+          }else{
+            bibleText="";
+          }
           htmlContent+="<div class=lecContent>"+bibleText+"</div>";
         }
         htmlContent+="</div>";        
       }
       var html=htmlTitle+htmlContent;
       dom.html(html);
-      for(var i=0;i<rspArr[0].record_count;i++){
-        var r=rspArr[0].record[i];
+      for(var i=0;i<maxRecordCnt;i++){
+        var r=rspArr[maxRecordIdx].record[i];
         dom.find('.lec:eq('+i+')').attr('chap',r.chap);
         dom.find('.lec:eq('+i+')').attr('sec',r.sec);
       }
       setCSS(col,ps);
-      that.registerEvents(ps);
+      dom.scrollTop(0);
+      that.selectLecture(null,null,1);
+      that.registerEvents(ps);      
     });
   }
 };
@@ -764,6 +894,35 @@ var fhlInfoContent={
             parsingPopUp.render(ps,parsingPopUp.dom,offset,"psn");
           });                    
         }
+
+        $('.secBack').click(function(){
+          var oldEngs=ps.engs;
+          var oldChap=ps.chap;
+          ps.engs=$(this).attr('engs');
+          var idx=getBookFunc('indexByEngs',ps.engs);
+          ps.chineses=book[idx];          
+          ps.chap=$(this).attr('chap');
+          ps.sec=$(this).attr('sec');          
+          bookSelect.render(ps,bookSelect.dom);
+          if(oldEngs!=ps.engs||oldChap!=ps.chap)
+            fhlLecture.render(ps,fhlLecture.dom);
+          fhlInfo.render(ps);
+          fhlLecture.selectLecture(null,null,ps.sec);
+        });
+        $('.secNext').click(function(){
+          var oldEngs=ps.engs;
+          var oldChap=ps.chap;
+          ps.engs=$(this).attr('engs');
+          var idx=getBookFunc('indexByEngs',ps.engs);
+          ps.chineses=book[idx];          
+          ps.chap=$(this).attr('chap');
+          ps.sec=$(this).attr('sec');          
+          bookSelect.render(ps,bookSelect.dom);
+          if(oldEngs!=ps.engs||oldChap!=ps.chap)
+            fhlLecture.render(ps,fhlLecture.dom);            
+          fhlInfo.render(ps);          
+          fhlLecture.selectLecture(null,null,ps.sec);
+        });        
         break;
       default:
         break;
@@ -839,10 +998,27 @@ var fhlInfoContent={
                         }
                         align_str="align=\"right\" style=\"padding:0px 10px 0px 0px;\"";
                     }
-                    var chineses=jsonObj.record[i].chineses;
-                    var chinesef=jsonObj.record[i].chinesef;
-                    var chap=jsonObj.record[i].chap;
-                    var sec=jsonObj.record[i].sec;
+
+                    var bookName=getBookFunc("bookFullName",ps.chineses);
+                    if(bookName!="failed"){                      
+                      if(ps.chineses==book[0]&&ps.chap==1&&ps.sec==1){
+                        head_str+="";
+                      }else{
+                        head_str+="<span class='secBack' ";
+                        head_str+="engs="+prev_engs+" chap="+prev_chap+" sec="+prev_sec;
+                        head_str+=">&#x25C0</span>";
+                      }      
+                      head_str+="<span>"+bookName;
+                      head_str+="&nbsp&nbsp"+ps.chap+":"+ps.sec+"</span>";
+                      if(ps.chineses==book[65]&&ps.chap==22&&ps.sec==21){
+                        head_str+="";
+                      }else{
+                        head_str+="<span class='secNext' ";
+                        head_str+="engs="+next_engs+" chap="+next_chap+" sec="+next_sec;
+                        head_str+=">&#x25B6</span>";
+                      }
+                    }                                        
+                    /*
                     var poverhead="",noverhead="";                    
                     if (prev_chineses!=chineses||prev_chap!=chap)
                         poverhead=";Gclick=false;Gsec="+prev_sec+";read_bible('"+chineses+"',"+prev_chap+");";
@@ -853,6 +1029,7 @@ var fhlInfoContent={
                         chinesef+"  "+chap+":"+sec
                         +"</span> <a href=\"javascript:spar('"+next_engs+"',"+next_chap+","+next_sec+",'"+div_name+"')"+
                         noverhead+"\">&gt;</a></span> "+parallel+"<br/>";
+                    */
                    var nword=word.split("\n");
                    var nexp=exp.split("\n");                                      
                    if (N==1){//OT                                 
@@ -1007,6 +1184,7 @@ var fhlInfoContent={
             html=parseComment(html);
             //console.log(html);
             dom.html(html);
+
           }
         });
         break;
@@ -1135,13 +1313,17 @@ var parsingPopUp={
 <div id="fhlToolbar" class="toolbar">
   <div id="bookSelect"></div>
   <div id="versionSelect"></div>
-  <div id="snSelect"></div>  
-  <div id="gbSelect">gbSelect</div>  
-  <div id="realTimePopUpSelect">realTimeShowPopUpSelect</div>
-  <div id="searchTool">searchTool</div>
-  <div id="fontSizeTool">fontSizeTool</div>
-  <div id="mapTool">mapTool</div>
-  <div id="imageTool">imageTool</div>  
+  <div id="snSelect" class="smallText"></div>
+  <div id="viewHistory">歷史紀錄</div>
+  <div id="searchTool" class="smallText"></div>
+  <div id="bibleAudio"></div>
+  <div id="mapTool">
+    <img class="menuImage" src="./images/bibleMap.png"/>
+  </div>
+  <div id="imageTool">
+    <img class="menuImage" src="./images/bibleImages.png"/>
+  </div>
+  <div id="setting"></div>
 </div>
 <div id="fhlLeftWindow">
     <div id="fhlLecture"></div>
@@ -1162,6 +1344,11 @@ var parsingPopUp={
   <div id="bookSelectChapter"></div>
 </div>
 <div id="versionSelectPopUp">  
+</div>
+<div id="settingPopUp">
+  <div id="gbSelect"></div>
+  <div id="realTimePopUpSelect"></div>
+  <div id="fontSizeTool"></div>
 </div>
 <div id="parsingPopUp"></div>
 <!-- Layer 3 windows that exists after mouse leave-->

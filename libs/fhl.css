@@ -22,13 +22,16 @@
   height: 80px;  
   z-index: 100;/*Layer 1*/  
 }
-#fhlToolbar div{
+.toolbar div{
   cursor:pointer;
   font: 30px/80px bold ,Microsoft JhengHei;
   padding:0px 10px 0px 10px;
   text-align: center;  
   position: relative; 
   float:left;      
+}
+.toolbar .smallText {
+  font: 20px/80px bold ,Microsoft JhengHei;
 }
 #fhlToolbar div:hover{
   background-color: #C0C0C0;
@@ -95,6 +98,10 @@
   color:red;
 }
 
+.secNext:hover,.secBack:hover{
+  color:red;
+}
+
 #versionSelectPopUp {
   position: fixed;
   font: 18px/18px bold ,Microsoft JhengHei;
@@ -120,21 +127,77 @@
   color:white;
 }
 
+#settingPopUp {
+  position: fixed;
+  font: 20px/20px bold ,Microsoft JhengHei;
+  background-color: #B0B0B0;  
+  padding: 5px;
+  z-index: 101;/*Layer 2*/
+}
+
+.menuImage {
+  width: 32px;
+  height: 32px;
+  margin: 0px;
+  padding: 0px;
+  vertical-align: middle;
+}
+.menuImage:hover{
+  background-color: red;  
+}
+
+.searchBox {
+  width:200px;
+  height:20px;
+  margin: 2px;
+  padding: 3px; 
+  border: 2px solid; 
+  vertical-align: middle;
+}
+.searchBtn {
+  display: inline-block;
+  color: white;
+  background-color: black;  
+  width:40px;
+  height:20px;
+  font: 20px/20px bold ,Microsoft JhengHei;
+  margin: 2px;
+  padding: 5px;
+  border-radius: 5px;      
+  vertical-align: middle;
+}
+
 .menuBtn {
   display: inline-block;
-  width:60px;
-  height:30px;
-  font: 24px/24px bold ,Microsoft JhengHei;
+  width:40px;
+  height:20px;
+  font: 20px/20px bold ,Microsoft JhengHei;
   margin: 2px;
   padding: 5px;
   border-radius: 5px;    
 }
-
 .menuBtn:hover{
   background-color: red;  
 }
-
 .menuBtn.selected{
+  background-color: black;
+  color: white;
+}
+
+.subMenuBtn {
+  display: inline-block;
+  width:30px;
+  height:15px;
+  font: 14px/15px bold ,Microsoft JhengHei;
+  margin: 2px;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+}
+.subMenuBtn:hover{
+  background-color: red;  
+}
+.subMenuBtn.selected{
   background-color: black;
   color: white;
 }

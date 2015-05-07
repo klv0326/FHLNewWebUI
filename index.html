@@ -309,6 +309,29 @@ var bookSelectChapter={
   }
 };
 
+function getVersionIdx(book){    
+  return $('#versionSelectPopUp').find("li[book="+book+"]").index();
+}
+function insertVersion(ps,dom){
+  var book=dom.attr('book');
+  var cname=dom.attr('cname');  
+  var versionIdx=getVersionIdx(book);
+  var inserted=false;
+  console.log('book='+book+",cname="+cname+",idx="+versionIdx);
+  for(var i=0;i<ps.version.length;i++){
+    if(versionIdx<getVersionIdx(ps.version[i])){
+      ps.version.splice(i,0,book);
+      ps.cname.splice(i,0,cname);
+      inserted=true;
+      break;
+    }
+  }
+  if(inserted==false){
+      ps.version.push(book);
+      ps.cname.push(cname);
+  }
+  console.dir(ps);
+}
 
 var versionSelect={
   init:function(ps,dom){
@@ -354,8 +377,11 @@ var versionSelectPopUp={
     this.dom.find('li').click(function(){
       $(this).toggleClass('selected');
       if($(this).hasClass('selected')){
+        insertVersion(ps,$(this));
+        /*
         ps.version.push($(this).attr('book'));
         ps.cname.push($(this).attr('cname'));
+        */
       }else{
         var idx=ps.version.indexOf($(this).attr('book'));
         ps.version.splice(idx,1);
@@ -556,6 +582,11 @@ function setCSS(col,ps){
   $('.lecVersion').css('width',(totalWidth/col)+"%");
 }
 
+function setFont(){
+  $('.bhs').addClass('hebrew');
+  $('.nwh').addClass('greek');
+}
+
 function getBibleText(col,ps,cbk,defCbk){
   var sem=col;
   //console.log("enter getBibleText");
@@ -607,7 +638,12 @@ function parseBibleText(text,ps,isOld,bibleVersion){
     default:
       ret=text;
       break;
-  }
+  }  
+  if(bibleVersion=="舊約馬索拉原文"||bibleVersion=="新約WH原文"){    
+    ret=ret.replace(/</g,"&lt");
+    ret=ret.replace(/>/g,"&gt");          
+    ret=ret.replace(/\r\n/g,"<br>");
+  }  
   return ret;
 }
 
@@ -677,6 +713,7 @@ var fhlLecture={
     });*/
   },
   render:function(ps,dom){
+    //console.log('start of fhlLecture render');
     var that=this;
     var htmlTitle="<div class=lecTitle></div>";
     var htmlContent="";
@@ -714,7 +751,7 @@ var fhlLecture={
           }else{
             bibleText="";
           }
-          htmlContent+="<div class=lecContent>"+bibleText+"</div>";
+          htmlContent+="<div class='lecContent "+rspArr[j].version+"'>"+bibleText+"</div>";
         }
         htmlContent+="</div>";        
       }
@@ -726,9 +763,11 @@ var fhlLecture={
         dom.find('.lec:eq('+i+')').attr('sec',r.sec);
       }
       setCSS(col,ps);
+      setFont();
       dom.scrollTop(0);
       that.selectLecture(null,null,1);
-      that.registerEvents(ps);      
+      that.registerEvents(ps);
+      //console.log('End of fhlLecture render');      
     });
   }
 };
@@ -1287,12 +1326,13 @@ var parsingPopUp={
         var jsonObj=JSON.parse(j.responseText);      
         var html=jsonObj.record[0].dic_text;
         html=html.replace(/\r\n/g,"</br>");
+        html=html.replace(/ /g,"&nbsp;");
         dom.html(html);                  
         var lecTop=164;
         var lecTopOffset=120;
         var RightWinH=$('#fhlInfo').height();
         var domH=dom.height();
-        console.log("top:"+offset.top+",domH:"+domH+",RightWinH:"+RightWinH);
+        //console.log("top:"+offset.top+",domH:"+domH+",RightWinH:"+RightWinH);
 
         if(domH>RightWinH){
           //set css to auto scroll
@@ -1319,6 +1359,7 @@ var parsingPopUp={
         var jsonObj=JSON.parse(j.responseText);      
         var html=jsonObj.record[0].dic_text;
         html=html.replace(/\r\n/g,"</br>");
+        html=html.replace(/ /g,"&nbsp;");
         dom.html(html);                  
         var lecTop=164;
         var lecTopOffset=120;
@@ -1327,8 +1368,8 @@ var parsingPopUp={
         var scrollY=$('#fhlLecture').scrollTop();
         var scrollH=$('#fhlLecture')[0].scrollHeight;
         var domH=dom.height();
-        console.log("top:"+offset.top+",domH:"+domH+",leftWinH:"+leftWinH+",lecH:"+lecH);
-        console.log("scrollH:"+scrollH+",scrollY:"+scrollY);        
+        //console.log("top:"+offset.top+",domH:"+domH+",leftWinH:"+leftWinH+",lecH:"+lecH);
+        //console.log("scrollH:"+scrollH+",scrollY:"+scrollY);        
 
         if(domH>leftWinH){
           //set css to auto scroll

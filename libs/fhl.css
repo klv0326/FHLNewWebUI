@@ -1,3 +1,22 @@
+@font-face {
+  font-family: COBSGreekWeb;
+  src:url(../font/COBSGreekWeb.ttf);
+}
+
+@font-face {
+  font-family: COBSHebrew;
+  src:url(../font/cobsh.ttf);
+}
+
+.greek {
+  font: 30px/30px bold ,COBSGreekWeb;
+}
+
+.hebrew {
+  font: 30px/30px bold ,COBSHebrew;
+  text-align:right;
+}
+
 #fhlTopMenu {  
   position: fixed;
   background-color: black;  
@@ -207,6 +226,7 @@
   overflow: hidden;
   background-color: white;    
   font: 20px/24px bold ,Microsoft JhengHei;
+  /*font: 20px/24px bold ,COBSHebrew;*/
   top: 130px;
   left: 0;  
   width:60%;

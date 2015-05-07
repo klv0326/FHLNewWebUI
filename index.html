@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -760,9 +760,22 @@ var fhlLeftBottomWindow={
         $('#fhlLeftBottomWindowContent').show();
         ps.leftBtmWinShow=true;
       }
-      var html=(ps.leftBtmWinShow==true)?"&#9661":"&#9651";
-      html+="fhlLeftBottomWindowTitle";
-      $('#fhlLeftBottomWindowTitle').html(html);
+
+      //搜尋功能 by snow
+      {
+        // 顯示箭頭部分 △ ▽
+        var html = (ps.leftBtmWinShow == true) ? "&#9661" : "&#9651";
+        if (searchTitleMsg.length == 0)
+          html += "fhlLeftBottomWindowTitle";
+        else
+          html += searchTitleMsg; //搜尋結果
+        $('#fhlLeftBottomWindowTitle').html(html);
+      }//搜尋功能
+
+      //mark by snow
+      //var html=(ps.leftBtmWinShow==true)?"&#9661":"&#9651";
+      //html+="fhlLeftBottomWindowTitle";
+      //$('#fhlLeftBottomWindowTitle').html(html);
     });
   },
   render:function(ps,dom){
@@ -1354,6 +1367,57 @@ var parsingPopUp={
 };
 /***** End of fhlInfo *****/
 </script>
+  <!--Start of 搜尋功能-->
+  <script src="search_api/fhl_api.js"></script>
+  <script src="search_api/abvphp_api.js"></script>
+  <link href="search_api/sephp_c_param.css" rel="stylesheet" />
+  <script src="search_api/sephp_c_param.js"></script>
+  <script>
+    var fhl = fhl || {};
+    var abvphp = abvphp || {};
+    var sephp = sephp || {};
+  </script>
+
+  <script>
+    //初始化
+    var Vversion = ["unv"];
+    var searchTitleMsg = "";//給title合下去的時候用的
+    $(function () {
+      abvphp.init_g_bibleversions();//必須先呼叫
+      sephp.g_param.m_divDst = document.getElementById("fhlLeftBottomWindowContent");
+
+      sephp.g_param.mp_chineses = book;
+      sephp.g_param.mp_vversion = Vversion;
+      //sephp.g_param.mp_vversion = pageState.version;
+
+      sephp.g_param.mpfn_search_title_change = function (msg) {
+        document.getElementById("fhlLeftBottomWindowTitle").innerHTML = "▽" + msg;
+        searchTitleMsg = msg;
+      };// mpfn_search_title_change function pointer
+
+      sephp.g_param.mpfn_read_bible = function (arg1_chinese, arg2_chap, arg3_sec) {
+        //console.debug("mpfn_read_bible 參數");
+
+        var idx = getBookFunc("index", arg1_chinese);
+        pageState.chineses = book[idx];
+        pageState.engs = bookEng[idx];
+        pageState.chap = arg2_chap;
+        pageState.sec = arg3_sec;
+
+        bookSelect.render(pageState, bookSelect.dom);
+        fhlLecture.render(pageState, fhlLecture.dom);
+        fhlInfo.render(pageState);
+      };// mpfn_read_bible function pointer
+
+      sephp.g_param.initial_div_ui();//初始化
+      if (pageState.gb == 0)
+        sephp.g_param.m_isBig5 = true;
+      else
+        sephp.g_param.m_isBig5 = false;
+
+    });//初始化
+  </script>
+  <!--End of 搜尋功能-->
 </head>
 <body>
 <!-- Layer 1-->
@@ -1380,7 +1444,8 @@ var parsingPopUp={
     <div id="fhlLeftBottomWindow">
       <div id="fhlLeftBottomWindowTitle"></div>
       <div id="fhlLeftBottomWindowContent">
-        Content of fhlLeftBottomWindowContent
+        <!--mark by snow-->
+        <!--Content of fhlLeftBottomWindowContent-->
       </div>
     </div>
 </div>

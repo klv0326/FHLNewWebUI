@@ -651,6 +651,7 @@ var fhlLecture={
     var that=this.dom;
     that.find('.lec').click(function(){
       ps.sec=parseInt($(this).attr('sec'));
+      ps.chap=parseInt($(this).attr('chap'));
       $(that).find('.lec').removeClass('selected');
       $(this).addClass('selected');
       fhlInfo.render(ps);
@@ -925,7 +926,7 @@ var fhlInfoContent={
         });        
         break;
       case "fhlInfoComment":
-        $('.commentSecBack, .commentSecNext, .commentBackground').click(function(){
+        $('.commentSecBack, .commentSecNext, .commentBackground, .commentJump').click(function(){
           var oldEngs=ps.engs;
           var oldChap=ps.chap;
           ps.engs=$(this).attr('engs');
@@ -933,8 +934,83 @@ var fhlInfoContent={
           ps.chineses=book[idx];
           ps.chap=$(this).attr('chap');
           ps.sec=$(this).attr('sec');
+          bookSelect.render(ps,bookSelect.dom);
+          if(oldEngs!=ps.engs||oldChap!=ps.chap)
+            fhlLecture.render(ps,fhlLecture.dom);
           fhlInfo.render(ps);
+          $('#fhlInfoContent').scrollTop(0);
         });
+        $('.commentSecBack').css({
+            "display": "block",
+            "color": "rgba(100, 100, 100, 0.3)",
+            "cursor": "pointer",
+            "position": "fixed",
+            "left": "60%",
+            "height": "100%",
+            "width": "5%", 
+            "font-size": "3em"
+        }).hover(function(){
+            $('.commentSecBack').css({
+                "color": "rgba(255, 0, 0, 1)",
+                "background": "linear-gradient(to right, rgba(100,100,100,1), rgba(0,0,0,0))"
+            })}, function(){
+            $('.commentSecBack').css({
+                "color": "rgba(100, 100, 100, 0.3)",
+                "background": "rgba(0, 0, 0, 0)"
+            });}
+        );
+        $('.commentSecNext').css({
+            "display": "block",
+            "color": "rgba(100, 100, 100, 0.3)",
+            "cursor": "pointer",
+            "position": "fixed",
+            "right": "0%",
+            "height": "100%",
+            "width": "5%", 
+            "font-size": "3em"
+        }).hover(function(){
+            $('.commentSecNext').css({
+                "color": "rgba(255, 0, 0, 1)",
+                "background": "linear-gradient(to left, rgba(100,100,100,1), rgba(0,0,0,0))"
+            })}, function(){
+            $('.commentSecNext').css({
+                "color": "rgba(100, 100, 100, 0.3)",
+                "background": "rgba(0, 0, 0, 0)"
+            });}
+        );
+        $('.commentBackground').css({
+            "display": "inline-block",
+            "cursor": "pointer",
+            "font-size": "20px",
+            "color": "rgba(200, 200, 200, 1)",
+            "background": "rgba(0, 70, 0, 1)",
+            "border-radius": "5px",
+            "width": "150px"
+        }).hover(function(){
+            $('.commentBackground').css({
+                "color": "rgba(255, 0, 0, 1)",
+                "background": "rgba(0,90,0,1)"
+            })}, function(){
+            $('.commentBackground').css({
+                "color": "rgba(200, 200, 200, 1)",
+                "background": "rgba(0, 70, 0, 1)",
+                "border-radius": "5px"
+            });}
+        );
+        $('.commentJump').css({
+            "display": "inline-block",
+            "cursor": "pointer",
+            "color": "rgba(50, 50, 100, 1)"
+        }).hover(function(){
+            $(this).css({
+                "color": "rgba(200, 0, 0, 1)",
+                "text-decoration": "underline"
+            })}, function(){
+            $(this).css({
+                "color": "rgba(50, 50, 100, 1)",
+                "text-decoration": "none"
+            });}
+        );
         break;
       default:
         break;
@@ -1178,22 +1254,47 @@ var fhlInfoContent={
               t=t.replace(/\n/g,"</br>");
               t=t.replace(/ /g,"&nbsp");
               var pt,pt1;
-              var tok;
+              var tok, tok_str;
+              var span_str;
+              var i=0;
               while(true){
                 pt=t.indexOf("#");
                 pt1=t.indexOf("|");
                 if(pt<0||pt1<0||pt1<=pt)
                   break;
-                tok=t.substring(pt+1,pt1);
-                t=t.substring(0,pt)+'<a href="">'+tok+"</a>"+t.substring(pt1+1);
+                tok_str=t.substring(pt+1,pt1);
+                span_str="";
+
+                while(tok_str.length!==0){
+                    var firstTokEnd = tok_str.indexOf(";");
+                    if(firstTokEnd===-1)
+                        firstTokEnd = tok_str.length;
+                    tok = tok_str.substring(0, firstTokEnd);
+                    tok_str = tok_str.substring(firstTokEnd+1, tok_str.length);
+
+                    span_str += "&nbsp;<span class='commentJump' engs=";
+                    var secNumberEnd = tok.indexOf("-");
+                    if(secNumberEnd === -1)
+                        secNumberEnd = tok.length;
+                    var chapNumberEnd = tok.indexOf(":");
+                    var secNumber = tok.substring(chapNumberEnd+1, secNumberEnd);
+                    if(!isNaN(tok[0])){ // parse 在同一卷書裡面跳的
+                        var chapNumber = tok.substring(0, chapNumberEnd);
+                        span_str += ps.engs;
+                    }
+                    else{ // parse 有中文字在前面的
+                        var bookNameEnd = tok.indexOf("&nbsp");
+                        var bookName = tok.substring(0, bookNameEnd);
+                        var chapNumber = tok.substring(bookNameEnd+5, chapNumberEnd);//+5是因為&nbsp
+                        span_str += bookEng[book.indexOf(bookName)];
+                    }
+                    span_str += " chap=" + chapNumber + " sec='" + secNumber + "'>"+tok+"</span>&nbsp;";
+                }
+                t=t.substring(0,pt)+span_str+t.substring(pt1+1);
               }
               return t;
             }
             var jsonObj=JSON.parse(j.responseText);
-            //console.log(j.responseText);
-            
-            //console.log(html);
-            
             var prev_engs;
             var prev_chap;
             var prev_sec;
@@ -1206,34 +1307,38 @@ var fhlInfoContent={
                 prev_engs=jsonObj.prev.engs;
                 prev_chap=jsonObj.prev.chap;
                 prev_sec=jsonObj.prev.sec;
-                head_str+="<span class='commentSecBack' ";
+                head_str+="<div class='commentSecBack' ";
                 head_str+="engs="+prev_engs+" chap="+prev_chap+" sec="+prev_sec;
-                head_str+=">&#x25C0</span>";
-            } 
-              
-            head_str+=jsonObj.record[0].title;
-              
+                head_str+="><span style='position: absolute; top: 40%; left: 25%;'>&#x276e;</span></div>";
+            }
+            
             if(jsonObj.hasOwnProperty('next')){
                 next_engs=jsonObj.next.engs;
                 next_chap=jsonObj.next.chap;
                 next_sec=jsonObj.next.sec;
-                head_str+="<span class='commentSecNext' ";
+                head_str+="<div class='commentSecNext' ";
                 head_str+="engs="+next_engs+" chap="+next_chap+" sec="+next_sec;
-                head_str+=">&#x25B6</span>";
+                head_str+="><span style='position: absolute; top: 40%; left: 40%;'>&#x276f;</span></div>";
             }
             
             if(ps.chap!=0&&ps.sec!=0){
-                head_str+="&nbsp;&nbsp;<span class='commentBackground' ";
+                head_str+="<br><div style='display: block; text-align: center; font-size: 1.3em; line-height: 50px;'>" + jsonObj.record[0].title;
+                head_str+="<div style='display: block; line-height: 100%;'>"
+                head_str+="<span class='commentBackground' ";
                 head_str+="engs="+ps.engs+" chap="+0+" sec="+0;
-                head_str+=">背景</span>";
+                head_str+=">書卷背景</span></div>";
+            }
+            else{
+                var idx=getBookFunc('indexByEngs',ps.engs);
+                head_str+="<br><div style='display: block; text-align: center; font-size: 1.3em; line-height: 50px;'>" + bookFullName[idx] +"&nbsp;背景資料</div>";
             }
             
-            head_str+="</br>";
+            head_str+="</div></br>";
 
             var html=jsonObj.record[0].com_text;
             html=parseComment(html);
-            
-            dom.html(head_str+html);
+              
+            dom.html("<div style='padding: 0px 20px;'>" + head_str + html + "</div>");
             that.registerEvents(ps);
           }
         });

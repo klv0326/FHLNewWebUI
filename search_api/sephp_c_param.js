@@ -90,9 +90,12 @@ sephp.c_param.prototype.initial_div_ui = function initial_div_ui() {
     // 處理auto高度
     $(this.divs["seFrame"]).css("position", "relative");
     $(this.divs["seFrame"]).css("top", 0);
-    $(this.divs["seFrame"]).css("height", "100%");
-    $(this.divs["seFrame"]).css("overflow-y", "hidden");
+    $(this.divs["seFrame"]).css("height", "90%");
+    $(this.divs["seFrame"]).css("border", "0");
+    $(this.divs["seFrame"]).css("overflow", "auto");
     $(this.divs["seFrame"]).css("border-style", "double");
+    $(this.divs["seFrame"]).css("margin-right", "-20px");
+    $(this.divs["seFrame"]).css("padding-right", "20px");
     
   }
 
@@ -103,10 +106,10 @@ sephp.c_param.prototype.initial_div_ui = function initial_div_ui() {
 
     $(this.divs["seFrameTool"]).css("white-space", "normal");//不加這行，視窗太窄的時候，會按不到後面的分類。
     //$(this.divs["seFrameTool"]).css("background", '#f6a828 url("ui-bg_gloss-wave_35_f6a828_500x100.png") 50% 50% repeat-x');
-    $(this.divs["seFrameTool"]).css("background", '#f6a828');
+    $(this.divs["seFrameTool"]).css("background", '#A0A0A0');
     $(this.divs["seFrameTool"]).css("color", "#ffffff");
     $(this.divs["seFrameTool"]).css("font-weight", "bold");
-
+    $(this.divs["seFrame"]).css("margin-right", "20px");
     // 處理auto高度
     $(this.divs["seFrameTool"]).css("position", "absolute");
     $(this.divs["seFrameTool"]).css("top", "0");
@@ -123,6 +126,8 @@ sephp.c_param.prototype.initial_div_ui = function initial_div_ui() {
 
     // 處理auto高度
     $(divFrame).css("overflow-y", "auto");
+    $(divFrame).css("margin-right", "-20px");
+    $(divFrame).css("padding-right", "20px");
     $(divFrame).css("top", $(this.divs["seFrameTool"]).height);
 
     

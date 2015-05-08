@@ -7,45 +7,46 @@
 <script src="./libs/xml2json.min.js"></script>
 <script>
 
+var pageState;
+var currentSWVer="0.1";
+
+function setCache(ps){
+  localStorage.setItem("fhlPageState",JSON.stringify(pageState));
+}
+function pageStateInit(){
+    pageState={
+      engs:"Gen",chineses:"創",chap:1,sec:1,version:["unv"],strong:0,
+      gb:0,book:3,N:0,k:"",cname:["和合本"],realTimePopUp:0,titleId:"fhlInfoComment",
+      leftBtmWinShow:true,searchTitleMsg:"",audio:0,swVer:currentSWVer
+    };    
+}
 
 $(function(){
   //fhlTopMenu.init(pageState);
   //fhlTopMenu.render(pageState);
+  //Check cache
+  if(localStorage.getItem("fhlPageState")!=null){
+    //console.log(localStorage.getItem("fhlPageState"));
+    var tmp=JSON.parse(localStorage.getItem("fhlPageState"));
+    if(tmp.swVer!=currentSWVer){
+      pageStateInit();
+      setCache(pageState);       
+    }else{
+      pageState=tmp;
+      setCache(pageState);
+    }
+  }else{
+    pageStateInit();
+    setCache(pageState); 
+  }  
   fhlToolbar.init(pageState);
   fhlLecture.init(pageState,$('#fhlLecture'));
   fhlLeftBottomWindow.init(pageState,$('#fhlLeftBottomWindow'));
   fhlInfo.init(pageState);  
+  searchInit(pageState);
 });
 
 var urlJSON="https://bkbible.fhl.net/json/";
-
-var pageState={
-    //Input Parameters
-    //For qb.php
-    engs:"Gen",
-    chineses:"創",
-    chap:1,
-    sec:1,
-    version:["unv"],    
-    strong:0,
-    gb:0,
-    //For sc.php
-    book:3,
-    //For sd.php
-    N:0,
-    k:"",    
-    //Return Values
-    cname:["和合本"],
-    //For popups
-    realTimePopUp:0,
-    //For fhlInfoContent
-    titleId:"fhlInfoComment",
-    //For fhlLeftBottomWindow
-    leftBtmWinShow:false,
-    //For audio
-    audio:0,
-};
-
 var book=new Array( "創","出","利","民","申","書","士","得","撒上","撒下","王上","王下",
                     "代上","代下","拉","尼","斯","伯","詩","箴","傳","歌","賽","耶",
                     "哀","結","但","何","珥","摩","俄","拿","彌","鴻","哈","番","該","亞","瑪",
@@ -185,6 +186,8 @@ var bookSelect={
       }else{
         ps.chap--;        
       }
+      ps.sec=1;
+      setCache(ps);
       that.render(ps,that.dom);
       fhlLecture.render(ps,fhlLecture.dom);
       fhlInfo.render(ps);
@@ -200,6 +203,8 @@ var bookSelect={
       }else{
         ps.chap++;
       }
+      ps.sec=1;
+      setCache(ps);
       that.render(ps,that.dom);
       fhlLecture.render(ps,fhlLecture.dom);
       fhlInfo.render(ps);
@@ -221,7 +226,7 @@ var bookSelect={
         html+="";
       }else{
         html+="<span class='chapNext'>&#x25B6</span>";
-      }            
+      }                 
       dom.html(html);
       this.registerEvents(ps);
     }
@@ -290,6 +295,7 @@ var bookSelectChapter={
       ps.engs=bookEng[that.idx];
       ps.chap=parseInt($(this).attr('chap'));
       ps.sec=1;
+      setCache(ps);
       bookSelect.render(ps,bookSelect.dom);
       fhlLecture.render(ps,fhlLecture.dom);
       fhlInfo.render(ps);
@@ -393,6 +399,7 @@ var versionSelectPopUp={
         ps.version.push(o.attr('book'));
         ps.cname.push(o.attr('cname'));
       }
+      setCache(ps);
       that.render(ps,that.dom,that.data);
       fhlLecture.render(ps,fhlLecture.dom);
     });
@@ -437,6 +444,7 @@ var snSelect={
       ps.strong=$(this).index();
       $('.snBtn').removeClass('selected');
       $('.snBtn').eq(ps.strong).addClass('selected');
+      setCache(ps);
       fhlLecture.render(ps,fhlLecture.dom);
     });
   },
@@ -446,20 +454,6 @@ var snSelect={
     html+="<span class='snBtn menuBtn'>開</span>";
     dom.html(html);
     $('.snBtn').eq(ps.strong).addClass('selected');
-  }
-};
-var searchTool={
-  init:function(ps,dom){
-    this.dom=dom;
-    this.render(ps,this.dom);
-  },
-  registerEvents:function(ps){
-  },
-  render:function(ps,dom){
-    var html="";
-    html+="<input type=text class='searchBox'></input>";
-    html+="<span class='searchBtn'>搜尋</span>";
-    dom.html(html);
   }
 };
 
@@ -540,6 +534,7 @@ var gbSelect={
       ps.gb=$(this).index();
       $('.gbBtn').removeClass('selected');
       $('.gbBtn').eq(ps.gb).addClass('selected');
+      setCache(ps);
       fhlLecture.render(ps,fhlLecture.dom);
     });
   },
@@ -561,6 +556,7 @@ var realTimePopUpSelect={
       ps.realTimePopUp=$(this).index();
       $('.rtBtn').removeClass('selected');
       $('.rtBtn').eq(ps.realTimePopUp).addClass('selected');
+      setCache(ps);
       fhlLecture.render(ps,fhlLecture.dom);
     });
   },
@@ -689,6 +685,7 @@ var fhlLecture={
       ps.sec=parseInt($(this).attr('sec'));
       $(that).find('.lec').removeClass('selected');
       $(this).addClass('selected');
+      setCache(ps);      
       fhlInfo.render(ps);
     });
     if(ps.realTimePopUp==1){
@@ -696,7 +693,7 @@ var fhlLecture={
         var offset=$(this).offset();
         offset.top+=$(this).height()+10;
         ps.N=$(this).attr('N');
-        ps.k=$(this).html();
+        ps.k=$(this).html();        
         parsingPopUp.render(ps,parsingPopUp.dom,offset);
       });
     }else{
@@ -765,7 +762,7 @@ var fhlLecture={
       setCSS(col,ps);
       setFont();
       dom.scrollTop(0);
-      that.selectLecture(null,null,1);
+      that.selectLecture(null,null,ps.sec);
       that.registerEvents(ps);
       //console.log('End of fhlLecture render');      
     });
@@ -804,12 +801,13 @@ var fhlLeftBottomWindow={
       {
         // 顯示箭頭部分 △ ▽
         var html = (ps.leftBtmWinShow == true) ? "&#9661" : "&#9651";
-        if (searchTitleMsg.length == 0)
-          html += "fhlLeftBottomWindowTitle";
+        if (ps.searchTitleMsg.length == 0)
+          html += "搜尋視窗";
         else
-          html += searchTitleMsg; //搜尋結果
+          html += ps.searchTitleMsg; //搜尋結果
         $('#fhlLeftBottomWindowTitle').html(html);
       }//搜尋功能
+      setCache(ps);
 
       //mark by snow
       //var html=(ps.leftBtmWinShow==true)?"&#9661":"&#9651";
@@ -819,7 +817,7 @@ var fhlLeftBottomWindow={
   },
   render:function(ps,dom){
       var html=(ps.leftBtmWinShow==true)?"&#9661":"&#9651";
-      html+="fhlLeftBottomWindowTitle";
+      html+="搜尋視窗";
       $('#fhlLeftBottomWindowTitle').html(html);
       if(ps.leftBtmWinShow==false){
         var fhlLeftWindowH=$('#fhlLeftWindow').height();
@@ -881,6 +879,7 @@ var fhlInfoTitle={
       $(selectAll).removeClass('selected');
       $(this).addClass('selected');
       ps.titleId=$(this).attr('id');
+      setCache(ps);
       fhlInfoContent.render(ps,fhlInfoContent.dom);
     });
   },  
@@ -947,7 +946,7 @@ var fhlInfoContent={
           });                    
         }
 
-        $('.secBack').click(function(){
+        $('.secBack, .secNext').click(function(){
           var oldEngs=ps.engs;
           var oldChap=ps.chap;
           ps.engs=$(this).attr('engs');
@@ -955,26 +954,13 @@ var fhlInfoContent={
           ps.chineses=book[idx];          
           ps.chap=$(this).attr('chap');
           ps.sec=$(this).attr('sec');          
-          bookSelect.render(ps,bookSelect.dom);
+          setCache(ps);
+          bookSelect.render(ps,bookSelect.dom);          
           if(oldEngs!=ps.engs||oldChap!=ps.chap)
-            fhlLecture.render(ps,fhlLecture.dom);
+            fhlLecture.render(ps,fhlLecture.dom);          
           fhlInfo.render(ps);
           fhlLecture.selectLecture(null,null,ps.sec);
-        });
-        $('.secNext').click(function(){
-          var oldEngs=ps.engs;
-          var oldChap=ps.chap;
-          ps.engs=$(this).attr('engs');
-          var idx=getBookFunc('indexByEngs',ps.engs);
-          ps.chineses=book[idx];          
-          ps.chap=$(this).attr('chap');
-          ps.sec=$(this).attr('sec');          
-          bookSelect.render(ps,bookSelect.dom);
-          if(oldEngs!=ps.engs||oldChap!=ps.chap)
-            fhlLecture.render(ps,fhlLecture.dom);            
-          fhlInfo.render(ps);          
-          fhlLecture.selectLecture(null,null,ps.sec);
-        });        
+        });     
         break;
       case "fhlInfoComment":
         $('.commentSecBack, .commentSecNext, .commentBackground').click(function(){
@@ -985,6 +971,7 @@ var fhlInfoContent={
           ps.chineses=book[idx];
           ps.chap=$(this).attr('chap');
           ps.sec=$(this).attr('sec');
+          setCache(ps);
           fhlInfo.render(ps);
         });
         break;
@@ -1034,6 +1021,7 @@ var fhlInfoContent={
                 var align_str="";
                 if (wid==0)
                 {
+                    
                     if (N==0)//NT
                     {
                         var wstr="";
@@ -1050,6 +1038,7 @@ var fhlInfoContent={
                                     wstr=wstr+"(聯："+wd[ii]+")";
                             }
                             word=wstr;
+                            console.log(word);
                         }
                     }
                     else if (N==1) //OT
@@ -1061,7 +1050,7 @@ var fhlInfoContent={
                                 parallel="平行經文："+remark;
                         }
                         align_str="align=\"right\" style=\"padding:0px 10px 0px 0px;\"";
-                    }
+                    }                    
 
                     var bookName=getBookFunc("bookFullName",ps.chineses);
                     if(bookName!="failed"){                      
@@ -1093,7 +1082,7 @@ var fhlInfoContent={
                         chinesef+"  "+chap+":"+sec
                         +"</span> <a href=\"javascript:spar('"+next_engs+"',"+next_chap+","+next_sec+",'"+div_name+"')"+
                         noverhead+"\">&gt;</a></span> "+parallel+"<br/>";
-                    */
+                    */                   
                    var nword=word.split("\n");
                    var nexp=exp.split("\n");                                      
                    if (N==1){//OT                                 
@@ -1138,8 +1127,10 @@ var fhlInfoContent={
                    }
                    else if (N==0){
                       var wid=1;
-                      for (var ii=0;ii<nword.length;ii++){
+                      for (var ii=0;ii<nword.length;ii++){                                                
+                        nword[ii]=nword[ii].trim();
                         var t=nword[ii].split(" ");
+                        console.dir(t);
                         head_str+="<div>";
                         for (var iii=0;iii<t.length;iii++,wid++){
                           var sn=jsonObj.record[wid].sn;
@@ -1160,13 +1151,15 @@ var fhlInfoContent={
              else
             {
                 if (N==0 && word=="+") {
+                  /*
                     clrcnt=(clrcnt+1)%3;
                     if (clrcnt==0) clrstr="";
                     else if (clrcnt==1) clrstr="#ffff99";
                     else if (clrcnt==2) clrstr="#ffcccc";
                     msg=skip1tag(msg,"record");
+                    */
                     continue;
-                } 
+                }
                 var sn=jsonObj.record[i].sn;
                 var pro=jsonObj.record[i].pro;
                 var wform=jsonObj.record[i].wform;
@@ -1417,46 +1410,72 @@ var parsingPopUp={
     var fhl = fhl || {};
     var abvphp = abvphp || {};
     var sephp = sephp || {};
+
+    var searchTool={
+        init:function(ps,dom){
+          this.dom=dom;
+          this.render(ps,this.dom);
+        },
+        registerEvents:function(ps){
+          var that=this;
+          $('.searchBtn').click(function(){
+            ps.leftBtmWinShow=true;
+            setCache(ps);
+            fhlLeftBottomWindow.render(ps,fhlLeftBottomWindow.dom);
+            doSearch($('.searchBox').val(),"search");
+          });
+        },
+        render:function(ps,dom){
+          var html="";
+          html+="<input type=text class='searchBox'></input>";
+          html+="<span class='searchBtn'>搜尋</span>";
+          dom.html(html);
+        }
+    };
   </script>
 
   <script>
-    //初始化
-    var Vversion = ["unv"];
-    var searchTitleMsg = "";//給title合下去的時候用的
-    $(function () {
-      abvphp.init_g_bibleversions();//必須先呼叫
-      sephp.g_param.m_divDst = document.getElementById("fhlLeftBottomWindowContent");
+  function searchInit(ps){
+    var version="unv";
+    abvphp.init_g_bibleversions();//必須先呼叫
+    sephp.g_param.m_divDst = document.getElementById("fhlLeftBottomWindowContent");
 
-      sephp.g_param.mp_chineses = book;
-      sephp.g_param.mp_vversion = Vversion;
-      //sephp.g_param.mp_vversion = pageState.version;
+    sephp.g_param.mp_chineses = book;
+    sephp.g_param.mp_vversion = version;    
+    sephp.g_param.mpfn_search_title_change = function (msg) {
+      document.getElementById("fhlLeftBottomWindowTitle").innerHTML = "▽" + msg;
+      ps.searchTitleMsg = msg;
+    };// mpfn_search_title_change function pointer
 
-      sephp.g_param.mpfn_search_title_change = function (msg) {
-        document.getElementById("fhlLeftBottomWindowTitle").innerHTML = "▽" + msg;
-        searchTitleMsg = msg;
-      };// mpfn_search_title_change function pointer
+    sephp.g_param.mpfn_read_bible = function (arg1_chinese, arg2_chap, arg3_sec) {
+      //console.debug("mpfn_read_bible 參數");
 
-      sephp.g_param.mpfn_read_bible = function (arg1_chinese, arg2_chap, arg3_sec) {
-        //console.debug("mpfn_read_bible 參數");
+      var idx = getBookFunc("index", arg1_chinese);
+      ps.chineses = book[idx];
+      ps.engs = bookEng[idx];
+      ps.chap = arg2_chap;
+      ps.sec = arg3_sec;
 
-        var idx = getBookFunc("index", arg1_chinese);
-        pageState.chineses = book[idx];
-        pageState.engs = bookEng[idx];
-        pageState.chap = arg2_chap;
-        pageState.sec = arg3_sec;
+      bookSelect.render(pageState, bookSelect.dom);
+      fhlLecture.render(pageState, fhlLecture.dom);
+      fhlInfo.render(pageState);
+    };// mpfn_read_bible function pointer
 
-        bookSelect.render(pageState, bookSelect.dom);
-        fhlLecture.render(pageState, fhlLecture.dom);
-        fhlInfo.render(pageState);
-      };// mpfn_read_bible function pointer
+    sephp.g_param.initial_div_ui();//初始化
+    if (pageState.gb == 0)
+      sephp.g_param.m_isBig5 = true;
+    else
+      sephp.g_param.m_isBig5 = false;    
 
-      sephp.g_param.initial_div_ui();//初始化
-      if (pageState.gb == 0)
-        sephp.g_param.m_isBig5 = true;
-      else
-        sephp.g_param.m_isBig5 = false;
+  }
+  function doSearch(keyword,func){    
 
-    });//初始化
+    sephp.g_param.m_keyword = keyword;
+    //sephp.g_param.mp_vversion = pageState.version;
+    if(func=="search"){
+      sephp.g_param.do_search();
+    }
+  }
   </script>
   <!--End of 搜尋功能-->
 </head>

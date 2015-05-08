@@ -273,7 +273,7 @@
 
 #fhlLeftBottomWindow {
   position: relative;  
-  overflow: auto;
+  overflow: hidden;
   height: 50%;
 }
 #fhlLeftBottomWindowTitle {
@@ -343,7 +343,8 @@
   font: 20px/30px bold ,Microsoft JhengHei;
   top: -1px;
   border-top: 1px solid;  
-  padding-right:15px;
+  margin-right: -20px;
+  padding-right: 20px;
   z-index:100;
 }
 #parsingPopUp {

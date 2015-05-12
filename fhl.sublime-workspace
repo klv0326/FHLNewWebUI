@@ -4,11 +4,11 @@
 		"selected_items":
 		[
 			[
-				"ver",
-				"versionIdx"
+				"versionSe",
+				"versionSelect"
 			],
 			[
-				"versionSe",
+				"ver",
 				"versionSelectPopUp"
 			],
 			[
@@ -263,7 +263,23 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 47659,
+				"buffer_size": 58260,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "search_api/fhl_api.js",
+			"settings":
+			{
+				"buffer_size": 64264,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "search_api/sephp_c_param.js",
+			"settings":
+			{
+				"buffer_size": 74658,
 				"line_ending": "Windows"
 			}
 		},
@@ -271,7 +287,7 @@
 			"file": "libs/fhl.css",
 			"settings":
 			{
-				"buffer_size": 6414,
+				"buffer_size": 6963,
 				"line_ending": "Windows"
 			}
 		}
@@ -304,6 +320,8 @@
 	"file_history":
 	[
 		"/D/GitHub/FHLNewWebUI/libs/fhl.css",
+		"/D/GitHub/FHLNewWebUI/search_api/sephp_c_param.js",
+		"/D/GitHub/FHLNewWebUI/search_api/sephp_c_param.css",
 		"/D/Learnings/History/Coursera_The Emergence of the Modern Middle East - Part I/4 - 12 - 4.6.1.1 The Non-Arab States- The Republic of Turkey (part 1) (03-58).srt",
 		"/D/GitHub/FHLNewWebUI/index.html",
 		"/D/GitHub/kevin/index.html",
@@ -350,6 +368,116 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"read_",
+			"read_bible",
+			"chap",
+			"ps.",
+			"fhlTool",
+			"fhlToolbar",
+			"viewHistory",
+			"viewHistoryPopUp",
+			"viewHistory",
+			"render",
+			"ps.history",
+			"version.push",
+			".push",
+			"setPageState",
+			"setBook",
+			"getBookFunc",
+			"viewHistory",
+			",",
+			"viewHistory",
+			"setPageState",
+			"ps.chineses",
+			"viewHistory",
+			"setPageState",
+			"setCache",
+			"button",
+			"viewHistory",
+			"註",
+			"歷史紀錄",
+			"hideAll",
+			"Popup",
+			"viewHistory",
+			"fhlToolbar",
+			"viewHistory",
+			"searchInit",
+			"pageStateInit",
+			"searchInit",
+			"&#x",
+			"&#",
+			"3em",
+			"fontsize",
+			"&#x",
+			"commentSec",
+			"sean",
+			"msg",
+			"skip1tag",
+			"orig_font",
+			"[wid",
+			"wid",
+			"var bookselect",
+			"nextChap",
+			"selectLecture",
+			"var fhl",
+			"select",
+			"selectLecture",
+			"var fhlLEc",
+			"fhlLecture",
+			"fhlLEcture",
+			"localStorage",
+			"registerEvents",
+			"setCache(ps);",
+			"registerEvents",
+			"ps.",
+			"background",
+			"rgb(246, 168, 40)",
+			"fhlleft",
+			"searchTool",
+			"overflow",
+			"padding-right",
+			"margin",
+			"left",
+			"css",
+			"more",
+			"ps.leftBtmWinShow",
+			"ps.leftBtmWinShow == true",
+			"fhlLeftBottomWindow",
+			"fhlLeftbottom",
+			"do_search",
+			"val(",
+			"this.div",
+			"fn.data",
+			"do_search",
+			"sephp_search",
+			"do_search",
+			"searchTitleMsg",
+			"do_search",
+			"m_keyword",
+			"m_keywordType",
+			"m_keyword",
+			"initial_div_ui",
+			"g_param",
+			"initial_div_ui()",
+			"_param.initial_div_ui()",
+			"m_keyword",
+			"do_search",
+			"m_keyword",
+			"initial_div_ui",
+			".click",
+			"search_type",
+			"keyword2",
+			"search",
+			"Vversion",
+			"book",
+			"searchTool",
+			"searchToll",
+			"search_api",
+			"fhlinfoContent",
+			"fhlinfo",
+			"that.find",
+			"registerEvents",
+			"getRecord",
 			"scroll",
 			"insertVersion",
 			"console.log",
@@ -367,117 +495,7 @@
 			"url(",
 			"ajax",
 			"getBookFunc",
-			"bookEng",
-			"getBookFunc",
-			"getBibleText",
-			"bibletext",
-			"sortBibleVersion",
-			"fhllecture.render",
-			"sortBibleVersion",
-			"r",
-			"sortBibleVersion",
-			"maxR",
-			"sortBibleVersion",
-			"ps[i",
-			"cname",
-			"getRecord",
-			"forEach",
-			"getBibleText",
-			"bibleV",
-			"parseBibleText",
-			"bibleText",
-			"comtext",
-			":eq",
-			"selectLecture",
-			"fhlLecture",
-			"selectLecture",
-			"bookSelect",
-			"bookSelect.",
-			"fhlToolbar.render",
-			"selectLecture",
-			"getBookFunc",
-			"prev_engs",
-			"chapNext",
-			"chapNex",
-			"chapBack",
-			"selectTex",
-			"attr",
-			"fhlLec",
-			"addClass",
-			"head_str",
-			"chinesef",
-			"chineses",
-			"bookSelect",
-			"head_str",
-			"poverhead",
-			"read_bible",
-			"&lt",
-			"bibleAudio",
-			"bibleAu",
-			"audio",
-			"sear",
-			"搜尋",
-			"PopUp.",
-			"versionSelectPopUp.",
-			"versionSelect",
-			"$(this).show",
-			"settingPop",
-			"bookSelectPopUp",
-			"bookSelect.render",
-			"bookSelect",
-			"fhlToolbar",
-			"toolbar",
-			"SN",
-			"&#",
-			"bookSelect",
-			"fhlInfoTitle",
-			"fhlInfo",
-			"fhlinfo",
-			"fhlInfo",
-			"realTimePopUp",
-			"realTimePopUpSelect",
-			"parsingPopUp",
-			"parsing",
-			"realTimePopUp",
-			"gbBtn",
-			"snSelect",
-			"psn",
-			"60",
-			"mouseleave",
-			"parsingPopUp",
-			"lecTop",
-			"parsing",
-			"fhlLeftBottomWindow",
-			".png",
-			"background-image",
-			"80px",
-			"ps.strong",
-			"getAjaxUrl",
-			"fhlInfoContent",
-			"fhlInfo",
-			"bookSelectPopUp",
-			"getBookFunc",
-			"bookSelectPopUp",
-			"bookSelect",
-			"Select",
-			"sn",
-			".sn",
-			"Lecture",
-			"psn",
-			".psn",
-			".parsing",
-			"sdic",
-			".parsing",
-			"parsing",
-			"::after",
-			"parsingPopUp",
-			"parsing",
-			"ps.par",
-			"ps.N",
-			"t[iii",
-			"parsingPopUp",
-			"isNew",
-			"isnew"
+			"bookEng"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -485,6 +503,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"setPageState",
 			"versionSelect",
 			"$(arr[i])",
 			".png"
@@ -507,15 +526,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 47659,
+						"buffer_size": 58260,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								44900,
-								44900
+								55666,
+								55666
 							]
 						],
 						"settings":
@@ -525,7 +544,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 37645.0,
+						"translation.y": 49377.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -533,19 +552,79 @@
 				},
 				{
 					"buffer": 1,
-					"file": "libs/fhl.css",
+					"file": "search_api/fhl_api.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6414,
+						"buffer_size": 64264,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								204,
-								204
+								7833,
+								7835
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 8867.0,
+						"translation.y": 4361.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "search_api/sephp_c_param.js",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 74658,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2051,
+								2061
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 833.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "libs/fhl.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6963,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2935,
+								2935
 							]
 						],
 						"settings":
@@ -555,10 +634,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 4633.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 3,
 					"type": "text"
 				}
 			]
@@ -602,7 +681,7 @@
 	"project": "fhl.sublime-project",
 	"replace":
 	{
-		"height": 68.0
+		"height": 82.0
 	},
 	"save_all_on_build": true,
 	"select_file":

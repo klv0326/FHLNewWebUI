@@ -5,7 +5,7 @@
 
 @font-face {
   font-family: COBSHebrew;
-  src:url(../font/cobsh.ttf);
+  src:url(../font/cobsh.woff);
 }
 
 .greek {
@@ -145,6 +145,36 @@
   background-color: black;
   color:white;
 }
+
+#viewHistoryPopUp {
+  position: fixed;
+  width:120px;
+  font: 18px/18px bold ,Microsoft JhengHei;
+  background-color: #B0B0B0;
+  padding: 2px;
+  text-align: center;
+  z-index: 101;/*Layer 2*/
+}
+
+#viewHistoryPopUp ul { 
+  list-style: none; 
+  padding:2px;
+  margin:0;
+}
+#viewHistoryPopUp li,span{    
+  cursor: pointer;
+  white-space: nowrap;
+  padding:0;
+  margin:0;
+}
+#viewHistoryPopUp li:hover,span:hover{    
+  background-color: white;
+}
+#viewHistoryPopUp li.selected{    
+  background-color: black;
+  color:white;
+}
+
 
 #settingPopUp {
   position: fixed;

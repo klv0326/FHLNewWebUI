@@ -535,6 +535,7 @@ var viewHistoryPopUp={
     this.dom.find('li').click(function(){      
       setBook(ps,$(this).attr('chineses'));
       ps.chap=parseInt($(this).attr('chap'));
+      ps.sec=1;
       that.dom.hide();
       setPageState(ps);    
       bookSelect.render(ps,bookSelect.dom);      
@@ -790,7 +791,10 @@ var fhlLecture={
   selectLecture:function(book,chap,sec){
     var that=this.dom;
     that.find('.lec').removeClass('selected');
-    that.find('.lec'+'[sec="'+sec+'"]').addClass('selected');
+    var obj=that.find('.lec'+'[sec="'+sec+'"]');
+    obj.addClass('selected');
+    that.scrollTop(that.scrollTop()+obj.position().top);    
+    //console.dir(obj.position());
   },
   registerEvents:function(ps){
     var that=this.dom;
@@ -874,8 +878,7 @@ var fhlLecture={
         dom.find('.lec:eq('+i+')').attr('sec',r.sec);
       }
       setCSS(col,ps);
-      setFont();
-      dom.scrollTop(0);
+      setFont();      
       that.selectLecture(null,null,ps.sec);
       that.registerEvents(ps);
       //console.log('End of fhlLecture render');      
@@ -977,8 +980,7 @@ var fhlInfoTitle={
               {"name":"註釋","id":"fhlInfoComment"},
               {"name":"講道","id":"fhlInfoPreach"},
               {"name":"串珠","id":"fhlInfoTsk"},
-              {"name":"典藏","id":"fhlInfoOb"},
-              {"name":"搜尋","id":"fhlInfoSearch"}
+              {"name":"典藏","id":"fhlInfoOb"}
       ];    
     this.render(ps,this.dom);    
   },
@@ -1512,11 +1514,7 @@ var fhlInfoContent={
       case "fhlInfoOb":
         var html=ps.titleId;
         dom.html(html);      
-        break;
-      case "fhlInfoSearch":
-        var html=ps.titleId;
-        dom.html(html);      
-        break;                                        
+        break;                           
     }
   }
 };
@@ -1646,7 +1644,7 @@ var parsingPopUp={
         render:function(ps,dom){
           var html="";
           html+="<input type=text class='searchBox'></input>";
-          html+="<span class='searchBtn'>搜尋</span>";
+          html+="<span class='searchBtn menuBtn'>搜尋</span>";
           dom.html(html);
         }
     };

@@ -89,7 +89,7 @@ var bookEng=new Array("Gen","Ex","Lev","Num","Deut","Josh","Judg","Ruth","1+Sam"
                 "Jon","Mic","Nah","Hab","Zeph","Hag","Zech","Mal",
                 "Matt","Mark","Luke","John","Acts","Rom","1+Cor","2+Cor","Gal","Eph",
                 "Phil","Col","1+Thess","2+Thess","1+Tim","2+Tim","Titus","Philem",
-                "Heb","James","1+Pet","2+Pet","1+John","2+John","3+John","Jude","Rev");    
+                "Heb","James","1+Pet","2+Pet","1+John","2+John","3+John","Jude","Rev");
 
 function getAjaxUrl(func,ps,idx){
   var paramArr=new Array("engs","chineses","chap","sec","version",
@@ -548,7 +548,7 @@ var viewHistoryPopUp={
     var html="";
     html+="<span class='clearHistory'>清除記錄</span>";
     html+=html="<ul>";    
-    for(var i=0;i<ps.history.length;i++){
+    for(var i=ps.history.length-1;i>=0;i--){
       var r=ps.history[i];
       html+="<li chineses="+r.chineses+" chap="+r.chap+">";
       html+=r.chineses+":"+r.chap+"</li>";

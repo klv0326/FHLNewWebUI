@@ -29,7 +29,7 @@ function processUrl(setup){
     var ret="";
     for(var key in setup){
         if(setup.hasOwnProperty(key)){
-            ret+=key+"="+encodeURIComponent(setup[key])+"&";
+            ret+=key+"="+setup[key]+"&";
         }
     }
     ret=ret.substring(0,ret.length-1);    

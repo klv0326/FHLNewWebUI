@@ -5,13 +5,13 @@ var BOOK_ABBR_CHI=new Array( "創","出","利","民","申","書","士","得","�
                     "太","可","路","約","徒","羅","林前","林後","加","弗","腓","西",
                     "帖前","帖後","提前","提後","多","門","來","雅",
                     "彼前","彼後","約一","約二","約三","猶","啟");
-var BOOK_ABBR_ENG=new Array("Gen","Ex","Lev","Num","Deut","Josh","Judg","Ruth","1+Sam","2+Sam",
-                "1+Kin","2+Kin","1+Chr","2+Chr","Ezra","Neh","Esth","Job","Ps","Prov",
+var BOOK_ABBR_ENG=new Array("Gen","Ex","Lev","Num","Deut","Josh","Judg","Ruth","1 Sam","2 Sam",
+                "1 Kin","2 Kin","1 Chr","2 Chr","Ezra","Neh","Esth","Job","Ps","Prov",
                 "Eccl","Song","Is","Jer","Lam","Ezek","Dan","Hos","Joel","Amos","Obad",
                 "Jon","Mic","Nah","Hab","Zeph","Hag","Zech","Mal",
-                "Matt","Mark","Luke","John","Acts","Rom","1+Cor","2+Cor","Gal","Eph",
-                "Phil","Col","1+Thess","2+Thess","1+Tim","2+Tim","Titus","Philem",
-                "Heb","James","1+Pet","2+Pet","1+John","2+John","3+John","Jude","Rev");
+                "Matt","Mark","Luke","John","Acts","Rom","1 Cor","2 Cor","Gal","Eph",
+                "Phil","Col","1 Thess","2 Thess","1 Tim","2 Tim","Titus","Philem",
+                "Heb","James","1 Pet","2 Pet","1 John","2 John","3 John","Jude","Rev");
 var BOOK_FULLNAME_CHI=new Array( "創世記","出埃及記","利未記","民數記","申命記","約書亞記","士師記",
                             "路得記","撒母耳記上","撒母耳記下","列王紀上","列王紀下",
                             "歷代志上","歷代志下","以斯拉記","尼希米記","以斯帖記","約伯記",

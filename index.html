@@ -5,6 +5,9 @@
 <link rel="stylesheet" href="./libs/fhl.css"/>
 <script src="./libs/jquery-1.10.2.js"></script>
 <script src="./libs/xml2json.min.js"></script>
+  <link href="libs/jquery-ui.css" rel="stylesheet" />
+  <script src="libs/jquery-ui.js"></script>
+  <script src="bible_audio_api/audiobible_api.js"></script>
 <script>
 
 var pageState;
@@ -1505,8 +1508,11 @@ var fhlInfoContent={
         });
         break;
       case "fhlInfoPreach":
-        var html=ps.titleId;
-        dom.html(html);      
+        do_preach(ps, dom);
+        
+          
+        //var html=ps.titleId;
+        //dom.html(html);      
         break;
       case "fhlInfoTsk":
         var html=ps.titleId;
@@ -1514,8 +1520,29 @@ var fhlInfoContent={
         break;
       case "fhlInfoOb":
         var html=ps.titleId;
-        dom.html(html);      
-        break;                           
+        dom.html(html);
+        break;
+      case "fhlInfoSearch":
+        //var html=ps.titleId;
+        //dom.html(html);
+
+        // 有聲聖經 snow 
+        {
+          var pfn_callback = function fn_after_set(ibook, ichap) {
+            ps.chineses = book[idx];
+            ps.chap = ichap + 1; //因為是0-based 與 1-based
+            ps.sec = 1;
+            bookSelect.render(pageState, bookSelect.dom);
+            fhlLecture.render(pageState, fhlLecture.dom);
+            fhlInfo.render(pageState);
+          };
+          var idx = getBookFunc("index", ps.chineses); // 0-based
+          //ps.chap; // 1-based
+          audiobible.g_audiobible.set_book_chap(idx, ps.chap - 1, dom[0]);
+          audiobible.g_audiobible.m_pfn_after_set = pfn_callback;
+        }
+        
+        break;                                        
     }
   }
 };
@@ -1654,6 +1681,7 @@ var parsingPopUp={
   <script src="search_api/abvphp_api.js"></script>
   <link href="search_api/sephp_c_param.css" rel="stylesheet" />
   <script src="search_api/sephp_c_param.js"></script>
+  <script src="preach_api/c_preach_frame.js"></script>
   <script>
     var fhl = fhl || {};
     var abvphp = abvphp || {};
@@ -1681,6 +1709,41 @@ var parsingPopUp={
         }
     };
   </script>
+
+  <!--講道功能 2015.05.11-->
+  <script>
+    function do_preach(ps,dom)
+    {
+      // 設定 callback function (scphp.set會呼叫)
+      scphp.pfn_set_after = function pfn_set_after(rediv) {
+        dom.html(rediv);
+
+        // 四個樣式可設定 (可變更...現在只是隨便設)
+        //for (var idx in scphp.divbooknames)//主題
+        //  $(scphp.divbooknames[idx]).addClass("search_type");
+        //for (var idx in scphp.divtitles)//範圍
+        //  $(scphp.divtitles[idx]).addClass("search_type");
+        for (var idx in scphp.divnexts)//範圍
+          $(scphp.divnexts[idx]).addClass("search_type");
+        for (var idx in scphp.divprevs)//範圍
+          $(scphp.divprevs[idx]).addClass("search_type");
+      }; // 設定 callback function (scphp.set會呼叫)
+
+      // 設定 callback function (onclick時會呼叫)
+      scphp.pfn_goto_sec = function pfn_(engs, chap, sec) {
+        var idx = getBookFunc("indexByEngs", engs);
+        ps.chineses = book[idx];
+        ps.engs = engs;
+        ps.chap = chap;
+        ps.sec = sec;
+        bookSelect.render(pageState, bookSelect.dom);
+        fhlLecture.render(pageState, fhlLecture.dom);
+        fhlInfo.render(pageState);
+      }; // 設定 callback function (onclick時會呼叫)
+
+      scphp.set(ps.engs, ps.chap, ps.sec);
+    }//do_preach
+  </script><!--講道功能 2015.05.11-->
 
   <script>
   function searchInit(ps){

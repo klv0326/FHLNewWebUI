@@ -1394,8 +1394,10 @@ var fhlInfoContent={
              var ptg="";
              if (N==0)
                 ptg="<td class=\"g0\">詞性</td>";
-            dom.html("<div style=\"height:25%;overflow:auto;\">"+head_str+"</div><div style=\"height:70%;overflow:auto;\"><hr/><table border=\"1\">"+
-     "<tr><td class=\"g0\">原文字</td><td class=\"g0\">SN</td>"+ptg+"<td class=\"g0\">字彙分析</td><td class=\"g0\">原型</td><td class=\"g0\">原型簡義</td><td class=\"g0\">備註</td>"+body_str+"</table></div>");
+             var headDivStyle="<div style=\"height:25%;overflow:auto;"+((N==1)?"text-align:right;":"")+
+                  "\">";
+
+            dom.html(headDivStyle+head_str+"</div><div style=\"height:70%;overflow:auto;\"><hr/><table border=\"1\">"+"<tr><td class=\"g0\">原文字</td><td class=\"g0\">SN</td>"+ptg+"<td class=\"g0\">字彙分析</td><td class=\"g0\">原型</td><td class=\"g0\">原型簡義</td><td class=\"g0\">備註</td>"+body_str+"</table></div>");
             that.registerEvents(ps);
           }//if j
         });
@@ -1517,6 +1519,26 @@ var fhlInfoContent={
     }
   }
 };
+
+function parseDic(text){    
+    var ps=pageState;    
+    text=text.replace(/(定義|自希伯來文|於|自|參|與|同義詞|和|見|from|and|See|see entry)(\s+)/g,
+      function replacer(match,p1,offset,string){return p1;});
+    text=text.replace(/ /g,"&nbsp;");
+    text=text.replace(/(於|自|參|與|同義詞|和|見|from|and|See|see entry)(\d+)/g,
+      function replacer(match,p1,p2,offset,string){
+          //return p1+" <a href=\"javascript:parseRender("+ps.N+",'"+p2+"')\">"+p2+"</a>";});
+          return p1+"<span class='snParse' N="+ps.N+">"+p2+"</span>";});
+    text=text.replace(/自希伯來文(\d+)/g,function replacer(match,p1,offset,string){
+          //return"自希伯來文 <a href=\"javascript:parseRender(1,'"+p1+"')\">"+p1+"</a>";});
+          return "自希伯來文<span class='snParse' N=1>"+p1+"</span>";});
+    text=text.replace(/定義(\d+)/g,function replacer(match,p1,offset,string){
+          //return"定義"+p1+"<a href=\"javascript:parseRender("+ps.N+",'"+p2+"')\">"+p2+"</a>";});
+          return "定義<span class='snParse' N="+ps.N+">"+p1+"</span>";});
+    text=text.replace(/\r\n/g,"</br>");        
+    return text;
+}
+
 var parsingPopUp={
   init:function(ps,dom){
     this.dom=dom;
@@ -1536,6 +1558,12 @@ var parsingPopUp={
         that.dom.unbind('mouseleave');
       }
     });
+    $('.snParse').click(function(){
+      //var offset=$(this).offset;
+      ps.N=$(this).attr('N');
+      ps.k=$(this).html();
+      parsingPopUp.render(ps,parsingPopUp.dom,null);
+    });
   },
   render:function(ps,dom,offset,par){
     var that=this;    
@@ -1546,30 +1574,33 @@ var parsingPopUp={
       }).done(function(d,s,j){      
         var jsonObj=JSON.parse(j.responseText);      
         var html=jsonObj.record[0].dic_text;
-        html=html.replace(/\r\n/g,"</br>");
-        html=html.replace(/ /g,"&nbsp;");
-        dom.html(html);                  
-        var lecTop=164;
-        var lecTopOffset=120;
-        var RightWinH=$('#fhlInfo').height();
-        var domH=dom.height();
+        html=parseDic(html);
+        dom.html(html);
+        if(offset!=null){
+          var lecTop=164;
+          var lecTopOffset=120;
+          var RightWinH=$('#fhlInfo').height();
+          var domH=dom.height();
         //console.log("top:"+offset.top+",domH:"+domH+",RightWinH:"+RightWinH);
 
-        if(domH>RightWinH){
-          //set css to auto scroll
-        }else if(offset.top+domH>RightWinH){
-          offset.top-=(offset.top>domH)?domH:offset.top;
-          offset.left+=70;
-        }    
-        that.dom.show();
-        dom.offset(offset);
+          if(domH>RightWinH){
+            //set css to auto scroll
+          }else if(offset.top+domH>RightWinH){
+            offset.top-=(offset.top>domH)?domH:offset.top;
+            offset.left+=70;
+          }              
+          that.dom.show();
+          dom.offset(offset);
+        }        
         that.registerEvents(ps);
       });            
     }else if(par!=null){      
       var html=par;      
       dom.html(html);                  
       that.dom.show();
-      dom.offset(offset);
+      if(offset!=null){
+        dom.offset(offset);
+      }
       //that.dom.scrollTop(0);      
       that.registerEvents(ps);
     }else{
@@ -1579,36 +1610,38 @@ var parsingPopUp={
       }).done(function(d,s,j){      
         var jsonObj=JSON.parse(j.responseText);      
         var html=jsonObj.record[0].dic_text;
-        html=html.replace(/\r\n/g,"</br>");
-        html=html.replace(/ /g,"&nbsp;");
+        html=parseDic(html);
         dom.html(html);                  
-        var lecTop=164;
-        var lecTopOffset=120;
-        var leftWinH=$('#fhlLeftWindow').height();
-        var lecH=$('#fhlLecture').height();
-        var scrollY=$('#fhlLecture').scrollTop();
-        var scrollH=$('#fhlLecture')[0].scrollHeight;
-        var domH=dom.height();
-        //console.log("top:"+offset.top+",domH:"+domH+",leftWinH:"+leftWinH+",lecH:"+lecH);
-        //console.log("scrollH:"+scrollH+",scrollY:"+scrollY);        
+        if(offset!=null){
+          var lecTop=164;
+          var lecTopOffset=120;
+          var leftWinH=$('#fhlLeftWindow').height();
+          var lecH=$('#fhlLecture').height();
+          var scrollY=$('#fhlLecture').scrollTop();
+          var scrollH=$('#fhlLecture')[0].scrollHeight;
+          var domH=dom.height();
+          //console.log("top:"+offset.top+",domH:"+domH+",leftWinH:"+leftWinH+",lecH:"+lecH);
+          //console.log("scrollH:"+scrollH+",scrollY:"+scrollY);        
 
-        if(domH>leftWinH){
-          //set css to auto scroll
-        }else if(offset.top+domH>leftWinH){
-          offset.top-=(offset.top>domH)?domH:offset.top;
-          offset.left+=50;
-        }
-/*
-        if((offset.top+domH+scrollY)>scrollH){
+          if(domH>leftWinH){
+            //set css to auto scroll            
+          }else if(offset.top+domH>leftWinH){
+            offset.top-=(offset.top>domH)?domH:offset.top;
+            offset.left+=50;
+          }
+  /*
+          if((offset.top+domH+scrollY)>scrollH){
 
+          }
+          else if((offset.top+domH)>leftWinH){
+            $('#fhlLecture').scrollTop(scrollY+offset.top-lecTop);
+            offset.top-=offset.top-lecTop;
+          }
+  */
+          that.dom.show();
+          dom.offset(offset);
         }
-        else if((offset.top+domH)>leftWinH){
-          $('#fhlLecture').scrollTop(scrollY+offset.top-lecTop);
-          offset.top-=offset.top-lecTop;
-        }
-*/
-        that.dom.show();
-        dom.offset(offset);
+          
         that.registerEvents(ps);
       });
     }

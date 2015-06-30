@@ -386,6 +386,14 @@ sephp.c_param.prototype.initial_div_ui = function initial_div_ui() {
       });
       for (var idx in abvphp.g_bibleversions) // 和合本 新譯本 ... etc.
       {
+        // 略過版本 add 2015.06.10
+        // unv 和合本, recover 恢復本 , wlunv 文理和合本
+        var val = abvphp.g_bibleversions[idx];
+        var is_ok_version = ['unv', 'recover', 'wlunv', 'ddv', 'cbol', 'kjv', 'bbe', 'web', 'asv', 'bhs', 'nwh', 'lxx'];
+        var ok_idx = is_ok_version.indexOf(val.book);
+        if (ok_idx == -1)
+          continue;
+
         divBtn = document.createElement('div');
         divBtn.innerHTML = idx;
         divBtn.setAttribute('class', 'search_type');
@@ -750,6 +758,14 @@ sephp.c_param.prototype.update_div_ui = function update_div_ui() {
     $(this.divs["聖經版本"]).removeClass("search_type_cur").addClass("search_type");
   // 「聖經版本」end
 
+  // 2015.05.06 (SN搜尋的時候,聖經版本隱藏)
+  if (this.m_isVisibleSn || this.m_keywordType != 0) {
+    $(this.divs["聖經版本"]).css("display", "none");
+    this.m_isVisibleDivBibleSwitch = false;
+  }
+  else
+    $(this.divs["聖經版本"]).css("display", "");
+
   if (this.m_isVisibleDivRange) {
     this.divs["範圍選單_總"].setAttribute("style", "display:inherit");
 
@@ -897,6 +913,8 @@ sephp.c_param.prototype.fncb_success_json = function fncb_success_json(json, obj
   }//for loop
 };
 sephp.c_param.prototype.fncb_success_xml_text = function fncb_success_xml_text(xml_text, obj_param) {
+  //console.debug("fncb_success_xml_text ");//debug
+
   var jsonResult = fhl.xml_tool.parseXml(xml_text);
   var json = jsonResult["result"];
 
@@ -918,6 +936,17 @@ sephp.c_param.prototype.fncb_success_xml_text = function fncb_success_xml_text(x
     var sec = j_records["sec"];
     var bible_text = j_records["bible_text"];
 
+    //2015.05.06 sn 要完全一樣. 才真的去畫後面的
+    if (pThis.m_keywordType != 0)// 輸入「摩西」的時候不用作下面.不然在下面的test會回傳false
+    {
+      // pThis.m_keywordType: 依使用者輸入的內容自動判斷.(0:keyword 1:sn 2:reference)
+      //var mt_str = '<[A-Za-z]+' + keyword + '>';
+      var mt_str = '<[A-Za-z]+0*' + keyword + '>';
+      var mt4 = new RegExp(mt_str, 'g');
+      if (mt4.test(bible_text) == false)
+        return;
+    }//2015.05.06 sn 要完全一樣. 才真的去畫後面的
+
     outputIds[id] = {
       book_cname: obj_param.version,
       chineses: bookcn,
@@ -930,8 +959,11 @@ sephp.c_param.prototype.fncb_success_xml_text = function fncb_success_xml_text(x
     pThis.make_keyword_color(keyword, outputIds[id]);
 
     obj_param.outputIds = outputIds;
+
+    
   }
   else {
+    
     for (var idxRecord in j_records) {
       var j_record = j_records[idxRecord];
 
@@ -948,6 +980,17 @@ sephp.c_param.prototype.fncb_success_xml_text = function fncb_success_xml_text(x
       var sec = j_record["sec"];
       var bible_text = j_record["bible_text"];
 
+      //2015.05.06 sn 要完全一樣. 才真的去畫後面的
+      if (pThis.m_keywordType != 0)// 輸入「摩西」的時候不用作下面.不然在下面的test會回傳false
+      {
+        // pThis.m_keywordType: 依使用者輸入的內容自動判斷.(0:keyword 1:sn 2:reference)
+        //var mt_str = '<[A-Za-z]+' + keyword + '>';
+        var mt_str = '<[A-Za-z]+0*' + keyword + '>';
+        var mt4 = new RegExp(mt_str, 'g');
+        if (mt4.test(bible_text) == false)
+          return;
+      }//2015.05.06 sn 要完全一樣. 才真的去畫後面的
+
       outputIds[id] = {
         book_cname: obj_param.version,
         chineses: bookcn,
@@ -960,6 +1003,8 @@ sephp.c_param.prototype.fncb_success_xml_text = function fncb_success_xml_text(x
       pThis.make_keyword_color(keyword, outputIds[id]);
 
       obj_param.outputIds = outputIds;
+
+      
     }//for loop
   }
 
@@ -1367,7 +1412,7 @@ sephp.c_param.prototype.search_reference = function search_reference() {
     $(pThisClassObj.divs["SearchMore"]).addClass("seSearchMoreNone");// reference searh 不用 more
     //$(pThisClassObj.divs["seFrameBody"]).css("max-height", $(pThisClassObj.divs["seFrame"]).height() - $(pThisClassObj.divs["seFrameTool"]).height() - 0);
     //$(pThisClassObj.divs["SearchMore"]).hide();// reference searh 不用 more
-    pThisClassObj.divs["DialogTitleBar"].innerHTML = "Reference Show";
+    //pThisClassObj.divs["DialogTitleBar"].innerHTML = "Reference Show";
 
     $.when.apply(window, asyn_queue).done(this, function when_apply_done(pthis) {
       // Result Step1 : fill data in re2 = {};
@@ -1384,7 +1429,7 @@ sephp.c_param.prototype.search_reference = function search_reference() {
       //console.log("為繪圖結果，資料準備...");
 
       
-      document.getElementById("search_result").innerHTML = "";
+      //document.getElementById("search_result").innerHTML = "";
       
 
       pThisClassObj.m_search_result = re2;
@@ -1418,8 +1463,10 @@ sephp.c_param.prototype.do_search = function do_search() {
     //this.m_userInputType = 0; 
   }
 
+  console.debug("debug");
   // SN 查詢 ... 00794 要用 794 才查得到 ... 但有 00794a ，這才處理的時候要小心
   if (this.m_userInputType != 0 || (this.m_userInputType == 0 && this.m_keywordType == 1)) {
+    // 05.06 不要trim掉 mark掉二行
     var t1 = new RegExp('^[0]+', 'g'); // 000756a ... 0開頭，且不一定會有幾個
     this.m_keyword = this.m_keyword.replace(t1, '');//把找到的 000 用 "" 取代掉. 
   }

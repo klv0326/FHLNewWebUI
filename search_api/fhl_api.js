@@ -66,6 +66,27 @@ fhl.xml_api_text = function xml_api(url, fncb_success, fncb_error, obj_param, is
     }
   });// $.ajax(...);
 };//fhl.xml_api_text function
+// 取fhl的xml資料, 但是確是取得最原始資料, 原因是 <bible_text>  <00732> </bible_text> 有SN是這樣, 就沒有辦法直接用現成的 xml 方式了. 
+fhl.json_api_text = function xml_api(url, fncb_success, fncb_error, obj_param, isAsync) {
+  if (isAsync == undefined)//default value
+    isAsync = true;
+  var root_url = "http://bkbible.fhl.net/json/";
+  var ab_url = root_url + url;
+
+  return $.ajax({
+    url: encodeURI(ab_url),
+    type: "GET",
+    dataType: "text",
+    async: isAsync,
+    error: function (jstr) {
+      console.debug("xml api error ...");
+      if (fncb_error != null) fncb_error(jstr, obj_param);
+    },
+    success: function (jstr) {
+      if (fncb_success != null) fncb_success(jstr, obj_param);
+    }
+  });// $.ajax(...);
+};//fhl.xml_api_text function
 // 小雪 聖經書卷群組(目前用在搜尋功能)...因為覺得是共用的，所以定義在fhl namespace中
 fhl.g_book_group = {
   "整卷聖經": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65],
@@ -217,4 +238,39 @@ fhl.chineses_2_iBook = function chineses_2_iBook(book_chinesename) {
     }
   }
   return -1;
+}
+fhl.get_chap_count = function get_chap_count(ibook) {
+  var cnum = [50, 40, 27, 36, 34, 24, 21, 4, 31, 24, 22, 25, 29, 36, 10, 13, 10, 42, 150, 31, 12, 8, 66, 52, 5, 48, 12, 14, 3, 9, 1, 4, 7, 3, 3, 3, 2, 14, 4, 28, 16, 24, 21, 28, 16, 16, 13, 6, 6, 4, 4, 5, 3, 6, 4, 3, 1, 13, 5, 5, 3, 5, 1, 1, 1, 22];
+  if (ibook >= 0 && ibook < 66)
+    return cnum[ibook];
+}
+// 開發給 有聲聖經 用的
+// 沒有回傳. 表示ibook=65,ichap=21. 沒有next了
+fhl.get_next_chap = function get_next_chap(ibook, ichap) {
+  // next
+  var ibooknx = ibook;
+  var ichapnx = ichap + 1;
+  var cnum = fhl.get_chap_count(ibook);
+  if (ichapnx >= cnum) {
+    ibooknx = ibooknx + 1;
+    ichapnx = 0;
+  }
+  if (ibooknx < 66)
+    return { ibook: ibooknx, ichap: ichapnx };
+}
+// 開發給 有聲聖經 用的
+// 沒有回傳. 表示ibook=0,ichap=0. 沒有prev了
+fhl.get_prev_chap = function get_prev_chap (ibook, ichap){
+  var ibookpv = ibook;
+  var ichappv = ichap - 1;
+  if (ichappv == -1) {
+    if (ibookpv == 0)
+      ibookpv = -1;
+    else {
+      ibookpv = ibookpv - 1;
+      ichappv = fhl.get_chap_count(ibookpv) - 1;
+    }
+  }
+  if (ibookpv != -1)
+    return { ibook: ibookpv, ichap: ichappv };
 }

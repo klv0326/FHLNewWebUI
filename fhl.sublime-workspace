@@ -268,18 +268,10 @@
 	"buffers":
 	[
 		{
-			"file": "index.html",
+			"file": ".gitignore",
 			"settings":
 			{
-				"buffer_size": 62030,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "libs/fhl.css",
-			"settings":
-			{
-				"buffer_size": 6989,
+				"buffer_size": 12,
 				"line_ending": "Windows"
 			}
 		}
@@ -311,15 +303,16 @@
 	},
 	"file_history":
 	[
+		"/D/GitHub/FHLNewWebUI/.gitattributes",
 		"/D/GitHub/FHLNewWebUI/libs/fhl.css",
+		"/D/GitHub/FHLNewWebUI/search_api/sephp_c_param.js",
+		"/D/GitHub/FHLNewWebUI/index.html",
 		"/D/GitHub/FHLNewWebUI/test.html",
 		"/D/GitHub/FHLNewWebUI/libs/constant.js",
 		"/D/GitHub/FHLNewWebUI/libs/fhlAPI.js",
-		"/D/GitHub/FHLNewWebUI/index.html",
 		"/D/GitHub/FHLNewWebUI/testPure.html",
 		"/D/GitHub/FHLNewWebUI/search_api/fhl_api.js",
 		"/D/GitHub/FHLNewWebUI/libs/jquery-1.10.2.js",
-		"/D/GitHub/FHLNewWebUI/search_api/sephp_c_param.js",
 		"/D/GitHub/FHLNewWebUI/search_api/abvphp_api.js",
 		"/C/Users/KevinWang/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/D/GitHub/FHLNewWebUI/search_api/sephp_c_param.css",
@@ -367,6 +360,11 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"doSearch",
+			"m_userInputType",
+			"doSearch",
+			"m_userInputType",
+			"do_search",
 			"searchBibleVerse",
 			".replace",
 			"searchBibleVerse",
@@ -489,12 +487,7 @@
 			"sean",
 			"msg",
 			"skip1tag",
-			"orig_font",
-			"[wid",
-			"wid",
-			"var bookselect",
-			"nextChap",
-			"selectLecture"
+			"orig_font"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -525,62 +518,30 @@
 			[
 				{
 					"buffer": 0,
-					"file": "index.html",
+					"file": ".gitignore",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 62030,
+						"buffer_size": 12,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								321,
-								321
+								12,
+								12
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "libs/fhl.css",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6989,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5281,
-								5281
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/CSS/CSS.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 8178.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
 					"type": "text"
 				}
 			]

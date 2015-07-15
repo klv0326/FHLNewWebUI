@@ -5,9 +5,10 @@
 <link rel="stylesheet" href="./libs/fhl.css"/>    
 <script src="./libs/jquery-1.10.2.js"></script>
 <script src="./libs/xml2json.min.js"></script>
-<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-<script src="bible_audio_api/audiobible_api.js"></script>
+<<<<<<< HEAD
+  <link href="libs/jquery-ui.css" rel="stylesheet" />
+  <script src="libs/jquery-ui.js"></script>
+  <script src="bible_audio_api/audiobible_api.js"></script>
 <script>
 
 var pageState;
@@ -33,10 +34,22 @@ function pageStateInit(){
       leftBtmWinShow:true,searchTitleMsg:"",audio:0,swVer:currentSWVer
     };    
 }
+=======
+
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    
+    
+<script>
+
+/*parameter setting*/
+/**/
+>>>>>>> sean
 
 $(function(){
   //fhlTopMenu.init(pageState);
   //fhlTopMenu.render(pageState);
+<<<<<<< HEAD
   //Check cache
   if(localStorage.getItem("fhlPageState")!=null){
     //console.log(localStorage.getItem("fhlPageState"));
@@ -52,14 +65,49 @@ $(function(){
     pageStateInit();
     setPageState(pageState); 
   }  
+  fhlToolbar.init(pageState);
+  fhlLecture.init(pageState,$('#fhlLecture'));
+  fhlLeftBottomWindow.init(pageState,$('#fhlLeftBottomWindow'));
+=======
   fhlToolBar.init(pageState);
   fhlLeftWindow.init(pageState);
   fhlMidWindow.init(pageState);
+>>>>>>> sean
   fhlInfo.init(pageState);  
   searchInit(pageState);
 });
 
-var urlJSON="https://bkbible.fhl.net/json/";  
+var urlJSON="https://bkbible.fhl.net/json/";
+<<<<<<< HEAD
+=======
+
+var pageState={
+    //Input Parameters
+    //For qb.php
+    engs:"Gen",
+    chineses:"創",
+    chap:1,
+    sec:1,
+    version:["unv"],    
+    strong:0,
+    gb:0,
+    //For sc.php
+    book:3,
+    //For sd.php
+    N:0,
+    k:"",    
+    //Return Values
+    cname:["和合本"],
+    //For popups
+    realTimePopUp:0,
+    //For fhlInfoContent
+    titleId:"fhlInfoComment",
+    //For fhlMidBottomWindow
+    leftBtmWinShow:false,
+    //For audio
+    audio:0,
+};
+    
 var chineseNumber=new Array( "零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十",
                             "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十",
                             "二十一", "二十二", "二十三", "二十四", "二十五", "二十六", "二十七", "二十八", "二十九", "三十",
@@ -76,6 +124,7 @@ var chineseNumber=new Array( "零", "一", "二", "三", "四", "五", "六", "�
                             "一百三十一", "一百三十二", "一百三十三", "一百三十四", "一百三十五", "一百三十六", "一百三十七", "一百三十八", "一百三十九", "一百四十",
                             "一百四十一", "一百四十二", "一百四十三", "一百四十四", "一百四十五", "一百四十六", "一百四十七", "一百四十八", "一百四十九", "一百五十");
 
+>>>>>>> sean
 var book=new Array( "創","出","利","民","申","書","士","得","撒上","撒下","王上","王下",
                     "代上","代下","拉","尼","斯","伯","詩","箴","傳","歌","賽","耶",
                     "哀","結","但","何","珥","摩","俄","拿","彌","鴻","哈","番","該","亞","瑪",
@@ -171,6 +220,25 @@ function getBookFunc(func,bookName){
   return ret;
 }
 
+<<<<<<< HEAD
+/***** Start of fhlToolbar *****/
+var fhlToolbar={
+  init:function(ps){
+    bookSelect.init(ps,$('#bookSelect'));        
+    versionSelect.init(ps,$('#versionSelect'));
+    versionSelect.registerEvents(ps);
+    snSelect.init(ps,$('#snSelect'));
+    snSelect.registerEvents(ps);
+    viewHistory.init(ps,$('#viewHistory'));
+    viewHistory.registerEvents(ps);
+    searchTool.init(ps,$('#searchTool'));
+    searchTool.registerEvents(ps);
+    bibleAudio.init(ps,$('#bibleAudio'));
+    bibleAudio.registerEvents(ps);
+    setting.init(ps,$('#setting'));
+    setting.registerEvents(ps);
+  }
+=======
 /***** Start of fhlToolBar *****/
     
 var bookSelectChapterAutoCloseTimeout;
@@ -184,12 +252,26 @@ var fhlToolBar={
         bookSelect.init(ps,$('#bookSelect'));
         versionSelect.init(ps,$('#versionSelect'));
         versionSelect.registerEvents(ps);
-        bibleAudio.init(ps,$('#bibleAudio'));
-        bibleAudio.registerEvents(ps);        
         
         windowControl.init(ps,$('#windowControl'));
         windowControl.registerEvents(ps);
     }
+>>>>>>> sean
+};
+
+var searchTool={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.render(ps,this.dom);
+  },
+  registerEvents:function(ps){
+  },
+  render:function(ps,dom){
+    var html="";
+    html+="<input type=text class='searchBox'></input>";
+    html+="<span class='searchBtn'>快速搜尋</span>";
+    dom.html(html);
+  }
 };
     
 var bookSelect={
@@ -233,15 +315,68 @@ var bookSelect={
             bookSelect.dom.css({'color': '#000000'});
         }
     });
+
+    /*$('.chapBack').click(function(e){
+      //versionSelectPopUp.dom.fadeOut('0.2');
+      var idx=getBookFunc("index",ps.chineses);
+      if(ps.chap==1){
+        ps.chineses=book[idx-1];
+        ps.engs=bookEng[idx-1];
+        ps.chap=bookChapters[idx-1];
+      }else{
+        ps.chap--;        
+      }
+      ps.sec=1;
+      setPageState(ps);
+      that.render(ps,that.dom);
+      fhlLecture.render(ps,fhlLecture.dom);
+      fhlInfo.render(ps);
+      //bookSelectPopUp.dom.fadeOut('0.2');
+      e.stopPropagation();
+    });
+    $('.chapNext').click(function(e){      
+      //versionSelectPopUp.dom.fadeOut('0.2');
+      var idx=getBookFunc("index",ps.chineses);
+      if(ps.chap==bookChapters[idx]){//if last chapter
+        ps.chineses=book[idx+1];//book+1
+        ps.engs=bookEng[idx+1];
+        ps.chap=1;
+      }else{
+        ps.chap++;
+      }
+      ps.sec=1;
+      setPageState(ps);
+      that.render(ps,that.dom);
+      fhlLecture.render(ps,fhlLecture.dom);
+      fhlInfo.render(ps);
+      //bookSelectPopUp.dom.fadeOut('0.2');
+      e.stopPropagation();
+    });*/
+    
   },
   render:function(ps,dom){
       var bookName=getBookFunc("bookFullName",ps.chineses);
       var html="";
+<<<<<<< HEAD
+      if(ps.chineses==book[0]&&ps.chap==1){
+        html+="";
+      }else{
+        html+="<span class='chapBack'>&#x25C0</span>";
+      }      
+      html+="<span class='chapSelect'>"+bookName;
+      html+="&nbsp&nbsp"+ps.chap+"</span>";
+      if(ps.chineses==book[65]&&ps.chap==22){
+        html+="";
+      }else{
+        html+="<span class='chapNext'>&#x25B6</span>";
+      }                 
+=======
       if(bookName!="詩篇")
           html=bookName+"： 第"+chineseNumber[ps.chap]+"章";
       else
           html=bookName+"： 第"+chineseNumber[ps.chap]+"篇";
       html+='&nbsp;&#9660;';
+>>>>>>> sean
       dom.html(html);
       this.registerEvents(ps);
   }
@@ -400,6 +535,7 @@ var bookSelectChapter={
   }
 };
 
+<<<<<<< HEAD
 function getVersionIdx(book){    
   return $('#versionSelectPopUp').find("li[book="+book+"]").index();
 }
@@ -424,6 +560,8 @@ function insertVersion(ps,dom){
   console.dir(ps);
 }
 
+=======
+>>>>>>> sean
 var versionSelect={
     init:function(ps,dom){
         this.dom=dom;
@@ -564,6 +702,15 @@ var windowControl={
     this.registerEvents(ps);
   },
   registerEvents:function(ps){
+<<<<<<< HEAD
+    $('.snBtn').click(function(){
+      ps.strong=$(this).index();
+      $('.snBtn').removeClass('selected');
+      $('.snBtn').eq(ps.strong).addClass('selected');
+      setPageState(ps);
+      fhlLecture.render(ps,fhlLecture.dom);
+    });
+=======
       $('#fhlLeftWindowControl').click(function(){
           if($('#fhlLeftWindow').css('left')=='0px'){
               $('#fhlLeftWindowControl').hover(function() {
@@ -630,11 +777,13 @@ var windowControl={
               $("#fhlMidWindow").animate({right: fhlInfoWidth + 'px', width: $("#fhlMidWindow").width() - fhlInfoWidth + 'px'});
           }
       });
+>>>>>>> sean
   },
   render:function(ps,dom){
     var html="<span id='fhlLeftWindowControl' style='top: -1px; padding: 1px 7px 4px 7px; border-bottom-left-radius: 3px; border-top-left-radius: 3px; border-width: 1px;'>&#8647;</span><span id='fhlMidBottomWindowControl' style='top: 0px; padding-top: 2px;'>&#8650;</span><span id='fhlInfoWindowControl' style='top: -1px; padding: 1px 7px 4px 7px; border-bottom-right-radius: 3px; border-top-right-radius: 3px;'>&#8649;</span>";
     dom.html(html);
-  }  
+  }
+<<<<<<< HEAD
 };
 
 function hideAllPopUp(){
@@ -734,8 +883,8 @@ var viewHistoryPopUp={
         });
       }
     }*/
-    that.registerEvents(ps);
-  }
+    that.registerEvents(ps);    
+=======
 }
     
 /***** End of fhlToolBar *****/
@@ -766,6 +915,7 @@ var fhlLeftWindow={
           });
         }
       });
+>>>>>>> sean
   }
 };
     
@@ -894,6 +1044,16 @@ var mapTool={
     this.render(ps,this.dom);
   },
   registerEvents:function(ps){
+<<<<<<< HEAD
+    $('.gbBtn').click(function(){
+      ps.gb=$(this).index();
+      $('.gbBtn').removeClass('selected');
+      $('.gbBtn').eq(ps.gb).addClass('selected');
+      setPageState(ps);
+      fhlLecture.render(ps,fhlLecture.dom);
+    });
+=======
+>>>>>>> sean
   },
   render:function(ps,dom){
     var html="<div>地圖顯示</div>";
@@ -913,6 +1073,16 @@ var imageTool={
     this.render(ps,this.dom);
   },
   registerEvents:function(ps){
+<<<<<<< HEAD
+    $('.rtBtn').click(function(){
+      ps.realTimePopUp=$(this).index();
+      $('.rtBtn').removeClass('selected');
+      $('.rtBtn').eq(ps.realTimePopUp).addClass('selected');
+      setPageState(ps);
+      fhlLecture.render(ps,fhlLecture.dom);
+    });
+=======
+>>>>>>> sean
   },
   render:function(ps,dom){
     var html="<div>圖片顯示</div>";
@@ -1155,7 +1325,11 @@ var fhlLecture={
           }else{
             bibleText="";
           }
+<<<<<<< HEAD
+          htmlContent+="<div class='lecContent "+rspArr[j].version+"'>"+bibleText+"</div>";
+=======
           htmlContent+="<div class='lecContent'><div style='margin: 0px 20px 0px 1px; padding: 7px 0px; height: 100%;'><span class='verseNumber'>"+maxR.sec+"</span>"+bibleText+"</div></div>";
+>>>>>>> sean
         }
         htmlContent+="</div>";        
       }
@@ -1216,15 +1390,90 @@ var fhlMidBottomWindow={
           });
         }
       });
+    /*$('#fhlMidBottomWindowTitle').click(function(){
+      if(ps.leftBtmWinShow==true){
+        var fhlMidWindowH=$('#fhlMidWindow').height();
+        $('#fhlMidBottomWindow').height(fhlMidWindowH*0.1);//50%->5%
+        var fhlMidBottomWindowH=$('#fhlMidBottomWindow').height();
+        $('#fhlMidBottomWindowTitle').height(fhlMidBottomWindowH);
+        $('#fhlMidBottomWindowContent').height(0);
+        $('#fhlLecture').height(fhlMidWindowH*0.9);
+        $('#fhlMidBottomWindowContent').hide();
+        ps.leftBtmWinShow=false;
+      }else{
+        var fhlMidWindowH=$('#fhlMidWindow').height();
+        $('#fhlMidBottomWindow').height(fhlMidWindowH*0.5);//5%->50%
+        var fhlMidBottomWindowH=$('#fhlMidBottomWindow').height();
+        $('#fhlMidBottomWindowTitle').height(fhlMidBottomWindowH*0.1);
+        $('#fhlMidBottomWindowContent').height(fhlMidBottomWindowH*0.9);        
+        $('#fhlLecture').height(fhlMidWindowH*0.5);
+        $('#fhlMidBottomWindowContent').show();
+        ps.leftBtmWinShow=true;
+      }
+<<<<<<< HEAD
+
+      //搜尋功能 by snow
+      {
+        // 顯示箭頭部分 △ ▽
+        var html = (ps.leftBtmWinShow == true) ? "&#9661" : "&#9651";
+        if (ps.searchTitleMsg.length == 0)
+          html += "搜尋視窗";
+        else
+          html += ps.searchTitleMsg; //搜尋結果
+        $('#fhlLeftBottomWindowTitle').html(html);
+      }//搜尋功能
+      setPageState(ps);
+
+      //mark by snow
+      //var html=(ps.leftBtmWinShow==true)?"&#9661":"&#9651";
+      //html+="fhlLeftBottomWindowTitle";
+      //$('#fhlLeftBottomWindowTitle').html(html);
+    });
+=======
+      var html=(ps.leftBtmWinShow==true)?"&#9661":"&#9651";
+      html+="fhlMidBottomWindowTitle";
+      $('#fhlMidBottomWindowTitle').html(html);
+    });*/
+>>>>>>> sean
   },
   render:function(ps,dom){
 
       var html=(ps.leftBtmWinShow==true)?"&#9661":"&#9651";
+<<<<<<< HEAD
+      html+="搜尋視窗";
+      $('#fhlLeftBottomWindowTitle').html(html);
+      if(ps.leftBtmWinShow==false){
+        var fhlLeftWindowH=$('#fhlLeftWindow').height();
+        $('#fhlLeftBottomWindow').height(fhlLeftWindowH*0.1);//50%->5%
+        var fhlLeftBottomWindowH=$('#fhlLeftBottomWindow').height();
+        $('#fhlLeftBottomWindowTitle').height(fhlLeftBottomWindowH);
+        $('#fhlLeftBottomWindowContent').height(0);
+        $('#fhlLecture').height(fhlLeftWindowH*0.9);
+        $('#fhlLeftBottomWindowContent').hide();
+=======
       html+="fhlMidBottomWindowTitle";
       $('#fhlMidBottomWindowTitle').html(html);
       
       var fhlMidBottomWindowHeight = 100;
       $('#fhlMidBottomWindow').css({'top': $('#fhlMidWindow').height()-fhlMidBottomWindowHeight + 'px'});
+      /*if(ps.leftBtmWinShow==false){
+        var fhlMidWindowH=$('#fhlMidWindow').height();
+        $('#fhlMidBottomWindow').height(fhlMidWindowH*0.1);//50%->5%
+        var fhlMidBottomWindowH=$('#fhlMidBottomWindow').height();
+        $('#fhlMidBottomWindowTitle').height(fhlMidBottomWindowH);
+        $('#fhlMidBottomWindowContent').height(0);
+        $('#fhlLecture').height(fhlMidWindowH*0.9);
+        $('#fhlMidBottomWindowContent').hide();
+>>>>>>> sean
+      }else{
+        var fhlMidWindowH=$('#fhlMidWindow').height();
+        $('#fhlMidBottomWindow').height(fhlMidWindowH*0.5);//5%->50%
+        var fhlMidBottomWindowH=$('#fhlMidBottomWindow').height();
+        $('#fhlMidBottomWindowTitle').height(fhlMidBottomWindowH*0.1);
+        $('#fhlMidBottomWindowContent').height(fhlMidBottomWindowH*0.9);        
+        $('#fhlLecture').height(fhlMidWindowH*0.5);
+        $('#fhlMidBottomWindowContent').show();
+      }*/
   }
 };
 /***** End of fhlMidWindow *****/
@@ -1403,7 +1652,25 @@ var fhlInfoContent={
             fhlLecture.render(ps,fhlLecture.dom);          
           fhlInfo.render(ps);
           fhlLecture.selectLecture(null,null,ps.sec);
+<<<<<<< HEAD
         });     
+=======
+        });
+        $('.secNext').click(function(){
+          var oldEngs=ps.engs;
+          var oldChap=ps.chap;
+          ps.engs=$(this).attr('engs');
+          var idx=getBookFunc('indexByEngs',ps.engs);
+          ps.chineses=book[idx];          
+          ps.chap=$(this).attr('chap');
+          ps.sec=$(this).attr('sec');          
+          bookSelect.render(ps,bookSelect.dom);
+          if(oldEngs!=ps.engs||oldChap!=ps.chap)
+            fhlLecture.render(ps,fhlLecture.dom);            
+          fhlInfo.render(ps);          
+          fhlLecture.selectLecture(null,null,ps.sec);
+        });
+>>>>>>> sean
         break;
       case "fhlInfoComment":
         $('.commentSecBack, .commentSecNext, .commentBackground, .commentJump').click(function(){
@@ -1414,7 +1681,10 @@ var fhlInfoContent={
           ps.chineses=book[idx];
           ps.chap=$(this).attr('chap');
           ps.sec=$(this).attr('sec');
+<<<<<<< HEAD
           setPageState(ps);
+=======
+>>>>>>> sean
           bookSelect.render(ps,bookSelect.dom);
           if(oldEngs!=ps.engs||oldChap!=ps.chap)
             fhlLecture.render(ps,fhlLecture.dom);
@@ -1425,6 +1695,21 @@ var fhlInfoContent={
             "display": "block",
             "color": "rgba(100, 100, 100, 0.3)",
             "cursor": "pointer",
+<<<<<<< HEAD
+            "position": "fixed",
+            "left": "60%",
+            "height": "100%",
+            "width": "5%", 
+            "font-size": "3em"
+        }).hover(function(){
+            $('.commentSecBack').css({
+                "color": "rgba(255, 0, 0, 1)",
+                "background": "linear-gradient(to right, rgba(100,100,100,1), rgba(0,0,0,0))"
+            })}, function(){
+            $('.commentSecBack').css({
+                "color": "rgba(100, 100, 100, 0.3)",
+                "background": "rgba(0, 0, 0, 0)"
+=======
             "position": "absolute",
             "left": "0px",
             "height": "80px",
@@ -1435,16 +1720,32 @@ var fhlInfoContent={
             $('.commentSecBack').css({
                 "color": "rgba(255, 0, 0, 1)"/*,
                 "background": "linear-gradient(to right, rgba(100,100,100,1), rgba(0,0,0,0))"*/
-            });}, function(){
+            })}, function(){
             $('.commentSecBack').css({
                 "color": "rgba(100, 100, 100, 0.3)"/*,
                 "background": "rgba(0, 0, 0, 0)"*/
+>>>>>>> sean
             });}
         );
         $('.commentSecNext').css({
             "display": "block",
             "color": "rgba(100, 100, 100, 0.3)",
             "cursor": "pointer",
+<<<<<<< HEAD
+            "position": "fixed",
+            "right": "0%",
+            "height": "100%",
+            "width": "5%", 
+            "font-size": "3em"
+        }).hover(function(){
+            $('.commentSecNext').css({
+                "color": "rgba(255, 0, 0, 1)",
+                "background": "linear-gradient(to left, rgba(100,100,100,1), rgba(0,0,0,0))"
+            })}, function(){
+            $('.commentSecNext').css({
+                "color": "rgba(100, 100, 100, 0.3)",
+                "background": "rgba(0, 0, 0, 0)"
+=======
             "position": "absolute",
             "right": "0px",
             "height": "80px",
@@ -1455,10 +1756,11 @@ var fhlInfoContent={
             $('.commentSecNext').css({
                 "color": "rgba(255, 0, 0, 1)"/*,
                 "background": "linear-gradient(to left, rgba(100,100,100,1), rgba(0,0,0,0))"*/
-            });}, function(){
+            })}, function(){
             $('.commentSecNext').css({
                 "color": "rgba(100, 100, 100, 0.3)"/*,
                 "background": "rgba(0, 0, 0, 0)"*/
+>>>>>>> sean
             });}
         );
         $('.commentBackground').css({
@@ -1473,7 +1775,7 @@ var fhlInfoContent={
             $('.commentBackground').css({
                 "color": "rgba(255, 0, 0, 1)",
                 "background": "rgba(0,90,0,1)"
-            });}, function(){
+            })}, function(){
             $('.commentBackground').css({
                 "color": "rgba(200, 200, 200, 1)",
                 "background": "rgba(0, 70, 0, 1)",
@@ -1488,7 +1790,7 @@ var fhlInfoContent={
             $(this).css({
                 "color": "rgba(200, 0, 0, 1)",
                 "text-decoration": "underline"
-            });}, function(){
+            })}, function(){
             $(this).css({
                 "color": "rgba(50, 50, 100, 1)",
                 "text-decoration": "none"
@@ -1799,15 +2101,30 @@ var fhlInfoContent={
                 prev_engs=jsonObj.prev.engs;
                 prev_chap=jsonObj.prev.chap;
                 prev_sec=jsonObj.prev.sec;
+<<<<<<< HEAD
+                head_str+="<div class='commentSecBack' ";
+                head_str+="engs="+prev_engs+" chap="+prev_chap+" sec="+prev_sec;
+                head_str+="><span style='position: absolute; top: 40%; left: 25%;'>&#x276e;</span></div>";
+=======
                 control_str+="<div class='commentSecBack' ";
                 control_str+="engs="+prev_engs+" chap="+prev_chap+" sec="+prev_sec;
                 control_str+=">&#x276e;</div>";
+>>>>>>> sean
             }
             
             if(jsonObj.hasOwnProperty('next')){
                 next_engs=jsonObj.next.engs;
                 next_chap=jsonObj.next.chap;
                 next_sec=jsonObj.next.sec;
+<<<<<<< HEAD
+                head_str+="<div class='commentSecNext' ";
+                head_str+="engs="+next_engs+" chap="+next_chap+" sec="+next_sec;
+                head_str+="><span style='position: absolute; top: 40%; left: 40%;'>&#x276f;</span></div>";
+            }
+            
+            if(ps.chap!=0&&ps.sec!=0){
+                head_str+="<br><div style='display: block; text-align: center; font-size: 1.3em; line-height: 50px;'>" + jsonObj.record[0].title;
+=======
                 control_str+="<div class='commentSecNext' ";
                 control_str+="engs="+next_engs+" chap="+next_chap+" sec="+next_sec;
                 control_str+=">&#x276f;</div>";
@@ -1817,6 +2134,7 @@ var fhlInfoContent={
                 head_str+="<div style='position: absolute; display: block; width: 100%; height: 80px; text-align: center; font-size: 1.3em; line-height: 50px; margin: 0px;'>";
                 head_str+=control_str;
                 head_str+= jsonObj.record[0].title;
+>>>>>>> sean
                 head_str+="<div style='display: block; line-height: 100%;'>"
                 head_str+="<span class='commentBackground' ";
                 head_str+="engs="+ps.engs+" chap="+0+" sec="+0;
@@ -1824,6 +2142,17 @@ var fhlInfoContent={
             }
             else{
                 var idx=getBookFunc('indexByEngs',ps.engs);
+<<<<<<< HEAD
+                head_str+="<br><div style='display: block; text-align: center; font-size: 1.3em; line-height: 50px;'>" + bookFullName[idx] +"&nbsp;背景資料</div>";
+            }
+            
+            head_str+="</div></br>";
+
+            var html=jsonObj.record[0].com_text;
+            html=parseComment(html);
+              
+            dom.html("<div style='padding: 0px 20px;'>" + head_str + html + "</div>");
+=======
                 head_str+="<div style='display: block; text-align: center; font-size: 1.3em; line-height: 50px;'>" + bookFullName[idx] +"&nbsp;背景資料</div>";
             }
             
@@ -1834,13 +2163,19 @@ var fhlInfoContent={
             html="<div style='display: absolute; padding: 0px; top: 0px; bottom: 0px; overflow: auto;'>" + head_str + '<div id="commentContent" style="position: absolute; top: 80px; left: 10px; right: 10px; bottom: 0px; display: block;  overflow: auto; word-wrap: break-word; word-break: normal; ">' + html + "</div></div>";
 
               /*height:' + ($(window).height()-200) + 'px;*/
-            dom.html(html);          
+            dom.html(html);
+            
+>>>>>>> sean
             that.registerEvents(ps);
           }
         });
         break;
       case "fhlInfoPreach":
-        do_preach(ps, dom);    
+        do_preach(ps, dom);
+        
+          
+        //var html=ps.titleId;
+        //dom.html(html);      
         break;
       case "fhlInfoTsk":
         var html=ps.titleId;
@@ -1851,6 +2186,8 @@ var fhlInfoContent={
         dom.html(html);
         break;
       case "fhlInfoAudio":
+        //var html=ps.titleId;
+        //dom.html(html);
 
         // 有聲聖經 snow 
         {
@@ -1976,6 +2313,18 @@ var parsingPopUp={
         html=parseDic(html);
         html=title+html;
         dom.html(html);                  
+<<<<<<< HEAD
+        if(offset!=null){
+          var lecTop=164;
+          var lecTopOffset=120;
+          var leftWinH=$('#fhlLeftWindow').height();
+          var lecH=$('#fhlLecture').height();
+          var scrollY=$('#fhlLecture').scrollTop();
+          var scrollH=$('#fhlLecture')[0].scrollHeight;
+          var domH=dom.height();
+          //console.log("top:"+offset.top+",domH:"+domH+",leftWinH:"+leftWinH+",lecH:"+lecH);
+          //console.log("scrollH:"+scrollH+",scrollY:"+scrollY);        
+=======
         var lecTop=164;
         var lecTopOffset=120;
         var leftWinH=$('#fhlMidWindow').height();
@@ -1985,6 +2334,7 @@ var parsingPopUp={
         var domH=dom.height();
         console.log("top:"+offset.top+",domH:"+domH+",leftWinH:"+leftWinH+",lecH:"+lecH);
         console.log("scrollH:"+scrollH+",scrollY:"+scrollY);        
+>>>>>>> sean
 
           if(domH>leftWinH){
             //set css to auto scroll            
@@ -2002,7 +2352,9 @@ var parsingPopUp={
           }
   */
           that.dom.show();
-          dom.offset(offset);          
+          dom.offset(offset);
+        }
+          
         that.registerEvents(ps);
       });
     }
@@ -2031,14 +2383,14 @@ var parsingPopUp={
           $('.searchBtn').click(function(){
             ps.leftBtmWinShow=true;
             setPageState(ps);
-            fhlMidBottomWindow.render(ps,fhlMidBottomWindow.dom);
+            fhlLeftBottomWindow.render(ps,fhlLeftBottomWindow.dom);
             doSearch($('.searchBox').val(),"search",0);
           });
         },
         render:function(ps,dom){
           var html="";
-            html+="<input type=text class='searchBox'></input>";
-            html+="<span class='searchBtn'>快速搜尋</span>";
+          html+="<input type=text class='searchBox'></input>";
+          html+="<span class='searchBtn menuBtn'>搜尋</span>";
           dom.html(html);
         }
     };
@@ -2083,12 +2435,12 @@ var parsingPopUp={
   function searchInit(ps){
     var version="unv";
     abvphp.init_g_bibleversions();//必須先呼叫
-    sephp.g_param.m_divDst = document.getElementById("fhlMidBottomWindowContent");
+    sephp.g_param.m_divDst = document.getElementById("fhlLeftBottomWindowContent");
 
     sephp.g_param.mp_chineses = book;
     sephp.g_param.mp_vversion = version;    
     sephp.g_param.mpfn_search_title_change = function (msg) {
-      document.getElementById("fhlMidBottomWindowTitle").innerHTML = "▽" + msg;
+      document.getElementById("fhlLeftBottomWindowTitle").innerHTML = "▽" + msg;
       ps.searchTitleMsg = msg;
     };// mpfn_search_title_change function pointer
 
@@ -2130,6 +2482,22 @@ var parsingPopUp={
 <div id="fhlTopMenu">
 	<img id="logoFHL" src="./images/logoTopMenuFHL.png"/>
 </div>
+<<<<<<< HEAD
+<div id="fhlToolbar" class="toolbar">
+  <div id="bookSelect"></div>
+  <div id="versionSelect"></div>
+  <div id="snSelect" class="smallText"></div>
+  <div id="viewHistory"></div>
+  <div id="searchTool" class="smallText"></div>
+  <div id="bibleAudio"></div>
+  <div id="mapTool">
+    <img class="menuImage" src="./images/bibleMap.png"/>
+  </div>
+  <div id="imageTool">
+    <img class="menuImage" src="./images/bibleImages.png"/>
+  </div>
+  <div id="setting"></div>
+=======
 <div id="fhlToolBar">
     <div id="searchTool" class="smallText"></div>
     <div id="middleBox">
@@ -2195,12 +2563,22 @@ var parsingPopUp={
 
         </div>
     </div>
+>>>>>>> sean
 </div>
 <div id="fhlMidWindow">
     <div id="fhlLecture"></div>
+<<<<<<< HEAD
+    <div id="fhlLeftBottomWindow">
+      <div id="fhlLeftBottomWindowTitle"></div>
+      <div id="fhlLeftBottomWindowContent">
+        <!--mark by snow-->
+        <!--Content of fhlLeftBottomWindowContent-->
+=======
     <div id="fhlMidBottomWindow">
       <div id="fhlMidBottomWindowTitle"></div>
       <div id="fhlMidBottomWindowContent">
+        Content of fhlMidBottomWindowContent
+>>>>>>> sean
       </div>
     </div>
 </div>
@@ -2215,6 +2593,15 @@ var parsingPopUp={
   <div id="bookSelectChapter"></div>
 </div>
 <div id="versionSelectPopUp"></div>
+<<<<<<< HEAD
+<div id="viewHistoryPopUp"></div>
+<div id="settingPopUp">
+  <div id="gbSelect"></div>
+  <div id="realTimePopUpSelect"></div>
+  <div id="fontSizeTool"></div>
+</div>
+=======
+>>>>>>> sean
 <div id="parsingPopUp"></div>
 <!-- Layer 3 windows that exists after mouse leave-->
 <div id="dictionaryPopUp"></div>

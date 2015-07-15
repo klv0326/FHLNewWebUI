@@ -1594,8 +1594,11 @@ var parsingPopUp={
     $('.searchBibleVerse').click(function(){
       var searchText=$(this).html();    
       searchText=searchText.replace(/&nbsp;/g," ");
-      doSearch("#"+searchText+"|","search");
+      doSearch("#"+searchText+"|","search",0);
     });
+    $('.searchSN').click(function(){
+      doSearch($(this).attr('k'),"search",parseInt($(this).attr('N'))+1);
+    });    
   },
   render:function(ps,dom,offset,par){
     var that=this;    
@@ -1641,8 +1644,12 @@ var parsingPopUp={
         url:ajaxUrl
       }).done(function(d,s,j){      
         var jsonObj=JSON.parse(j.responseText);      
+        var title="<span class='searchSN' N="+jsonObj.record[0].dic_type+" k="+
+                jsonObj.record[0].sn+">";
+        title+="出現經文</span></br>";
         var html=jsonObj.record[0].dic_text;
         html=parseDic(html);
+        html=title+html;
         dom.html(html);                  
         if(offset!=null){
           var lecTop=164;
@@ -1703,7 +1710,7 @@ var parsingPopUp={
             ps.leftBtmWinShow=true;
             setPageState(ps);
             fhlLeftBottomWindow.render(ps,fhlLeftBottomWindow.dom);
-            doSearch($('.searchBox').val(),"search");
+            doSearch($('.searchBox').val(),"search",0);
           });
         },
         render:function(ps,dom){
@@ -1784,9 +1791,10 @@ var parsingPopUp={
       sephp.g_param.m_isBig5 = false;    
 
   }
-  function doSearch(keyword,func){    
+  function doSearch(keyword,func,type){    
 
     sephp.g_param.m_keyword = keyword;
+    sephp.g_param.m_userInputType = type;
     //sephp.g_param.mp_vversion = pageState.version;
     if(func=="search"){
       sephp.g_param.do_search();

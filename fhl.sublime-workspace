@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"view",
+				"viewHistory"
+			],
+			[
 				"fhl",
 				"fhlAPI"
 			],
@@ -268,10 +272,18 @@
 	"buffers":
 	[
 		{
-			"file": ".gitignore",
+			"file": "libs/fhl.css",
 			"settings":
 			{
-				"buffer_size": 12,
+				"buffer_size": 14178,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 77131,
 				"line_ending": "Windows"
 			}
 		}
@@ -303,6 +315,10 @@
 	},
 	"file_history":
 	[
+		"/D/GitHub/FHLNewWebUI/search_api/sephp_c_param.css",
+		"/D/GitHub/FHLNewWebUI/index_conflict.html",
+		"/D/GitHub/FHLNewWebUI/index_old.html",
+		"/D/GitHub/FHLNewWebUI/.gitignore",
 		"/D/GitHub/FHLNewWebUI/.gitattributes",
 		"/D/GitHub/FHLNewWebUI/libs/fhl.css",
 		"/D/GitHub/FHLNewWebUI/search_api/sephp_c_param.js",
@@ -315,7 +331,6 @@
 		"/D/GitHub/FHLNewWebUI/libs/jquery-1.10.2.js",
 		"/D/GitHub/FHLNewWebUI/search_api/abvphp_api.js",
 		"/C/Users/KevinWang/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-		"/D/GitHub/FHLNewWebUI/search_api/sephp_c_param.css",
 		"/D/Learnings/History/Coursera_The Emergence of the Modern Middle East - Part I/4 - 12 - 4.6.1.1 The Non-Arab States- The Republic of Turkey (part 1) (03-58).srt",
 		"/D/GitHub/kevin/index.html",
 		"/D/GitHub/yw/InternalQuotation/jquery-1.10.2.js",
@@ -360,6 +375,72 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"onOff",
+			"realTimeOnOffSwitch",
+			"realTime",
+			"console.log",
+			"snSelect",
+			"clear",
+			"setpageState",
+			"viewHistory",
+			"setpageState",
+			"ps.",
+			"setPageState",
+			"viewHistory",
+			"ps.history",
+			"history",
+			"viewHistory",
+			"viewHi",
+			"settings",
+			"fhlLeftWindow",
+			"fhlLeftWindow.init",
+			"fhlLeftWindow.render",
+			"fhlLeftWindow.init",
+			"fhlLeftWindow",
+			"viewHistory",
+			"fhlLecture",
+			"viewHistoryList",
+			"viewHistory",
+			"history",
+			"viewHistory",
+			"viewHistoryList",
+			"viewHistory",
+			"settings",
+			"viewHistory",
+			"setting",
+			"viewHistoryPopup",
+			"viewHistory",
+			"hideAllPopUp",
+			"fhlLeftWindow",
+			"fhlLeftWindow.init",
+			"fhlLeftWindow",
+			"leftWindow",
+			"snsle",
+			"viewHistory",
+			"pageStateInit",
+			"pageInit",
+			"========",
+			"fhlleft",
+			"leftBtmWinshow",
+			"fhlMidBottomWindow",
+			"fhlLeftBottomWindow",
+			"searchTool",
+			"searchBox",
+			"searchTool",
+			"windowControl",
+			"searchTool",
+			"setBook",
+			"snBtn",
+			"versionSelect",
+			"insertVersion",
+			"getVersionIdx",
+			"searchTool",
+			"viewHistory",
+			"fhlMidWindow",
+			"fhlLeftBottomWindow",
+			"bookName",
+			"pageStateInit",
+			"pageState",
 			"doSearch",
 			"m_userInputType",
 			"doSearch",
@@ -421,73 +502,7 @@
 			"cnt",
 			"bibleTextTest",
 			"history",
-			"record",
-			"CommentChap",
-			"commentBack",
-			"getAjax",
-			"getAjx",
-			"CommentChap",
-			"setPageState",
-			"comment",
-			"fhlInfo.render",
-			"setPageState",
-			"commentBackground",
-			"background",
-			"'",
-			".eq",
-			"li:eq",
-			"getAjaxUrl",
-			"jQuery",
-			"getFullAjaxUrl",
-			"json_api",
-			"xml_api",
-			"json_api",
-			"read_",
-			"read_bible",
-			"chap",
-			"ps.",
-			"fhlTool",
-			"fhlToolbar",
-			"viewHistory",
-			"viewHistoryPopUp",
-			"viewHistory",
-			"render",
-			"ps.history",
-			"version.push",
-			".push",
-			"setPageState",
-			"setBook",
-			"getBookFunc",
-			"viewHistory",
-			",",
-			"viewHistory",
-			"setPageState",
-			"ps.chineses",
-			"viewHistory",
-			"setPageState",
-			"setCache",
-			"button",
-			"viewHistory",
-			"註",
-			"歷史紀錄",
-			"hideAll",
-			"Popup",
-			"viewHistory",
-			"fhlToolbar",
-			"viewHistory",
-			"searchInit",
-			"pageStateInit",
-			"searchInit",
-			"&#x",
-			"&#",
-			"3em",
-			"fontsize",
-			"&#x",
-			"commentSec",
-			"sean",
-			"msg",
-			"skip1tag",
-			"orig_font"
+			"record"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -513,32 +528,64 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": ".gitignore",
+					"file": "libs/fhl.css",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 12,
+						"buffer_size": 14178,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								12,
-								12
+								6361,
+								6366
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 10333.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 77131,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								25740,
+								25740
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 20765.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,

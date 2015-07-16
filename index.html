@@ -11,7 +11,7 @@
 <script>
 
 var pageState;
-var currentSWVer="0.7";
+var currentSWVer="0.8";
 
 function setPageState(ps){
   var isViewed=false;
@@ -23,7 +23,7 @@ function setPageState(ps){
   if(isViewed==false)
     ps.history.push({chineses:ps.chineses,chap:ps.chap});
   //console.dir(ps);
-  localStorage.setItem("fhlPageState",JSON.stringify(pageState));
+  localStorage.setItem("fhlPageState",JSON.stringify(pageState));  
 }
 function pageStateInit(){
     pageState={
@@ -31,7 +31,7 @@ function pageStateInit(){
       gb:0,book:3,N:0,k:"",cname:["和合本"],realTimePopUp:0,titleId:"fhlInfoComment",
       history:[{chineses:"創",chap:1}],
       leftBtmWinShow:true,searchTitleMsg:"",audio:0,swVer:currentSWVer
-    };    
+    };
 }
 
 $(function(){
@@ -372,9 +372,10 @@ var bookSelectChapter={
       ps.engs=bookEng[that.idx];
       ps.chap=parseInt($(this).attr('chap'));
       ps.sec=1;
-      setPageState(ps);
+      setPageState(ps);      
       bookSelect.render(ps,bookSelect.dom);
       fhlLecture.render(ps,fhlLecture.dom);
+      viewHistory.render(ps,viewHistory.dom);
       //fhlInfo.render(ps);
       bookSelectPopUp.dom.hide();
       bookSelect.dom.css({'color': '#000000'});
@@ -408,7 +409,7 @@ function insertVersion(ps,dom){
   var cname=dom.attr('cname');  
   var versionIdx=getVersionIdx(book);
   var inserted=false;
-  console.log('book='+book+",cname="+cname+",idx="+versionIdx);
+  //console.log('book='+book+",cname="+cname+",idx="+versionIdx);
   for(var i=0;i<ps.version.length;i++){
     if(versionIdx<getVersionIdx(ps.version[i])){
       ps.version.splice(i,0,book);
@@ -421,7 +422,6 @@ function insertVersion(ps,dom){
       ps.version.push(book);
       ps.cname.push(cname);
   }
-  console.dir(ps);
 }
 
 var versionSelect={
@@ -505,7 +505,7 @@ var versionSelectPopUp={
     this.dom.find('li').click(function(e){
       $(this).toggleClass('selected');
       if($(this).hasClass('selected')){
-        insertVersion(ps,$(this));
+        insertVersion(ps,$(this));        
         /*
         ps.version.push($(this).attr('book'));
         ps.cname.push($(this).attr('cname'));
@@ -635,109 +635,7 @@ var windowControl={
     var html="<span id='fhlLeftWindowControl' style='top: -1px; padding: 1px 7px 4px 7px; border-bottom-left-radius: 3px; border-top-left-radius: 3px; border-width: 1px;'>&#8647;</span><span id='fhlMidBottomWindowControl' style='top: 0px; padding-top: 2px;'>&#8650;</span><span id='fhlInfoWindowControl' style='top: -1px; padding: 1px 7px 4px 7px; border-bottom-right-radius: 3px; border-top-right-radius: 3px;'>&#8649;</span>";
     dom.html(html);
   }  
-};
-
-function hideAllPopUp(){
-  bookSelectPopUp.dom.hide();
-  versionSelectPopUp.dom.hide();
-  settingPopUp.dom.hide();
-  viewHistoryPopUp.dom.hide();
-}
-
-var viewHistory={
-  init:function(ps,dom){
-    this.dom=dom;
-    this.render(ps,this.dom);
-    //position of Popup
-    var offset=this.dom.offset();
-    offset.top+=this.dom.height();
-    viewHistoryPopUp.init(ps,$('#viewHistoryPopUp'),offset);     
-  },
-  registerEvents:function(ps){
-    this.dom.click(function(){
-      hideAllPopUp();
-      viewHistoryPopUp.render(ps,viewHistoryPopUp.dom);
-      viewHistoryPopUp.dom.show();
-    });
-  },
-  render:function(ps,dom){
-    dom.html("歷史記錄");
-  }
-};
-
-function setBook(ps,bookName){
-  var idx=null;
-  if(book.indexOf(bookName)!=-1){
-    idx=book.indexOf(bookName);
-  }else if(bookEng.indexOf(bookName)!=-1){
-    idx=book.indexOf(bookName);
-  }else{
-    idx=null;
-  }
-  if(idx!=null){
-    ps.chineses=book[idx];
-    ps.engs=bookEng[idx];
-  }else{
-    console.log('setBook error:idx is null');
-  }
-}
-
-var viewHistoryPopUp={
-  init:function(ps,dom,offset){
-    this.dom=dom;
-    this.dom.offset(offset);    
-    this.render(ps,dom);
-    this.dom.hide();
-  },
-  registerEvents:function(ps){
-    var that=this;
-    this.dom.mouseleave(function(){
-      that.dom.hide();
-    });
-    $('.clearHistory').click(function(){
-      ps.history=[{chineses:ps.chineses,chap:ps.chap}];
-      that.dom.hide();
-      setPageState(ps);
-    });
-    this.dom.find('li').click(function(){      
-      setBook(ps,$(this).attr('chineses'));
-      ps.chap=parseInt($(this).attr('chap'));
-      ps.sec=1;
-      that.dom.hide();
-      setPageState(ps);    
-      bookSelect.render(ps,bookSelect.dom);      
-      fhlInfo.render(ps,fhlInfo.dom);
-      fhlLecture.render(ps,fhlLecture.dom);
-    });
-  },  
-  render:function(ps,dom){
-    var that=this;
-    var html="";
-    html+="<span class='clearHistory'>清除記錄</span>";
-    html+=html="<ul>";    
-    for(var i=ps.history.length-1;i>=0;i--){
-      var r=ps.history[i];
-      html+="<li chineses="+r.chineses+" chap="+r.chap+">";
-      html+=r.chineses+":"+r.chap+"</li>";
-    }
-    dom.html(html);
-    /*
-    for(var i=0;i<ps.version.length;i++){
-      var v=ps.version[i];
-      var li=dom.find('li[book="'+v+'"]');
-      if(li!=null){
-        li.each(function(){
-          $(this).addClass('selected');
-          var html=$(this).html();
-          html+="&#x2713";
-          $(this).html(html);
-        });
-      }
-    }*/
-    that.registerEvents(ps);
-  }
-}
-    
+};  
 /***** End of fhlToolBar *****/
     
 /***** Start of fhlLeftWindow *****/
@@ -747,6 +645,7 @@ var fhlLeftWindow={
       this.registerEvents();
       settings.init(ps,$('#setting'));
       settings.registerEvents(ps);
+      viewHistory.init(ps,$('#viewHistory'));
   },
   registerEvents:function(){
       $('#fhlLeftWindow').resizable({
@@ -814,6 +713,7 @@ var snSelect={
                 ps.strong=0;
                 fhlLecture.render(ps,fhlLecture.dom);
             }
+            setPageState(ps);
         });
     },
     render:function(ps,dom){
@@ -844,6 +744,7 @@ var gbSelect={
                 ps.gb=0;
                 fhlLecture.render(ps,fhlLecture.dom);
             }
+            setPageState(ps);
         });
   },
   render:function(ps,dom){
@@ -874,6 +775,7 @@ var realTimePopUpSelect={
                 ps.realTimePopUp=0;
                 fhlLecture.render(ps,fhlLecture.dom);
             }
+            setPageState(ps);
         });
   },
   render:function(ps,dom){
@@ -926,9 +828,70 @@ var imageTool={
         dom.html(html);
   }
 };
-    
-    
-    
+
+function setBook(ps,bookName){
+  var idx=null;
+  if(book.indexOf(bookName)!=-1){
+    idx=book.indexOf(bookName);
+  }else if(bookEng.indexOf(bookName)!=-1){
+    idx=book.indexOf(bookName);
+  }else{
+    idx=null;
+  }
+  if(idx!=null){
+    ps.chineses=book[idx];
+    ps.engs=bookEng[idx];
+  }else{
+    console.log('setBook error:idx is null');
+  }
+}    
+var viewHistory={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.render(ps,this.dom);    
+  },
+  registerEvents:function(ps){
+    var that=this;
+    $('#viewHistory p')
+        .css({cursor: "pointer"})
+        .on('click', function(){
+        var html =  $(this).html() == "▼&nbsp;歷史紀錄"?"&#9654;&nbsp;歷史紀錄":"&#9660;&nbsp;歷史紀錄";
+        $(this).html(html);
+        $(this).next().slideToggle();
+    });
+    $('.clearHistory').click(function(){
+      ps.history=[{chineses:ps.chineses,chap:ps.chap}];      
+      setPageState(ps);
+      viewHistory.render(ps,viewHistory.dom);
+    });    
+    this.dom.find('li')
+    .css({cursor: "pointer"})
+    .click(function(){      
+      setBook(ps,$(this).attr('chineses'));
+      ps.chap=parseInt($(this).attr('chap'));
+      ps.sec=1;
+      setPageState(ps);    
+      bookSelect.render(ps,bookSelect.dom);      
+      fhlInfo.render(ps,fhlInfo.dom);
+      fhlLecture.render(ps,fhlLecture.dom);
+    });    
+  },
+  render:function(ps,dom){
+    var html="<p>&#9660;&nbsp;歷史紀錄</p>";
+    html+="<ul class='viewHistoryList'>";
+    html+="<span class='clearHistory'>清除記錄</span>";
+    for(var i=ps.history.length-1;i>=0;i--){
+      var r=ps.history[i];
+      html+="<li chineses="+r.chineses+" chap="+r.chap+">";
+      html+=r.chineses+":"+r.chap+"</li>";
+    }
+    html+="</ul>";
+    dom.html(html);
+    this.registerEvents(ps);
+  }
+};
+
+       
 /***** End of fhlLeftWindow *****/
 
 /***** Start of fhlMidWindow *****/
@@ -1093,6 +1056,8 @@ var fhlLecture={
       }else{
         ps.chap--;        
       }
+      setPageState(ps);
+      viewHistory.render(ps,viewHistory.dom);
       fhlLecture.render(ps,fhlLecture.dom);
       //fhlInfo.render(ps);
       bookSelect.render(ps, bookSelect.dom);
@@ -1107,6 +1072,8 @@ var fhlLecture={
       }else{
         ps.chap++;
       }
+      setPageState(ps);
+      viewHistory.render(ps,viewHistory.dom);
       fhlLecture.render(ps,fhlLecture.dom);
       //fhlInfo.render(ps);
       bookSelect.render(ps, bookSelect.dom);
@@ -1558,7 +1525,7 @@ var fhlInfoContent={
                                     wstr=wstr+"(聯："+wd[ii]+")";
                             }
                             word=wstr;
-                            console.log(word);
+                            //console.log(word);
                         }
                     }
                     else if (N==1) //OT
@@ -1983,8 +1950,8 @@ var parsingPopUp={
         var scrollY=$('#fhlLecture').scrollTop();
         var scrollH=$('#fhlLecture')[0].scrollHeight;
         var domH=dom.height();
-        console.log("top:"+offset.top+",domH:"+domH+",leftWinH:"+leftWinH+",lecH:"+lecH);
-        console.log("scrollH:"+scrollH+",scrollY:"+scrollY);        
+        //console.log("top:"+offset.top+",domH:"+domH+",leftWinH:"+leftWinH+",lecH:"+lecH);
+        //console.log("scrollH:"+scrollH+",scrollY:"+scrollY);        
 
           if(domH>leftWinH){
             //set css to auto scroll            
@@ -2152,47 +2119,7 @@ var parsingPopUp={
                 <li><div id="imageTool"></div></li>
             </ul>
         </div>
-        <div id="viewHistory">
-            <p>&#9660;&nbsp;歷史紀錄</p>
-            <ul>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-                <li>一筆紀錄</li>
-            </ul>
-
+        <div id="viewHistory">  
         </div>
     </div>
 </div>

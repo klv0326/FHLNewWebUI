@@ -272,18 +272,18 @@
 	"buffers":
 	[
 		{
-			"file": "libs/fhl.css",
+			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 14178,
+				"buffer_size": 77229,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "index.html",
+			"file": "index_conflict.html",
 			"settings":
 			{
-				"buffer_size": 77131,
+				"buffer_size": 90817,
 				"line_ending": "Windows"
 			}
 		}
@@ -315,21 +315,21 @@
 	},
 	"file_history":
 	[
-		"/D/GitHub/FHLNewWebUI/search_api/sephp_c_param.css",
 		"/D/GitHub/FHLNewWebUI/index_conflict.html",
-		"/D/GitHub/FHLNewWebUI/index_old.html",
-		"/D/GitHub/FHLNewWebUI/.gitignore",
-		"/D/GitHub/FHLNewWebUI/.gitattributes",
-		"/D/GitHub/FHLNewWebUI/libs/fhl.css",
 		"/D/GitHub/FHLNewWebUI/search_api/sephp_c_param.js",
+		"/D/GitHub/FHLNewWebUI/libs/fhl.css",
+		"/D/GitHub/FHLNewWebUI/search_api/fhl_api.js",
 		"/D/GitHub/FHLNewWebUI/index.html",
+		"/D/GitHub/FHLNewWebUI/search_api/abvphp_api.js",
+		"/D/GitHub/FHLNewWebUI/.gitignore",
+		"/D/GitHub/FHLNewWebUI/search_api/sephp_c_param.css",
+		"/D/GitHub/FHLNewWebUI/index_old.html",
+		"/D/GitHub/FHLNewWebUI/.gitattributes",
 		"/D/GitHub/FHLNewWebUI/test.html",
 		"/D/GitHub/FHLNewWebUI/libs/constant.js",
 		"/D/GitHub/FHLNewWebUI/libs/fhlAPI.js",
 		"/D/GitHub/FHLNewWebUI/testPure.html",
-		"/D/GitHub/FHLNewWebUI/search_api/fhl_api.js",
 		"/D/GitHub/FHLNewWebUI/libs/jquery-1.10.2.js",
-		"/D/GitHub/FHLNewWebUI/search_api/abvphp_api.js",
 		"/C/Users/KevinWang/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/D/Learnings/History/Coursera_The Emergence of the Modern Middle East - Part I/4 - 12 - 4.6.1.1 The Non-Arab States- The Republic of Turkey (part 1) (03-58).srt",
 		"/D/GitHub/kevin/index.html",
@@ -375,6 +375,86 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"snParse",
+			"var parsingPopup",
+			"console.dir",
+			"=====",
+			"<<<",
+			".sn",
+			"parseDic",
+			"var parsingPopup",
+			"parsingPopUp",
+			"parseBibleText",
+			"var fhllecture",
+			"snSelect",
+			"var fhllecture",
+			"var parsing",
+			"setFont",
+			".bhs",
+			"setFont",
+			"var fhllecture",
+			"function ",
+			"fhllecture",
+			"fhlLecture",
+			"fhllecture",
+			".hebrew",
+			"lecture",
+			"version",
+			"do_search =",
+			"do_search",
+			"init_g_bibleversions",
+			"sephp_search",
+			"do_search",
+			"localStorage",
+			"init_g_bibleversions",
+			"searchInit",
+			"mp_vversion",
+			"m_bibleversions",
+			"version",
+			"parsingPoup",
+			"doSearch",
+			"parsingPopUp.render",
+			"parsingPopUp",
+			"searchSN",
+			"doSearch",
+			"control_str",
+			"mapTool",
+			"insertVersion",
+			"getVersionIdx",
+			"c_preach",
+			"setCache",
+			"searchInit",
+			"請檢查「查詢範圍」與「聖經版本」設定，沒有能查詢的範圍。",
+			"fhlMidBottomWindow",
+			"searchTool",
+			"searchInit",
+			"doSearch",
+			"leftWindow",
+			"initial_div_ui",
+			"fhlMidBottomWindowTitle",
+			"init_g_bibleversions",
+			"do_search",
+			"doSearch",
+			"parsingPopUp",
+			"parsingPopup",
+			"parsing",
+			"fhlMidBottom",
+			"searchInit",
+			"search_api",
+			"console.debug",
+			"doSearch",
+			"searchTool",
+			"init_g_bibleversions",
+			"searchInit",
+			"version",
+			"parseBibleText",
+			"fhlLecture",
+			"function fhlLecture",
+			"lecture",
+			"sn",
+			"class='sn",
+			".sn",
+			"sn",
 			"onOff",
 			"realTimeOnOffSwitch",
 			"realTime",
@@ -422,87 +502,7 @@
 			"========",
 			"fhlleft",
 			"leftBtmWinshow",
-			"fhlMidBottomWindow",
-			"fhlLeftBottomWindow",
-			"searchTool",
-			"searchBox",
-			"searchTool",
-			"windowControl",
-			"searchTool",
-			"setBook",
-			"snBtn",
-			"versionSelect",
-			"insertVersion",
-			"getVersionIdx",
-			"searchTool",
-			"viewHistory",
-			"fhlMidWindow",
-			"fhlLeftBottomWindow",
-			"bookName",
-			"pageStateInit",
-			"pageState",
-			"doSearch",
-			"m_userInputType",
-			"doSearch",
-			"m_userInputType",
-			"do_search",
-			"searchBibleVerse",
-			".replace",
-			"searchBibleVerse",
-			"doSearch",
-			"searchBible",
-			"search",
-			"snParse",
-			"parseDic",
-			"fhlinfoAudio",
-			"currentSWVer",
-			"ps.audio",
-			">>>>>",
-			"======",
-			"<<<<<<",
-			"<<<<<",
-			"===",
-			"=====",
-			"=======",
-			"=====",
-			"+++++++",
-			"**",
-			"head_str",
-			"align_str",
-			"$('.sn'",
-			"'sn",
-			"$('sn').click",
-			"setPageState",
-			"pageState",
-			"ps.N",
-			"pdic_type",
-			"parsingPopup.render",
-			"offset",
-			"parsingPopUp.render",
-			"parsing",
-			"width:",
-			"parseDic",
-			"out",
-			"parsingPopUp",
-			"align_str",
-			"fhlinfo",
-			"parsing",
-			"parsingP",
-			"width: 300",
-			"dic_text",
-			"parsingPopUp.render",
-			"parsingPopUp",
-			"snSelect",
-			"strong",
-			"sn",
-			"bibleParsingTest",
-			"getBibleParsing",
-			"bibleParsingTest",
-			"getAjaxUrl",
-			"cnt",
-			"bibleTextTest",
-			"history",
-			"record"
+			"fhlMidBottomWindow"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -528,54 +528,24 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "libs/fhl.css",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 14178,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6361,
-								6366
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/CSS/CSS.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 10333.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
 					"file": "index.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 77131,
+						"buffer_size": 77229,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								25740,
-								25740
+								75561,
+								75561
 							]
 						],
 						"settings":
@@ -585,10 +555,40 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 20765.0,
+						"translation.y": 61394.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "index_conflict.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 90817,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								79559,
+								79566
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 69369.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
 					"type": "text"
 				}
 			]

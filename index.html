@@ -1035,7 +1035,7 @@ var fhlLecture={
         var offset=$(this).offset();
         offset.top+=$(this).height()+10;
         ps.N=$(this).attr('N');
-        ps.k=$(this).html();        
+        ps.k=$(this).html().replace(/&lt;/g,"").replace(/&gt;/g,"");
         parsingPopUp.render(ps,parsingPopUp.dom,offset);
       });
     }else{
@@ -1043,7 +1043,7 @@ var fhlLecture={
         var offset=$(this).offset();
         offset.top+=$(this).height()+10;
         ps.N=$(this).attr('N');
-        ps.k=$(this).html();
+        ps.k=$(this).html().replace(/&lt;/g,"").replace(/&gt;/g,"");
         parsingPopUp.render(ps,parsingPopUp.dom,offset);
       });    
     }
@@ -1122,7 +1122,7 @@ var fhlLecture={
           }else{
             bibleText="";
           }
-          htmlContent+="<div class='lecContent'><div style='margin: 0px 20px 0px 1px; padding: 7px 0px; height: 100%;'><span class='verseNumber'>"+maxR.sec+"</span>"+bibleText+"</div></div>";
+          htmlContent+="<div class='lecContent "+rspArr[j].version+"'><div style='margin: 0px 20px 0px 1px; padding: 7px 0px; height: 100%;'><span class='verseNumber'>"+maxR.sec+"</span>"+bibleText+"</div></div>";
         }
         htmlContent+="</div>";        
       }
@@ -1617,7 +1617,7 @@ var fhlInfoContent={
                       for (var ii=0;ii<nword.length;ii++){                                                
                         nword[ii]=nword[ii].trim();
                         var t=nword[ii].split(" ");
-                        console.dir(t);
+                        //console.dir(t);
                         head_str+="<div>";
                         for (var iii=0;iii<t.length;iii++,wid++){
                           var sn=jsonObj.record[wid].sn;
@@ -1878,7 +1878,7 @@ var parsingPopUp={
       }
     });
     $('.snParse').click(function(){
-      //var offset=$(this).offset;
+      //var offset=parsingPopUp.dom.offset;
       ps.N=$(this).attr('N');
       ps.k=$(this).html();
       parsingPopUp.render(ps,parsingPopUp.dom,null);
@@ -1952,7 +1952,7 @@ var parsingPopUp={
         var domH=dom.height();
         //console.log("top:"+offset.top+",domH:"+domH+",leftWinH:"+leftWinH+",lecH:"+lecH);
         //console.log("scrollH:"+scrollH+",scrollY:"+scrollY);        
-
+        if(offset != null){
           if(domH>leftWinH){
             //set css to auto scroll            
           }else if(offset.top+domH>leftWinH){
@@ -1970,6 +1970,7 @@ var parsingPopUp={
   */
           that.dom.show();
           dom.offset(offset);          
+        }
         that.registerEvents(ps);
       });
     }
@@ -2047,8 +2048,9 @@ var parsingPopUp={
   </script><!--講道功能 2015.05.11-->
 
   <script>
-  function searchInit(ps){
+  function searchInit(ps){    
     var version="unv";
+    
     abvphp.init_g_bibleversions();//必須先呼叫
     sephp.g_param.m_divDst = document.getElementById("fhlMidBottomWindowContent");
 
@@ -2081,10 +2083,9 @@ var parsingPopUp={
 
   }
   function doSearch(keyword,func,type){    
-
     sephp.g_param.m_keyword = keyword;
     sephp.g_param.m_userInputType = type;
-    //sephp.g_param.mp_vversion = pageState.version;
+
     if(func=="search"){
       sephp.g_param.do_search();
     }

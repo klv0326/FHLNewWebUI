@@ -1440,6 +1440,7 @@ sephp.c_param.prototype.search_reference = function search_reference() {
 // 這個是 search() 主流程 是被 sephp_search()  呼叫的
 sephp.c_param.prototype.do_search = function do_search() {
 
+  console.dir(this);
   this.m_search_queue = [];//clear
   var pThisClassObj = this;
   var divFrame = this.divs["seFrameBody"];
@@ -1463,7 +1464,7 @@ sephp.c_param.prototype.do_search = function do_search() {
     //this.m_userInputType = 0; 
   }
 
-  console.debug("debug");
+  //console.debug("debug");
   // SN 查詢 ... 00794 要用 794 才查得到 ... 但有 00794a ，這才處理的時候要小心
   if (this.m_userInputType != 0 || (this.m_userInputType == 0 && this.m_keywordType == 1)) {
     // 05.06 不要trim掉 mark掉二行

@@ -20,6 +20,7 @@
 body {
     margin: 0px;
     overflow: hidden;
+    background-color: #B0B0B0;
 }
 #fhlTopMenu {  
   position: fixed;
@@ -36,15 +37,162 @@ body {
   background-color: white;
 }
 
+
+nav#fhlTopMenu {
+    height: 40px;
+    z-index: 1000;
+}
+
+#fhlTopMenu .menu{
+    position: absolute;
+    top: 0px;
+    left: 120px;
+    margin: 0px;
+    padding: 0px;
+}
+
+#fhlTopMenu .menu li{
+    list-style: none;
+    float: left;
+    position: relative;
+    width: 160px;
+    height: 40px;
+}
+
+#fhlTopMenu .menu>li{
+    background-color: #a82222;
+    background-image: -webkit-linear-gradient(#a82222, #670000);
+    background-image: -moz-linear-gradient(#a82222, #670000);
+    background-image: -o-linear-gradient(#a82222, #670000);
+    background-image: linear-gradient(#a82222, #670000);
+    border-left: 1px solid #5f5f5f;
+    border-right: 1px solid #7e0000;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out; 
+}
+
+#fhlTopMenu .menu li:first-child{
+    border-radius: 3px 0px 0px 3px;
+    border-left: none;
+}
+
+#fhlTopMenu .menu li:last-child{
+    border-radius: 0px 3px 3px 0px;
+    border-right: none;
+}
+
+#fhlTopMenu .menu a{
+    display: block;
+    text-decoration: none;
+    color: white;
+    padding: 0 20px;
+    font-family: 'Verdana', arial;
+    margin: 0;
+    position: relative;
+    font-size: 12pt;
+    text-align: center;
+    line-height: 40px;
+}
+
+#fhlTopMenu .menu li:hover{
+    -webkit-box-shadow: inset 0 0 10px #470000;
+    -moz-box-shadow: inset 0 0 10px #470000;
+    box-shadow: inset 0 0 10px #470000;
+    background-color: #a82222;
+    background-image: -webkit-linear-gradient(#911212, #670000);
+    background-image: -moz-linear-gradient(#911212, #670000);
+    background-image: -o-linear-gradient(#911212, #670000);
+    background-image: linear-gradient(#911212, #670000);
+}
+
+#fhlTopMenu .menu li:hover span:after{
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+#fhlTopMenu ul.menu-hover{
+    visibility: hidden;
+    position: absolute;
+    top:100%;
+    left: -40px;
+    opacity: 0;
+    height: 100%;
+    width: 150px;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+#fhlTopMenu .menu li:hover .menu-hover{
+    visibility: visible;
+    height: 100%;
+    opacity: 1;
+}
+
+#fhlTopMenu .menu-hover li{
+    width: 160px;
+    height: 100%;
+    border-bottom: 1px solid #696969;
+    background-color: #2a2a2a;
+    border-left: none;
+    border-right: none;
+}
+
+#fhlTopMenu .menu-hover li:hover{
+    background-image: -webkit-linear-gradient(#2a2a2a, #434343);
+    background-image: -moz-linear-gradient(#2a2a2a, #434343);
+    background-image: -o-linear-gradient(#2a2a2a, #434343);
+    background-image: linear-gradient(#2a2a2a, #434343);
+    box-shadow: none;
+}
+
+#fhlTopMenu .menu-hover a{
+    color: white;
+}
+
+#fhlTopMenu .menu a span:after{
+    content: "";
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid white;
+    position: absolute;
+    top: 15px;
+    right: 30px;
+
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out; 
+}
+
+#fhlTopMenu .menu-hover li:first-child, #fhlTopMenu .menu-hover li:last-child{
+    border-radius: 0;
+}
+
+#fhlTopMenu .menu a:after {
+    background: rgba(255,255,255,.07);
+    content: "";
+    height: 20px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+
+
 #fhlToolBar {
     position: fixed;
-    top: 40px;
+    top: 50px;
     display: block;
     color: aqua;
-    background-color: grey;
-    height: 40px;
-    width: 100%;
-    border: solid 1px black;
+    background-color: #404040;
+    height: 60px;
+    left: 250px;
+    right: 12px;
+    border-radius: 4px;
 }
 #fhlToolBar div{
     float: left;
@@ -52,11 +200,11 @@ body {
 #searchTool{
     position: absolute;
     top: 50%;
-    left: 0%;
-    transform: translate(0%, -50%);
+    right: 12px;
+    transform: translate(0%, -55%);
     height: 30px;
 }
-.searchBox {
+/*.searchBox {
   width:200px;
   height:20px;
   margin: 2px;
@@ -75,18 +223,102 @@ body {
   padding: 5px;
   border-radius: 5px;      
   vertical-align: middle;
+}*/
+
+
+.wrapper {
+  text-align: center;
+  margin: 0px;
+  height: 30px;
 }
-#fhlToolBar #middleBox{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    height: 30px;
+.searchBtn {
+  visibility: hidden;
+  opacity: 0;
+  color: #d9d9d9;
+  border: 2px solid #d9d9d9;
+  border-radius: 30px;
+  font-size: 12pt;
+  white-space: nowrap;
+  position: absolute;
+  top: 2px;
+  right: 0px;
+  padding: 5px 10px;
+  transition: all 0.4s ease-out;
+  cursor: pointer;
 }
+.searchBtn:hover{
+    color: #00A0FF;
+}
+.icon-search-container {
+  display: inline-block;
+  border: 2px solid #d9d9d9;
+  border-radius: 30px;
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  right: 0px;
+  transition: all 0.4s ease-out;
+  backface-visibility: hidden;
+}
+.icon-search-container.active {
+  width: 285px;
+  right: 100px;
+}
+.icon-search-container.active + .searchBtn {
+    opacity: 1;
+    visibility: visible;
+}
+.icon-search-container.active .times-circle {
+  opacity: 1;
+}
+.icon-search-container.active .search-input {
+  width: 160px;
+}
+.icon-search-container .search {
+  color: #2980b9;
+  font-size: 30px;
+  position: absolute;
+  top: -8px;
+  left: 5px;
+  cursor: pointer;
+  -ms-transform: rotate(-45deg); /* IE 9 */
+  -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
+  transform: rotate(-45deg);
+}
+.icon-search-container .times-circle {
+  opacity: 0;
+  color: #d9d9d9;
+  font-size: 20px;
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  transition: opacity 0.4s ease-out;
+  cursor: pointer;
+}
+.icon-search-container .times-circle:hover {
+    color: #00A0FF;
+}
+.icon-search-container .search-input {
+  position: absolute;
+  cursor: default;
+  left: 25px;
+  top: 2px;
+  width: 0;
+  padding: 5px;
+  border: none;
+  outline: none;
+  font-size: 12pt;
+  line-height: 12pt;
+  color: white;
+  background-color: rgba(255, 255, 255, 0);
+  transition: width 0.4s ease-out;
+}
+
+
 #bookSelectPopUp {
   position: fixed;
-  top: 77px;
-  left: 50%;
+  top: 100px;
+  left: 55%;
   transform: translate(-50%, 0%);
   width: 711px;
   font: 14px/14px bold ,Microsoft JhengHei;
@@ -176,42 +408,7 @@ body {
 .secNext:hover,.secBack:hover{
   color:red;
 }
-#versionSelectPopUp {
-  position: fixed;
-  top: 77px;
-  font: 18px/18px bold, Microsoft JhengHei;
-  background-color: #B0B0B0;
-  z-index: 101;/*Layer 2*/
-}
-/*#versionSelectPopUp:before {
-    content: '';
-    position: absolute;
-    top: -32px;
-    left: 10px;
-    width: 0;
-    height: 0;
-    border: 16px solid transparent;
-    border-bottom-color: blue;
-}*/
-#versionSelectPopUp ul {
-  list-style: none;
-  padding:2px;
-  margin:0;
-}
-#versionSelectPopUp li {    
-  cursor: pointer;
-  white-space: nowrap;
-  padding:0;
-  margin:0;
-}
-#versionSelectPopUp li:hover{
-  background-color: white;
-}
-#versionSelectPopUp li.selected{
-  background-color: black;
-  color:white;
-}
-
+/*
 #viewHistoryPopUp {
   position: fixed;
   width:120px;
@@ -219,7 +416,7 @@ body {
   background-color: #B0B0B0;
   padding: 2px;
   text-align: center;
-  z-index: 101;/*Layer 2*/
+  z-index: 101;
 }
 
 #viewHistoryPopUp ul { 
@@ -227,108 +424,239 @@ body {
   padding:2px;
   margin:0;
 }
-#viewHistoryPopUp li,span{    
+#viewHistoryPopUp li{    
   cursor: pointer;
   white-space: nowrap;
   padding:0;
   margin:0;
 }
-#viewHistoryPopUp li:hover,span:hover{    
+#viewHistory span:hover{    
   background-color: white;
 }
 #viewHistoryPopUp li.selected{    
   background-color: black;
   color:white;
-}
+}*/
 
 #fhlToolBar #bookSelect{
-    position: static;
-    height: 30px;
-    line-height: 30px;
+    position: absolute;
+    top: 50%;
+    left: 47%;
+    transform: translate(-50%, -50%);
+    height: 40px;
+    line-height: 40px;
     text-align: center;
     padding: 0px 40px;
     margin: 0px 5px;
-    background-color: white;
-    color: black;
-    border-radius: 3px;
-    cursor: pointer;
-}
-#fhlToolBar #versionSelect{
-    position: static;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    padding: 0px 10px;
-    margin: 0px 5px;
-    background-color: white;
-    color: black;
+    background-color: black;
+    color: white;
+    font-size: 12pt;
     border-radius: 3px;
     cursor: pointer;
 }
 #fhlToolBar #windowControl{
     position: absolute;
     top: 50%;
-    right: 10px;
+    left: -238px;
+    width: 226px;
     transform: translate(0%, -50%);
-    height: 30px;
-    line-height: 30px;
+    height: 60px;
+    line-height: 60px;
     text-align: center;
     padding: 0px;
-    background-color: white;
-    color: black;
-    border-radius: 3px;
+    color: #0050FF;
+    background-color: #404040;
+    border-radius: 4px;
 }
 #fhlToolBar #windowControl span{
     position: relative;
-    font-size: 24px;
-    border: solid black;
-    border-width: 1px 1px 1px 0px;
+    font-size: 30px;
     padding: 0px 7px 3px;
     cursor: pointer;
-    margin: 0px;
+    margin: 0px 12px;
 }
 #fhlToolBar #windowControl span:hover{
     color: #00A0FF;
+}
+#fhlToolBar #help{
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translate(0%, -50%);
+    height: 25px;
+    line-height: 25px;
+    font-size: 12pt;
+    text-align: center;
+    padding: 2px 15px 0px;
+    color: #FFFFFF;
+    border: solid 2px #FFFFFF;
+    border-radius: 30px;
+    cursor: pointer;
+}
+#fhlToolBar #help:hover{
+    color: #00A0FF;
+    background-color: #303030;
+}
+#helpingPopUp{
+    visibility: hidden;
+    opacity: 0;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background-color: rgba(255, 255, 255, 0.6);
+    z-index: 102;
+    transition: all 0.2s ease-out;
+}
+#helpingPopUpInside{
+    position: absolute;
+    top: 100px;
+    right: 100px;
+    bottom: 100px;
+    left: 100px;
+    border-radius: 4px;
+    background-color: white;
 }
 
 #fhlLeftWindow {
   position: absolute;
   display: block;
-  background-color: #F3F3F3;
-  top: 82px;
-  left: 0px;
+  background-color: #FFFFFF;
+  top: 120px;
+  left: 12px;
   bottom: 0px;
-  width: 200px;
+  width: 220px;
+  border-radius: 4px;
   z-index: 100;/*Layer 1*/  
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
 }
-#fhlLeftWindow > div {
-    /*border: solid 1px black;
-    border-width: 0px 0px 1px;*/
-}
+
 .leftWindow div:not(.ui-resizable-handle){
   font: 12pt/18pt bold ,Microsoft JhengHei;
-  padding:0px 10px 0px 10px;
+  padding:0px
   text-align: left;  
 }
-.leftWindow .ui-resizable-handle{
+.leftWindow>.ui-resizable-handle{
     height: 100%;
-    background-color: black;
+    right: -12px;
+    background-color: #B0B0B0;
     cursor: col-resize;
+    width: 12px;
+}
+#fhlLeftWindow .ui-resizable-handle span{
+    pointer-events: none;
+    cursor: col-resize;
+    position: absolute;
+    top: 50%;
+    left: 2px;
+    transform: translate(0%, -50%);
+    transform: rotate(90deg);
 }
 .leftWindow .smallText {
   font: 10px/40px bold ,Microsoft JhengHei;
 }
-.leftWindowInside{
+#fhlLeftWindow .leftWindowInside{
     position: absolute;
     top: 0px;
     bottom: 0px;
     left: 0px;
     right: 0px;
     overflow: auto;
+    background-color: #B0B0B0;
 }
+#fhlLeftWindow .leftWindowInside>div {
+    /*border: solid 1px black;
+    border-width: 0px 0px 1px;*/
+    padding: 0px;
+}
+#fhlLeftWindow .leftWindowInside>div>.ui-resizable-handle{
+    background: #B0B0B0;
+    bottom: -12px;
+    cursor: row-resize;
+    height: 12px;
+}
+#fhlLeftWindow .leftWindowInside .ui-resizable-handle span{
+    pointer-events: none;
+    cursor: row-resize;
+    position: absolute;
+    top: -7px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+#fhlLeftWindow .leftWindowInside>div ul {
+    position: absolute;
+    width: 190px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    margin: 0px;
+    padding: 0px;
+    overflow: auto;
+}
+#fhlLeftWindow .leftWindowInside>div p {
+    cursor: pointer;
+    margin: 0px;
+    padding: 10px;
+    /*background-color: #E0E0E0;*/
+}
+#fhlLeftWindow .secondLevelInside {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    border-radius: 4px;
+    background-color: white;
+    overflow: hidden;
+}
+.secondLevelInside>div{
+    position: absolute;
+    top: 44px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    overflow: auto;
+}
+.secondLevelInside li{
+    margin: 5px 3px;
+    padding: 0px 0px 5px 15px;
+    border-bottom: dotted 1px black;
+    list-style-type: none;
+    float: none;
+}
+.secondLevelInside li:first-child {
+    margin-top: 0px;
+    padding-top: 5px;
+    border-top: dotted 1px black;
+}
+
+#settings {
+    width: 100%;
+    height: 300px;
+    overflow: visible;
+    background-color: #B0B0B0;
+}
+#settings li div{
+    display: inline-block;
+    /*padding: 0px;*/
+}
+#settings li div div{
+    display: inline-block;
+}
+#settings li>div>div:first-child{
+    float: left;
+    margin-right: 20px;
+}
+
 /*float: right; top: 12px;*/
 .onOffSwitch {
-    position: relative; width: 59px; float: right; top: 3px;
+    position: relative; width: 59px; /*float: right;*/ top: 3px;
     -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
 }
 .onOffSwitch-checkbox {
@@ -379,24 +707,102 @@ body {
 .onOffSwitch-checkbox:checked + .onOffSwitch-label .onOffSwitch-switch {
     right: 0px; 
 }
+#fontSizeTool{
+    /*margin: 0px 0px 0px 10px;*/
+}
+#fhlLectureFontSizeSmaller, #fhlLectureFontSizeLarger{
+    position: relative;
+    margin: 0px 11px 0px -5px;
+    padding: 1px 0px 0px 5px;
+    width: 25px;
+    line-height: 15pt;
+    font-size: 10pt;
+    text-align: center;
+    box-shadow: 1px 1px 1px #888888;
+    border-radius: 3px;
+    background-color: #E0E0E0;
+    cursor: pointer;
+}
+#fhlLectureFontSizeSmaller:hover, #fhlLectureFontSizeLarger:hover{
+    box-shadow: inset 1px 1px 1px #888888;
+    top: 1px;
+    left: 1px;
+}
+#fhlLectureFontSizeSmaller span, #fhlLectureFontSizeLarger span{
+    position: relative;
+    font-size: 5pt;
+    top: -7px;
+    left: -2px;
+}
+#fhlLectureFontSizeSliderBar{
+    cursor: pointer;
+}
 
-#settings p {
+#versionSelect{
+    position: absolute;
+    top: 312px;
+    width: 100%;
+    background-color: #B0B0B0;
+    overflow: visible;
+}
+.versionSelectInside{
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    border-radius: 4px;
+    background-color: white;
+    overflow: hidden;
+}
+.versionSelectInside>div{
+    position: absolute;
+    top: 44px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    overflow: auto;
+}
+#versionSelect ul{
+    /*margin: 0px;
+    padding: 2px 0px 0px 10px;*/
+    cursor: pointer;
+}
+#versionSelect li:hover {
+    color: #00A0FF;
+}
+#versionSelect li.selected{
+    color: rgba(0, 80, 255, 1);
+}
+
+#viewHistory{
+    position: absolute;
+    height: 42px;
+    bottom: 12px;
+    width: 100%;
+    background-color: #B0B0B0;
+    overflow: visible;
+}
+#viewHistory p {
     margin: 0px;
 }
-#settings ul{
+#viewHistory ul{
     margin: 0px;
-    padding: 2px 0px 0px 10px;
+    padding: 2px 0px 0px 40px;
 }
-#settings li {
+#viewHistory li {
     margin: 3px;
-    list-style-type: none;
-    float: none;
 }
-#settings li div{
-    padding: 0px;
+#viewHistory .clearHistory{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 8pt;
+    color: #C0C0C0;
+    cursor: pointer;
 }
-#settings li div div{
-    display: inline-block;
+#viewHistory .clearHistory:hover{
+    color: #FF0000;
 }
 /*
 #settingPopUp {
@@ -456,28 +862,39 @@ body {
 #fhlMidWindow {
   position: absolute;
   overflow: hidden;
-  background-color: white;    
-  font: 12pt/18pt bold ,Microsoft JhengHei;
-  top: 82px;
-  bottom: 0px;
-  left: 200px;
+  background-color: #B0B0B0;    
+  border-radius: 4px;
+  font: 12pt/16pt bold ,Microsoft JhengHei;
+  top: 120px;
+  bottom: 12px;
+  left: 244px;/*220+12+12*/
+  cursor: default;
   z-index: 100;/*Layer 1*/  
 }
 #fhlLecture {
   position: absolute;
   top: 0px;
-  bottom: 100px;
+  bottom: 312px; /*如果這裡改了，jquery 裡面也要改*/
   width: 100%;
-  /*position: relative;*/
+  border-radius: 4px;
   overflow: hidden;
   margin: 0px;
+  background-color: white;
+}
+#fhlLecture span {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 #fhlLecture .lec{
-  font-size: 18px;
+  font-size: 12pt;
   padding: 0px 50px;
 }
 #fhlLecture .selected{
-  background-color: #C0C0C0;
+  background-color: #CCCC99;
 }
 #fhlLecture .lecContent{
   display: inline-block;
@@ -495,22 +912,23 @@ body {
     top: -8px;
     margin-left: 1px;
     margin-right: 1px;
-    font-size: 8px;
+    font-size: 6pt;
 }
 #fhlLecture .versionName{
     display: inline-block;
-    border: solid 2px black;
+    margin: 5px 0px 0px 10px;
+    /*border: solid 2px black;
     border-width: 2px;
-    border-bottom: white;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    min-width: 70%;
+    border-bottom: white;*/
+    border-radius: 4px;
+    background-color: white;
+    width: 80%;
     text-align: center;
 }
 #fhlLecture .closeButton{
     line-height: 15px;
     float: right;
-    margin: 3px 10px 0px 0px;
+    margin: 1px 10px 0px 0px;
     padding: 0px 3px 3px 3px;
     cursor: pointer;
     border-radius: 50%;
@@ -546,13 +964,18 @@ body {
     width: 50px;
     text-align: center;
 }
+#lecMainTitle {
+    background-color: #D0D0D0;
+    height: 30px;
+    padding: 0px 50px;
+}
 #lecMain {
     position: absolute;
-    top: 27px;
+    top: 30px;
     left: 0px;
     right: 0px;
     bottom: 0px;
-    border-top: solid 2px black;
+    /*border-top: solid 2px black;*/
     overflow: auto;
 }
 <<<<<<< HEAD
@@ -571,14 +994,16 @@ body {
 }
 
 #fhlMidBottomWindow {
-  /*position: relative;  
-  overflow: auto;*/
     position: absolute;
     bottom: 0px;
-    height: 100px;
+    height: 300px; /* 這裏改了 jquery也要改 */
     width: 100%;
+    border-radius: 4px;
+    background-color: white;
 }
 #fhlMidBottomWindowTitle {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   height: 10%;
   margin:0;
   padding:0;
@@ -593,8 +1018,17 @@ body {
   color: white;
 }*/
 #fhlMidBottomWindow .ui-resizable-handle{
-    background-color: black;
+    background-color: #B0B0B0;
     cursor: row-resize;
+    top: -12px;
+    height: 12px;
+    text-align: center;
+}
+#fhlMidBottomWindow .ui-resizable-handle span{
+    pointer-events: none;
+    cursor: row-resize;
+    position: absolute;
+    top: -7px;
 }
 #fhlMidBottomWindowContent {
   height: 90%;
@@ -604,30 +1038,41 @@ body {
 
 #fhlInfo {
   position: absolute;
-  overflow: hidden;
-  top: 80px;
-  bottom: 0px;
-  right: 0px;
+  top: 120px;
+  bottom: 12px;
+  right: 12px;
+    /*border: solid 5px black;*/
   width: 500px;/*這裏改了javascript 裡面也要改*/
   z-index: 100;/*Layer 1*/
 }
-#fhlInfo #bibleAudio {
-    height: 32px;
-}
 #fhlInfo .ui-resizable-handle{
-    background-color: black;
+    background-color: #B0B0B0;
     cursor: col-resize;
+    left: -12px;
+    width: 12px;
+}
+#fhlInfo .ui-resizable-handle span{
+    pointer-events: none;
+    cursor: col-resize;
+    position: absolute;
+    top: 50%;
+    left: 2px;
+    transform: translate(0%, -50%);
+    transform: rotate(90deg);
 }
 #fhlInfoTitle {
+    overflow: hidden;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
     text-align: center;
     height: 30px;
+    background-color: #D0D0D0;
 }
 #fhlInfoTitle ul {
   width:100%;  
   list-style: none; 
   margin: 0px 0px 3px;
   padding: 0px;
-  background-color: #A0A0A0;
 }
 #fhlInfoTitle li {
   position: relative;
@@ -645,20 +1090,19 @@ body {
 #fhlInfoTitle .selected{
     font: 20px/30px bold ,Microsoft JhengHei;
     color: #3030FF;
-    background-color: #A0A0A0;
 }
 #fhlInfoContent {
   position: absolute;
   /*overflow:auto;*/
-  background-color: #F3F3F3;
+  background-color: #FFFFFF;
   display: inline-block;
   width:100%;
-  top: 64px;
+  top: 30px;
   bottom: 0px;
   /*font: 18px/24px bold ,Microsoft JhengHei;*/
   font: 10pt/15pt bold ,Microsoft JhengHei;
-  /*top: -1px;
-  border-top: 1px solid;  */
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
   padding-right:0px;/*15px*/
   z-index:100;
 }

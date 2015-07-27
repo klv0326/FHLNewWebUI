@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -7,6 +7,7 @@
 <script src="./libs/xml2json.min.js"></script>
 <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
 <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<script src="./libs/jquery.hotkeys.js"></script>
 <script src="bible_audio_api/audiobible_api.js"></script>
 <script>
 
@@ -57,6 +58,7 @@ $(function(){
   fhlMidWindow.init(pageState);
   fhlInfo.init(pageState);  
   searchInit(pageState);
+  shortcutReg();
 });
 
 var urlJSON="https://bkbible.fhl.net/json/";  
@@ -171,6 +173,25 @@ function getBookFunc(func,bookName){
   return ret;
 }
 
+function shortcutReg(){
+    $(document).bind('keydown', 'ctrl+f', function(){$('[data-ic-class="search-trigger"]').trigger("click");});
+    $(document).bind('keydown', 'esc', function(){
+        $('#helpingPopUp').css({
+            'visibility': 'hidden',
+            'opacity': '0'
+        });
+    });
+    
+    /*in search input*/
+    $('[data-ic-class="search-input"]').bind('keydown', 'esc', function(){
+        $('[data-ic-class="search-input"]').val('');
+        $('[data-ic-class="search-trigger"]').removeClass('active');
+    });
+    $('[data-ic-class="search-input"]').bind('keydown', 'return', function(){
+        $('.searchBtn').trigger("click");
+    });
+}
+    
 /***** Start of fhlToolBar *****/
     
 var bookSelectChapterAutoCloseTimeout;
@@ -179,18 +200,135 @@ var bookSelectAutoCloseTimeout;
 var fhlToolBar={
     init:function(ps){
         //this.registerEvents();
-        searchTool.init(ps,$('#searchTool'));
-        searchTool.registerEvents(ps);
-        bookSelect.init(ps,$('#bookSelect'));
-        versionSelect.init(ps,$('#versionSelect'));
-        versionSelect.registerEvents(ps);
-        bibleAudio.init(ps,$('#bibleAudio'));
-        bibleAudio.registerEvents(ps);        
-        
         windowControl.init(ps,$('#windowControl'));
         windowControl.registerEvents(ps);
+        help.init(ps,$('#help'));
+        bookSelect.init(ps,$('#bookSelect'));
+        searchTool.init(ps,$('#searchTool'));
+        searchTool.registerEvents(ps);
     }
 };
+    
+var windowControl={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.render(ps,this.dom);
+    this.registerEvents(ps);
+    setTimeout(function(){ 
+        $('#fhlMidBottomWindowControl').trigger("click");
+        $('#fhlMidBottomWindowControl').css({'color': '#FFFFFF'});
+    }, 500);
+  },
+  registerEvents:function(ps){
+      $('#fhlLeftWindowControl').click(function(){
+          if($('#fhlLeftWindow').css('left')=='12px'){
+              $('#fhlLeftWindowControl').hover(function() {
+                  $(this).css({'color': '#00A0FF'});
+              }, function() {
+                  $(this).css({'color': '#FFFFFF'});
+              });
+              var fhlLeftWindowWidth = $("#fhlLeftWindow").width();
+              $("#fhlLeftWindow").animate({left: -fhlLeftWindowWidth-15 + 'px'});
+              $("#fhlMidWindow").animate({left: '12px', width: $("#fhlMidWindow").width() + fhlLeftWindowWidth + 12 + 'px'});
+          }
+          else{
+              $('#fhlLeftWindowControl').hover(function() {
+                  $(this).css({'color': '#00A0FF'});
+              }, function() {
+                  $(this).css({'color': '#0050FF'});
+              });
+              var fhlLeftWindowWidth = $("#fhlLeftWindow").width();
+              $("#fhlLeftWindow").animate({left: '12px'});
+              $("#fhlMidWindow").animate({left: fhlLeftWindowWidth+12+12 + 'px', width: $("#fhlMidWindow").width() - fhlLeftWindowWidth -12 + 'px'});
+          }
+      });
+      $('#fhlMidBottomWindowControl').click(function(){
+          if($('#fhlMidBottomWindow').css('bottom')=='0px'){
+              $('#fhlMidBottomWindowControl').hover(function() {
+                  $(this).css({'color': '#00A0FF'});
+              }, function() {
+                  $(this).css({'color': '#FFFFFF'});
+              });
+              var fhlMidBottomWindowHeight = $("#fhlMidBottomWindow").height();
+              $("#fhlMidBottomWindow").animate({top: $('#fhlMidWindow').height()+15+'px', bottom: -fhlMidBottomWindowHeight-15 + 'px'});
+              $("#fhlLecture").animate({bottom: '0px', height: $("#fhlLecture").height() + fhlMidBottomWindowHeight+12 + 'px'});
+          }
+          else{
+              $('#fhlMidBottomWindowControl').hover(function() {
+                  $(this).css({'color': '#00A0FF'});
+              }, function() {
+                  $(this).css({'color': '#0050FF'});
+              });
+              var fhlMidBottomWindowHeight = $("#fhlMidBottomWindow").height();
+              $("#fhlMidBottomWindow").animate({top: $('#fhlMidWindow').height()-fhlMidBottomWindowHeight+'px', bottom: '0px'});
+              $("#fhlLecture").animate({bottom: fhlMidBottomWindowHeight + 'px', height: $("#fhlLecture").height() - fhlMidBottomWindowHeight - 12 + 'px'});
+          }
+      });
+      $('#fhlInfoWindowControl').click(function(){
+          if($('#fhlInfo').css('right')=='12px'){
+              $('#fhlInfoWindowControl').hover(function() {
+                  $(this).css({'color': '#00A0FF'});
+              }, function() {
+                  $(this).css({'color': '#FFFFFF'});
+              });
+              var fhlInfoWidth = $("#fhlInfo").width();
+              $("#fhlInfo").animate({left: $(window).width() + 15 + 'px', right: -fhlInfoWidth-15 + 'px', width: fhlInfoWidth});
+              $("#fhlMidWindow").animate({right: '12px', width: $("#fhlMidWindow").width() + fhlInfoWidth + 12 + 'px'});
+          }
+          else{
+              $('#fhlInfoWindowControl').hover(function() {
+                  $(this).css({'color': '#00A0FF'});
+              }, function() {
+                  $(this).css({'color': '#0050FF'});
+              });
+              var fhlInfoWidth = $("#fhlInfo").width();
+              $("#fhlInfo").animate({left: $(window).width()-fhlInfoWidth-12 + 'px', right: '12px'});
+              $("#fhlMidWindow").animate({right: fhlInfoWidth + 'px', width: $("#fhlMidWindow").width() - fhlInfoWidth - 12 + 'px'});
+          }
+      });
+  },
+  render:function(ps,dom){
+    var html="<span id='fhlLeftWindowControl' style='top: -1px; padding: 1px 7px 4px 7px; border-bottom-left-radius: 3px; border-top-left-radius: 3px; border-width: 1px;'>&#x2699;</span><span id='fhlMidBottomWindowControl' style='top: -2px; padding-top: 2px; font-size: 24px;'>&#9776;</span><span id='fhlInfoWindowControl' style='top: 0px; padding: 1px 7px 4px 7px; border-bottom-right-radius: 3px; border-top-right-radius: 3px;'>&#9112;</span>";
+    dom.html(html);
+  }  
+};
+
+var help={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.render(ps,this.dom);
+    helpingPopUp.init(ps, $('#helpingPopUp'));
+  },
+  registerEvents:function(ps){
+    this.dom.on('click', function(){
+        $('#helpingPopUp').css({
+            'visibility': 'visible',
+            'opacity': '1'
+        });
+    });
+  },
+  render:function(ps,dom){
+      var html="";
+      html+='HELP';
+      dom.html(html);
+      this.registerEvents(ps);
+  }
+};
+
+var helpingPopUp={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.render(ps,this.dom);
+  },
+  registerEvents:function(ps){
+  },
+  render:function(ps,dom){
+      var html="";
+      html+='<div><ul><li>Ctrl+F: 搜尋</li><li>esc: 跳出</li></ul></div>';
+      $('#helpingPopUpInside').html(html);
+      this.registerEvents(ps);
+  }
+}
     
 var bookSelect={
   init:function(ps,dom){    
@@ -205,23 +343,18 @@ var bookSelect={
         if(bookSelectPopUp.dom.is(":visible")){
             bookSelectPopUp.dom.fadeOut('0.2');
             setTimeout(function(){
-                bookSelect.dom.css({'color': '#000000'});
+                bookSelect.dom.css({'color': '#FFFFFF'});
             }, 200);
         }
         else{
-            if(versionSelectPopUp.dom.is(":visible"))
-                setTimeout(function(){ bookSelectPopUp.dom.fadeIn('0.2'); }, 200);
-            else
-                bookSelectPopUp.dom.fadeIn('0.2');
-            setTimeout(function(){ versionSelect.dom.css({'color': '#000000'}); }, 200);
-            versionSelectPopUp.dom.fadeOut('0.2');
+            bookSelectPopUp.dom.fadeIn('0.2');
             bookSelect.dom.css({'color': '#00A0FF'});
         }
         e.stopPropagation();
     });
     $(document).click(function() {
         bookSelectPopUp.dom.fadeOut('0.2');
-        setTimeout(function(){ bookSelect.dom.css({'color': '#000000'}); }, 200);
+        setTimeout(function(){ bookSelect.dom.css({'color': '#FFFFFF'}); }, 200);
     });
     $('#bookSelect').mouseenter(function(){
         if(!bookSelectPopUp.dom.is(":visible")){
@@ -230,7 +363,7 @@ var bookSelect={
     });
     $('#bookSelect').mouseleave(function(){
         if(!bookSelectPopUp.dom.is(":visible")){
-            bookSelect.dom.css({'color': '#000000'});
+            bookSelect.dom.css({'color': '#FFFFFF'});
         }
     });
   },
@@ -401,270 +534,39 @@ var bookSelectChapter={
   }
 };
 
-function getVersionIdx(book){    
-  return $('#versionSelectPopUp').find("li[book="+book+"]").index();
-}
-function insertVersion(ps,dom){
-  var book=dom.attr('book');
-  var cname=dom.attr('cname');  
-  var versionIdx=getVersionIdx(book);
-  var inserted=false;
-  //console.log('book='+book+",cname="+cname+",idx="+versionIdx);
-  for(var i=0;i<ps.version.length;i++){
-    if(versionIdx<getVersionIdx(ps.version[i])){
-      ps.version.splice(i,0,book);
-      ps.cname.splice(i,0,cname);
-      inserted=true;
-      break;
-    }
-  }
-  if(inserted==false){
-      ps.version.push(book);
-      ps.cname.push(cname);
-  }
-}
 
-var versionSelect={
-    init:function(ps,dom){
-        this.dom=dom;
-        this.render(ps,this.dom);
-        //position of Popup
-        var offset=this.dom.offset();
-        offset.top+=this.dom.height();
-        versionSelectPopUp.init(ps,$('#versionSelectPopUp'),offset);
-    },
-    registerEvents:function(ps){
-        var that=this;
-        this.dom.click(function(e){
-            if(!versionSelectPopUp.dom.is(":visible")){
-                bookSelectPopUp.dom.fadeOut('0.2');
-                bookSelect.dom.css({'color': '#000000'});
-                
-                /*var position=$(this).position();
-                position.left=$(this).position().left;
-                position.top=$(this).position().top+$(this).height()+40;
-                versionSelectPopUp.dom.css({'position': 'fixed', 'left':position.left, 'top':position.top});*/
-                
-                if(bookSelectPopUp.dom.is(":visible"))
-                    setTimeout(function(){ versionSelectPopUp.dom.fadeIn('0.2'); }, 200);
-                else
-                    versionSelectPopUp.dom.fadeIn('0.2');
-                versionSelect.dom.css({'color': '#00A0FF'});
-                isVersionSelectPopUp = true;
-            }
-            else{
-                versionSelectPopUp.dom.fadeOut('0.2');
-                setTimeout(function(){ versionSelect.dom.css({'color': '#000000'}); }, 200);
-                isVersionSelectPopUp = false;
-            }
-            e.stopPropagation();
-        });
-        $(document).click(function() {
-            versionSelectPopUp.dom.fadeOut('0.2');
-            setTimeout(function(){ versionSelect.dom.css({'color': '#000000'}); }, 200);
-        });
-        $('#versionSelect').mouseenter(function(){
-            if(!versionSelectPopUp.dom.is(":visible")){
-                versionSelect.dom.css({'color': '#00A0FF'});
-            }
-        });
-        $('#versionSelect').mouseleave(function(){
-            if(!versionSelectPopUp.dom.is(":visible")){
-                versionSelect.dom.css({'color': '#000000'});
-            }
-        });
-    },
-    render:function(ps,dom){
-        dom.html("聖經版本&nbsp;&#9660;");
-    }
-};
-
-var versionSelectPopUp={
-  init:function(ps,dom,offset){
-    this.dom=dom;
-    this.dom.offset(offset);
-    var that=this;    
-    var ajaxUrl=urlJSON+"abv.php";
-    $.ajax({
-      url:ajaxUrl
-    }).done(function(d,s,j){
-      if(j){
-        var jsonObj=JSON.parse(j.responseText);
-        that.data=jsonObj;
-      }    
-      that.render(ps,dom,that.data);  
-    });        
-    this.dom.hide();
-  },
-  registerEvents:function(ps){
-    var that=this;
-    /*this.dom.mouseleave(function(){
-      that.dom.fadeOut('0.2');
-      versionSelect.dom.css({'background-color': '#F3F3F3'});
-    });*/
-    this.dom.find('li').click(function(e){
-      $(this).toggleClass('selected');
-      if($(this).hasClass('selected')){
-        insertVersion(ps,$(this));        
-        /*
-        ps.version.push($(this).attr('book'));
-        ps.cname.push($(this).attr('cname'));
-        */
-      }else{
-        var idx=ps.version.indexOf($(this).attr('book'));
-        ps.version.splice(idx,1);
-        ps.cname.splice(idx,1);
-      }
-      //Set Default version?      
-      if(ps.version.length==0){
-        var o=that.dom.find('li:eq(0)');
-        ps.version.push(o.attr('book'));
-        ps.cname.push(o.attr('cname'));
-      }
-      setPageState(ps);
-      that.render(ps,that.dom,that.data);
-      fhlLecture.render(ps,fhlLecture.dom);
-      e.stopPropagation();
-    });
-  },  
-  render:function(ps,dom,data){
-    var that=this;
-    var html="<ul>";
-    for(var i=0;i<data.record_count;i++){
-      var o=data.record[i];
-      html+="<li>"+o.cname+"</li>";
-    }
-    html+="</ul>";
-    dom.html(html);
-    for(var i=0;i<data.record_count;i++){
-      var o=data.record[i];
-      dom.find('li:eq('+i+')').attr(o);
-    }        
-    dom.find('li').removeClass('selected');
-    for(var i=0;i<ps.version.length;i++){
-      var v=ps.version[i];
-      var li=dom.find('li[book="'+v+'"]');
-      if(li!=null){
-        li.each(function(){
-          $(this).addClass('selected');
-          var html=$(this).html();
-          html+="&#x2713";
-          $(this).html(html);
-        });
-      }
-    }
-    that.registerEvents(ps);    
-  }
-};
-
-var windowControl={
-  init:function(ps,dom){
-    this.dom=dom;
-    this.render(ps,this.dom);
-    this.registerEvents(ps);
-  },
-  registerEvents:function(ps){
-      $('#fhlLeftWindowControl').click(function(){
-          if($('#fhlLeftWindow').css('left')=='0px'){
-              $('#fhlLeftWindowControl').hover(function() {
-                  $(this).css({'color': '#00A0FF'});
-              }, function() {
-                  $(this).css({'color': '#0050FF'});
-              });
-              var fhlLeftWindowWidth = $("#fhlLeftWindow").width();
-              $("#fhlLeftWindow").animate({left: -fhlLeftWindowWidth-5 + 'px'});
-              $("#fhlMidWindow").animate({left: '0px', width: $("#fhlMidWindow").width() + fhlLeftWindowWidth + 'px'});
-          }
-          else{
-              $('#fhlLeftWindowControl').hover(function() {
-                  $(this).css({'color': '#00A0FF'});
-              }, function() {
-                  $(this).css({'color': '#000000'});
-              });
-              var fhlLeftWindowWidth = $("#fhlLeftWindow").width();
-              $("#fhlLeftWindow").animate({left: '0px'});
-              $("#fhlMidWindow").animate({left: fhlLeftWindowWidth + 'px', width: $("#fhlMidWindow").width() - fhlLeftWindowWidth + 'px'});
-          }
-      });
-      $('#fhlMidBottomWindowControl').click(function(){
-          if($('#fhlMidBottomWindow').css('bottom')=='0px'){
-              $('#fhlMidBottomWindowControl').hover(function() {
-                  $(this).css({'color': '#00A0FF'});
-              }, function() {
-                  $(this).css({'color': '#0050FF'});
-              });
-              var fhlMidBottomWindowHeight = $("#fhlMidBottomWindow").height();
-              $("#fhlMidBottomWindow").animate({top: $('#fhlMidWindow').height()+5+'px', bottom: -fhlMidBottomWindowHeight-5 + 'px'});
-              $("#fhlLecture").animate({bottom: '0px', height: $("#fhlLecture").height() + fhlMidBottomWindowHeight + 'px'});
-          }
-          else{
-              $('#fhlMidBottomWindowControl').hover(function() {
-                  $(this).css({'color': '#00A0FF'});
-              }, function() {
-                  $(this).css({'color': '#000000'});
-              });
-              var fhlMidBottomWindowHeight = $("#fhlMidBottomWindow").height();
-              $("#fhlMidBottomWindow").animate({top: $('#fhlMidWindow').height()-fhlMidBottomWindowHeight+'px', bottom: '0px'});
-              $("#fhlLecture").animate({bottom: fhlMidBottomWindowHeight + 'px', height: $("#fhlLecture").height() - fhlMidBottomWindowHeight + 'px'});
-          }
-      });
-      $('#fhlInfoWindowControl').click(function(){
-          if($('#fhlInfo').css('right')=='0px'){
-              $('#fhlInfoWindowControl').hover(function() {
-                  $(this).css({'color': '#00A0FF'});
-              }, function() {
-                  $(this).css({'color': '#0050FF'});
-              });
-              var fhlInfoWidth = $("#fhlInfo").width();
-              $("#fhlInfo").animate({left: $(window).width() + 5 + 'px', right: -fhlInfoWidth-5 + 'px', width: fhlInfoWidth});
-              $("#fhlMidWindow").animate({right: '0px', width: $("#fhlMidWindow").width() + fhlInfoWidth + 'px'});
-          }
-          else{
-              $('#fhlInfoWindowControl').hover(function() {
-                  $(this).css({'color': '#00A0FF'});
-              }, function() {
-                  $(this).css({'color': '#000000'});
-              });
-              var fhlInfoWidth = $("#fhlInfo").width();
-              $("#fhlInfo").animate({left: $(window).width()-fhlInfoWidth + 'px', right: '0px'});
-              $("#fhlMidWindow").animate({right: fhlInfoWidth + 'px', width: $("#fhlMidWindow").width() - fhlInfoWidth + 'px'});
-          }
-      });
-  },
-  render:function(ps,dom){
-    var html="<span id='fhlLeftWindowControl' style='top: -1px; padding: 1px 7px 4px 7px; border-bottom-left-radius: 3px; border-top-left-radius: 3px; border-width: 1px;'>&#8647;</span><span id='fhlMidBottomWindowControl' style='top: 0px; padding-top: 2px;'>&#8650;</span><span id='fhlInfoWindowControl' style='top: -1px; padding: 1px 7px 4px 7px; border-bottom-right-radius: 3px; border-top-right-radius: 3px;'>&#8649;</span>";
-    dom.html(html);
-  }  
-};  
 /***** End of fhlToolBar *****/
     
 /***** Start of fhlLeftWindow *****/
     
 var fhlLeftWindow={
   init:function(ps){
-      this.registerEvents();
-      settings.init(ps,$('#setting'));
+      settings.init(ps,$('#settings'));
       settings.registerEvents(ps);
+      versionSelect.init(ps,$('#versionSelect'));
+      //versionSelect.registerEvents(ps);
       viewHistory.init(ps,$('#viewHistory'));
+      this.registerEvents();
   },
   registerEvents:function(){
       $('#fhlLeftWindow').resizable({
         handles: 'e',
-        maxWidth: 450,
-        minWidth: 120,
+        maxWidth: 300,
+        minWidth: 170,
         resize: function(event, ui){
           var currentWidth = ui.size.width;
           var width;
-            if($("#fhlInfo").css('right')=='0px')
+            if($("#fhlInfo").css('right')=='12px')
                 width=$(window).width()-$("#fhlInfo").width()-currentWidth;
             else 
-                width=$(window).width()-currentWidth;
+                width=$(window).width()-currentWidth+12;
           $("#fhlMidWindow").css({
-              'width': width+'px',
-              'left': currentWidth+'px'
+              'width': width-12*4+'px',
+              'left': currentWidth+12+12+'px'
           });
         }
       });
+      $('.ui-resizable-handle.ui-resizable-e').html('<span>&#9776;</span>');
   }
 };
     
@@ -682,21 +584,61 @@ var settings={
         mapTool.registerEvents(ps);
         imageTool.init(ps,$('#imageTool'));
         imageTool.registerEvents(ps);
+        fontSizeTool.init(ps,$('#fontSizeTool'));
+        fontSizeTool.registerEvents(ps);
     },
     registerEvents:function(ps){
         $('#settings p')
-            .css({cursor: "pointer"})
             .on('click', function(){
-            var html =  $(this).html() == "▼&nbsp;設定"?"&#9654;&nbsp;設定":"&#9660;&nbsp;設定";
-            $(this).html(html);
-            $(this).next().slideToggle();
+                var html =  $(this).html() == "▼&nbsp;設定"?"&#9654;&nbsp;設定":"&#9660;&nbsp;設定";
+                $(this).html(html);
+                if($(this).html()=="▼&nbsp;設定"){
+                    var settingsHeight = Math.min(300, $('#fhlLeftWindow').height()-42-$('#viewHistory').height()-36);
+                    $("#settings").animate( { height: settingsHeight + 'px' }, { queue:false, duration:500 });
+                    var versionSelectHeight = settingsHeight < 300 ? 42 : $("#versionSelect").height() - settingsHeight + 42;//bug: 前面會變41不會變42不知道為什麼，所以用這行修正
+                    $("#versionSelect").animate( { top: settingsHeight+12+'px', height: versionSelectHeight + 'px' }, { queue:false, duration:500 });
+                    var html = versionSelectHeight == 42?"&#9654;&nbsp;聖經版本選擇":"&#9660;&nbsp;聖經版本選擇";
+                    $('#versionSelect p').html(html);
+                }
+                else{
+                    var versionSelectHeight = $("#versionSelect").height() + $("#settings").height() - 42;
+                    $("#versionSelect").animate( { top: 42+12+'px', height: versionSelectHeight + 'px' }, { queue:false, duration:500 });
+                    $("#settings").animate( { height:'42px' }, { queue:false, duration:500 });
+                    $("#versionSelect p").html("&#9660;&nbsp;聖經版本選擇");
+                    
+                }
         });
+        $('#settings').resizable({
+            handles: 's',
+            maxHeight: 300,
+            minHeight: 42,
+            resize: function(event, ui){
+              var maxHeight = $('#fhlLeftWindow').height() - 42 - $('#viewHistory').height() -36;
+              if(ui.size.height>maxHeight){//不可以超過其他的bar
+                  ui.size.height=maxHeight;
+                  $("#versionSelect p").html("&#9654;&nbsp;聖經版本選擇");
+              }
+              var height=$('#fhlLeftWindow').height()-$('#viewHistory').height()-ui.size.height;
+              $("#versionSelect").css({
+                  'top': ui.size.height + 12 + 'px',
+                  'height': height - 36 +'px'
+              });
+              $(this).css({
+                  width: 'auto',
+                  right: '0px'
+              });
+              var html = $(this).css('height') == '42px'?"&#9654;&nbsp;設定":"&#9660;&nbsp;設定";
+              $('#settings p').html(html);
+              var html = $('#versionSelect').css('height') == '42px'?"&#9654;&nbsp;聖經版本選擇":"&#9660;&nbsp;聖經版本選擇";
+              $('#versionSelect p').html(html);
+            }
+        });
+        $('.ui-resizable-handle.ui-resizable-s').html('<span>&#9776;</span>');
     },
     render:function(ps,dom){
         //dom.html("設定");
     }
 };
-
 var snSelect={
     init:function(ps,dom){
         this.dom=dom;
@@ -717,7 +659,7 @@ var snSelect={
         });
     },
     render:function(ps,dom){
-        var html="<div>原文編號</div>";
+        var html="<div>原文編號:</div>";
         html+='<div class="onOffSwitch">\
                     <input type="checkbox" name="snOnOffSwitch" class="onOffSwitch-checkbox" id="snOnOffSwitch">\
                     <label class="onOffSwitch-label" for="snOnOffSwitch">\
@@ -748,7 +690,7 @@ var gbSelect={
         });
   },
   render:function(ps,dom){
-      var html="<div>繁簡切換</div>";
+      var html="<div>繁簡切換:</div>";
         html+='<div class="onOffSwitch">\
                     <input type="checkbox" name="gbSelectSwitch" class="onOffSwitch-checkbox" id="gbSelectSwitch">\
                     <label class="onOffSwitch-label" for="gbSelectSwitch">\
@@ -779,7 +721,7 @@ var realTimePopUpSelect={
         });
   },
   render:function(ps,dom){
-      var html="<div>即時顯示</div>";
+      var html="<div>即時顯示:</div>";
         html+='<div class="onOffSwitch">\
                     <input type="checkbox" name="realTimeOnOffSwitch" class="onOffSwitch-checkbox" id="realTimeOnOffSwitch">\
                     <label class="onOffSwitch-label" for="realTimeOnOffSwitch">\
@@ -798,7 +740,7 @@ var mapTool={
   registerEvents:function(ps){
   },
   render:function(ps,dom){
-    var html="<div>地圖顯示</div>";
+    var html="<div>地圖顯示:</div>";
         html+='<div class="onOffSwitch">\
                     <input type="checkbox" name="mapToolOnOffSwitch" class="onOffSwitch-checkbox" id="mapToolOnOffSwitch">\
                     <label class="onOffSwitch-label" for="mapToolOnOffSwitch">\
@@ -817,7 +759,7 @@ var imageTool={
   registerEvents:function(ps){
   },
   render:function(ps,dom){
-    var html="<div>圖片顯示</div>";
+    var html="<div>圖片顯示:</div>";
         html+='<div class="onOffSwitch">\
                     <input type="checkbox" name="imageToolOnOffSwitch" class="onOffSwitch-checkbox" id="imageToolOnOffSwitch">\
                     <label class="onOffSwitch-label" for="imageToolOnOffSwitch">\
@@ -827,6 +769,204 @@ var imageTool={
                 </div>';
         dom.html(html);
   }
+};
+var fontSizeTool={
+  init:function(ps,dom){
+    this.dom=dom;
+    this.render(ps,this.dom);
+  },
+  registerEvents:function(ps){
+      $('#fhlLectureFontSizeSliderBar').change(function() {
+          $("#fhlLectureFontSize").val($('#fhlLectureFontSizeSliderBar').val());
+          $('#fhlLecture .lec').css({
+              'font-size':$('#fhlLectureFontSize').val()+'pt',
+              'line-height':parseInt($('#fhlLectureFontSize').val())+4+'pt'
+          });
+      });
+      $('#fhlLectureFontSize').change(function() {
+          if($('#fhlLectureFontSize').val()>60)
+              $('#fhlLectureFontSize').val(60);
+          else if($('#fhlLectureFontSize').val()<6)
+              $('#fhlLectureFontSize').val(6);
+          $('#fhlLectureFontSizeSliderBar').val($('#fhlLectureFontSize').val());
+          $('#fhlLecture .lec').css({
+              'font-size':$('#fhlLectureFontSize').val()+'pt',
+              'line-height':parseInt($('#fhlLectureFontSize').val())+4+'pt'
+          });
+      });
+      $('#fhlLectureFontSizeSmaller').click(function() {
+          $('#fhlLectureFontSize').val(parseInt($('#fhlLectureFontSize').val())-2);
+          if($('#fhlLectureFontSize').val()<=6)
+              $('#fhlLectureFontSize').val(6);
+          $("#fhlLectureFontSizeSliderBar").val($('#fhlLectureFontSize').val());
+          $('#fhlLecture .lec').css({
+              'font-size':$('#fhlLectureFontSize').val()+'pt',
+              'line-height':parseInt($('#fhlLectureFontSize').val())+4+'pt'
+          });
+      });
+      $('#fhlLectureFontSizeLarger').click(function() {
+          $('#fhlLectureFontSize').val(parseInt($('#fhlLectureFontSize').val())+2);
+          if($('#fhlLectureFontSize').val()>=60)
+              $('#fhlLectureFontSize').val(60);
+          $("#fhlLectureFontSizeSliderBar").val($('#fhlLectureFontSize').val());
+          $('#fhlLecture .lec').css({
+              'font-size':$('#fhlLectureFontSize').val()+'pt',
+              'line-height':parseInt($('#fhlLectureFontSize').val())+4+'pt'
+          });
+      });
+  },
+  render:function(ps,dom){
+    var html="<div>字體大小:</div>";
+        html+=' <div id="fhlLectureFontSizeSmaller">A<span>-</span></div>\
+                <div id="fhlLectureFontSizeLarger">A<span>+</span></div>\
+                <div style="display: block; margin-top: 5px;">\
+                    <input id="fhlLectureFontSizeSliderBar" type="range" min="6" max="60" value="12" step="1"/>\
+                    <input id="fhlLectureFontSize" type="text" value="12" style="width:16px;"/>\
+                </div>\
+                ';
+        dom.html(html);
+  }
+};
+    
+function getVersionIdx(book){    
+  return $('#versionSelect').find("li[book="+book+"]").index();
+}
+function insertVersion(ps,dom){
+  var book=dom.attr('book');
+  var cname=dom.attr('cname');  
+  var versionIdx=getVersionIdx(book);
+  var inserted=false;
+  //console.log('book='+book+",cname="+cname+",idx="+versionIdx);
+  for(var i=0;i<ps.version.length;i++){
+    if(versionIdx<getVersionIdx(ps.version[i])){
+      ps.version.splice(i,0,book);
+      ps.cname.splice(i,0,cname);
+      inserted=true;
+      break;
+    }
+  }
+  if(inserted==false){
+      ps.version.push(book);
+      ps.cname.push(cname);
+  }
+}
+
+var versionSelect={
+    init:function(ps,dom){
+        this.dom=dom;
+        var that=this;    
+        var ajaxUrl=urlJSON+"abv.php";
+        $.ajax({
+          url:ajaxUrl
+        }).done(function(d,s,j){
+          if(j){
+            var jsonObj=JSON.parse(j.responseText);
+            that.data=jsonObj;
+          }    
+          that.render(ps,dom,that.data);  
+        });
+        var versionSelectHeight = $('#fhlLeftWindow').height() - $('#settings').height() - $('#viewHistory').height() - 36;
+        $('#versionSelect').css({height: versionSelectHeight + 'px'});
+    },
+    registerEvents:function(ps){
+      $('#versionSelect p').on('click', function(){
+        var html =  $(this).html() == "▼&nbsp;聖經版本選擇"?"&#9654;&nbsp;聖經版本選擇":"&#9660;&nbsp;聖經版本選擇";
+        $(this).html(html);
+        if($(this).html()=="▼&nbsp;聖經版本選擇"){
+            var versionSelectHeight = $('#fhlLeftWindow').height() - $('#settings').height() - 42 - 36;
+            var viewHistoryTop = $('#fhlLeftWindow').height() - 42 -12;
+            $("#versionSelect").animate( { height: versionSelectHeight + 'px' }, { queue:false, duration:500 });
+            $("#viewHistory").animate( { height: '42px', top:viewHistoryTop + 'px' }, { queue:false, duration:500 });
+            $("#viewHistory p").html("&#9654;&nbsp;歷史紀錄");
+        }
+        else{
+            var viewHistoryHeight = $('#fhlLeftWindow').height() - $('#settings').height() - 42 - 36;
+            var viewHistoryTop = $('#fhlLeftWindow').height() - viewHistoryHeight - 12;
+            $("#versionSelect").animate( { height:'42px' }, { queue:false, duration:500 });
+            $("#viewHistory").animate( { height: viewHistoryHeight + 'px', top: viewHistoryTop + 'px' }, { queue:false, duration:500 });
+            $("#viewHistory p").html("&#9660;&nbsp;歷史紀錄");
+        }
+      });    
+      var that=this;
+      this.dom.find('li').click(function(e){
+          $(this).toggleClass('selected');
+          if($(this).hasClass('selected')){
+            insertVersion(ps,$(this));        
+            /*
+            ps.version.push($(this).attr('book'));
+            ps.cname.push($(this).attr('cname'));
+            */
+            //$(this).html("&#x2713"+$(this).html());
+          }else{
+            var idx=ps.version.indexOf($(this).attr('book'));
+            ps.version.splice(idx,1);
+            ps.cname.splice(idx,1);
+            //$(this).html($(this).html().substr(1, $(this).html().length-1));
+          }
+          //Set Default version?      
+          if(ps.version.length==0){
+            var o=that.dom.find('li:eq(0)');
+            ps.version.push(o.attr('book'));
+            ps.cname.push(o.attr('cname'));
+          }
+          setPageState(ps);
+          fhlLecture.render(ps,fhlLecture.dom);
+          e.stopPropagation();
+      });
+      $('#versionSelect').resizable({
+        handles: 's',
+        maxHeight: 1006,
+        minHeight: 42,
+        resize: function(event, ui){
+          var maxHeight = $('#fhlLeftWindow').height() - $('#settings').height() - 42 - 36;
+          if(ui.size.height>maxHeight){//不可以超過其他的bar
+              ui.size.height=maxHeight;
+          }
+          var height=$('#fhlLeftWindow').height()-$('#settings').height()-ui.size.height-36;
+          $("#viewHistory").css({
+              'height': height+'px',
+              'top': $('#settings').height()+ui.size.height+24+'px'
+          });
+          $(this).css({
+              width: 'auto',
+              right: '0px'
+          });
+          var html = $(this).css('height') == '42px'?"&#9654;&nbsp;聖經版本選擇":"&#9660;&nbsp;聖經版本選擇";
+          $('#versionSelect p').html(html);
+          var html = $('#viewHistory').css('height') == '42px'?"&#9654;&nbsp;歷史紀錄":"&#9660;&nbsp;歷史紀錄";
+          $('#viewHistory p').html(html);
+        }
+      });
+      $('.ui-resizable-handle.ui-resizable-s').html('<span>&#9776;</span>');
+    },
+    render:function(ps,dom, data){
+        var that=this;
+        var html="<div class='secondLevelInside'><p>&#9660;&nbsp;聖經版本選擇</p><div><ul>";
+        for(var i=0;i<data.record_count;i++){
+          var o=data.record[i];
+          html+="<li>"+o.cname+"</li>";
+        }
+        html+="</ul></div></div>";
+        dom.html(html);
+        for(var i=0;i<data.record_count;i++){
+          var o=data.record[i];
+          dom.find('li:eq('+i+')').attr(o);
+        }        
+        dom.find('li').removeClass('selected');
+        for(var i=0;i<ps.version.length;i++){
+          var v=ps.version[i];
+          var li=dom.find('li[book="'+v+'"]');
+          if(li!=null){
+            li.each(function(){
+              $(this).addClass('selected');
+              var html="";/*&#x2713*/
+              html+=$(this).html();
+              $(this).html(html);
+            });
+          }
+        }
+        that.registerEvents(ps);    
+      }
 };
 
 function setBook(ps,bookName){
@@ -848,16 +988,38 @@ function setBook(ps,bookName){
 var viewHistory={
   init:function(ps,dom){
     this.dom=dom;
-    this.render(ps,this.dom);    
+    this.render(ps,this.dom);
+    var viewHistoryTop = $('#fhlLeftWindow').height() - 42 - 12;
+    $('#viewHistory').css({top:viewHistoryTop});
   },
   registerEvents:function(ps){
     var that=this;
     $('#viewHistory p')
-        .css({cursor: "pointer"})
         .on('click', function(){
-        var html =  $(this).html() == "▼&nbsp;歷史紀錄"?"&#9654;&nbsp;歷史紀錄":"&#9660;&nbsp;歷史紀錄";
-        $(this).html(html);
-        $(this).next().slideToggle();
+            var html =  $(this).html() == "▼&nbsp;歷史紀錄"?"&#9654;&nbsp;歷史紀錄":"&#9660;&nbsp;歷史紀錄";
+            $(this).html(html);
+            if($(this).html()=="▼&nbsp;歷史紀錄"){
+                var viewHistoryHeight = Math.min(36*ps.history.length+64, $('#fhlLeftWindow').height() - $('#settings').height() - 42 - 36);
+                var viewHistoryTop = $('#fhlLeftWindow').height() - viewHistoryHeight -12;
+                if(viewHistoryHeight == 36*ps.history.length+64){
+                    var versionSelectHeight = $("#versionSelect").height() + $("#viewHistory").height() - viewHistoryHeight;
+                    $("#versionSelect").animate( { height: versionSelectHeight + 'px' }, { queue:false, duration:500 });
+                }
+                else{
+                    $("#versionSelect").animate( { height: '42px' }, { queue:false, duration:500 });
+                    $("#versionSelect p").html("&#9654;&nbsp;聖經版本選擇");
+                }
+                $("#viewHistory").animate( { height: viewHistoryHeight + 'px', top:viewHistoryTop + 'px' }, { queue:false, duration:500 });
+                $("#viewHistory p").html("&#9660;&nbsp;歷史紀錄");
+            }
+            else{
+                var versionSelectHeight = $('#fhlLeftWindow').height() - $('#settings').height() - 42 - 36;
+                var viewHistoryTop = $('#fhlLeftWindow').height() - 42 - 12;
+                $("#versionSelect").animate( { height: versionSelectHeight + 'px' }, { queue:false, duration:500 });
+                $("#versionSelect p").html("&#9660;&nbsp;聖經版本選擇");
+                $("#viewHistory").animate( { height: '42px', top: viewHistoryTop + 'px' }, { queue:false, duration:500 });
+                $("#viewHistory p").html("&#9654;&nbsp;歷史紀錄");
+            } 
     });
     $('.clearHistory').click(function(){
       ps.history=[{chineses:ps.chineses,chap:ps.chap}];      
@@ -877,15 +1039,18 @@ var viewHistory={
     });    
   },
   render:function(ps,dom){
-    var html="<p>&#9660;&nbsp;歷史紀錄</p>";
-    html+="<ul class='viewHistoryList'>";
-    html+="<span class='clearHistory'>清除記錄</span>";
+    var html="<div class='secondLevelInside'>";
+    if($("#viewHistory").height()==42)
+        html+="<p>&#9654;&nbsp;歷史紀錄</p>";
+    else
+        html+="<p>&#9660;&nbsp;歷史紀錄</p>";
+    html+="<span class='clearHistory'>清除記錄</span><div><ul class='viewHistoryList'>";
     for(var i=ps.history.length-1;i>=0;i--){
       var r=ps.history[i];
       html+="<li chineses="+r.chineses+" chap="+r.chap+">";
       html+=r.chineses+":"+r.chap+"</li>";
     }
-    html+="</ul>";
+    html+="</ul></div></div>";
     dom.html(html);
     this.registerEvents(ps);
   }
@@ -903,7 +1068,7 @@ var fhlMidWindow={
         this.render(ps,dom);
     },
     render:function(ps,dom){
-        var width=$(window).width()-$("#fhlLeftWindow").width()-$("#fhlInfo").width();
+        var width=$(window).width()-$("#fhlLeftWindow").width()-$("#fhlInfo").width()-12*4;
         $("#fhlMidWindow").css({
             'width': width+'px'
         });
@@ -1030,6 +1195,23 @@ var fhlLecture={
       setPageState(ps);      
       fhlInfo.render(ps);
     });
+    $('.closeButton').click(function(e){
+      var idx=ps.version.indexOf(versionSelect.dom.find('li[cname='+$(this).attr('cname')+']').attr('book'));
+      ps.version.splice(idx,1);
+      ps.cname.splice(idx,1);
+      versionSelect.dom.find('li[cname='+$(this).attr('cname')+']').removeClass('selected');
+      //Set Default version?
+      if(ps.version.length==0){
+        var o=versionSelect.dom.find('li:eq(0)');
+        ps.version.push(o.attr('book'));
+        ps.cname.push(o.attr('cname'));
+        versionSelect.dom.find('li:eq(0)').addClass('selected');
+      }
+      setPageState(ps);
+      fhlLecture.render(ps,fhlLecture.dom);
+      e.stopPropagation();
+        
+    });
     if(ps.realTimePopUp==1){
       $('.sn').mouseenter(function(){
         var offset=$(this).offset();
@@ -1100,7 +1282,7 @@ var fhlLecture={
       rspArr=sortBibleVersion(rspArr,ps);
       for(var i=0;i<rspArr.length;i++){
         var o=rspArr[i];
-        htmlTitle+="<div class=lecContent><div class=versionName>"+o.v_name+"<span class='closeButton'>&#215</span></div></div>";
+        htmlTitle+="<div class=lecContent><div class=versionName>"+o.v_name+"<span class='closeButton' cname='"+o.v_name+"'>&#215</span></div></div>";
         if(rspArr[i].record_count>maxRecordCnt){
           maxRecordCnt=rspArr[i].record_count;
           maxRecordIdx=i;          
@@ -1144,7 +1326,7 @@ var fhlLecture={
         }            
       }
         
-      var html=control_str+'<div id="lecMainTitle" style="margin: 0px 50px; z-index: 2;">'+htmlTitle+'</div>';
+      var html=control_str+'<div id="lecMainTitle">'+htmlTitle+'</div>';
       html+='<div id="lecMain">'+htmlContent+'</div>';
       dom.html(html);
       for(var i=0;i<maxRecordCnt;i++){
@@ -1173,16 +1355,16 @@ var fhlMidBottomWindow={
         maxHeight: 600,
         minHeight: 100,
         resize: function(event, ui){
-          var currentHeight = ui.size.height;
-          var height=$(window).height()-currentHeight-80;
+          var height=$(window).height()-ui.size.height-120-12;
           $("#fhlLecture").css({
-              'height': height+'px',
+              'height': height -12 +'px',
           });
           $(this).css({
               'width': '100%'
           });
         }
       });
+      $('.ui-resizable-handle.ui-resizable-n').html('<span>&#9776;</span>');
   },
   render:function(ps,dom){
 
@@ -1190,7 +1372,7 @@ var fhlMidBottomWindow={
       html+="fhlMidBottomWindowTitle";
       $('#fhlMidBottomWindowTitle').html(html);
       
-      var fhlMidBottomWindowHeight = 100;
+      var fhlMidBottomWindowHeight = 300; /*如果這裡改了 css #fhlLecture, #fhlMidBottomWindow裡面也要改*/
       $('#fhlMidBottomWindow').css({'top': $('#fhlMidWindow').height()-fhlMidBottomWindowHeight + 'px'});
   }
 };
@@ -1209,7 +1391,7 @@ var fhlInfo={
     this.registerEvents();
     this.render(ps);
       var fhlInfoWidth = 500;//這邊改了，css裡面也要改
-    $('#fhlInfo').css({'left': $(window).width()-fhlInfoWidth + 'px'});
+    $('#fhlInfo').css({'left': $(window).width()-fhlInfoWidth-12 + 'px'});// 12 是外面border
   },
   registerEvents:function(){
       $('#fhlInfo').resizable({
@@ -1219,16 +1401,17 @@ var fhlInfo={
         resize: function(event, ui){
             var currentWidth = ui.size.width;
             var width=0;
-            if($("#fhlLeftWindow").css('left')=='0px')
+            if($("#fhlLeftWindow").css('left')=='12px')
                 width=$(window).width()-$("#fhlLeftWindow").width()-currentWidth;
             else
-                width=$(window).width()-currentWidth;
+                width=$(window).width()-currentWidth+12;
             $("#fhlMidWindow").css({
-              'width': width+'px',
+              'width': width-48+'px',
               'right': currentWidth+'px'
             });
         }
       });
+      $('.ui-resizable-handle.ui-resizable-w').html('<span>&#9776;</span>');
   },
   render:function(ps){
     //fhlInfoTitle.render(ps,$('#fhlInfoTitle'));
@@ -1995,17 +2178,52 @@ var parsingPopUp={
         },
         registerEvents:function(ps){
           var that=this;
+            
+          var $searchTrigger = $('[data-ic-class="search-trigger"]'),
+            $searchInput = $('[data-ic-class="search-input"]'),
+            $searchClear = $('[data-ic-class="search-clear"]');
+
+          $searchTrigger.click(function() {
+            var $this = $('[data-ic-class="search-trigger"]');
+            $this.addClass('active');
+            $searchInput.focus();
+          });
+
+          $searchInput.blur(function() {
+            if ($searchInput.val().length > 0) {
+              return false;
+            } else {
+              $searchTrigger.removeClass('active');
+            }
+          });
+
+          $searchClear.click(function() {
+            $searchInput.val('');
+          });
+
+          $searchInput.focus(function() {
+            $searchTrigger.addClass('active');
+          });
+
           $('.searchBtn').click(function(){
             ps.leftBtmWinShow=true;
             setPageState(ps);
             fhlMidBottomWindow.render(ps,fhlMidBottomWindow.dom);
             doSearch($('.searchBox').val(),"search",0);
+            $searchInput.val('');
+            $searchTrigger.removeClass('active');
           });
         },
         render:function(ps,dom){
-          var html="";
-            html+="<input type=text class='searchBox'></input>";
-            html+="<span class='searchBtn'>快速搜尋</span>";
+          var html="";/*&#x1f50d;*/
+            html+=' <div class="wrapper">\
+                      <div class="icon-search-container" data-ic-class="search-trigger">\
+                        <span class="search">⚲</span>\
+                        <input type="text" class="searchBox search-input" data-ic-class="search-input" placeholder="Search" on/>\
+                        <span class="times-circle" data-ic-class="search-clear">×</span>\
+                      </div>\
+                      <span class="searchBtn">快速搜尋</span>\
+                    </div>'
           dom.html(html);
         }
     };
@@ -2094,33 +2312,113 @@ var parsingPopUp={
 </head>
 <body>
 <!-- Layer 1-->
-<div id="fhlTopMenu">
-	<img id="logoFHL" src="./images/logoTopMenuFHL.png"/>
-</div>
-<div id="fhlToolBar">
-    <div id="searchTool" class="smallText"></div>
-    <div id="middleBox">
-        <div id="bookSelect"></div>
-        <div id="versionSelect"></div>
-    </div>
     
+<nav id="fhlTopMenu">
+    <img id="logoFHL" src="./images/logoTopMenuFHL.png"/>
+    <ul class="menu">
+        <li><a href="#"><span>讀經</span></a>
+            <ul class="menu-hover">
+                <li><a href="#"> 讀經介面(new)</a></li>
+                <li><a href="#"> 閱讀計劃</a></li>
+                <li><a href="#"> 讀經計劃表</a></li>
+                <li><a href="#"> 主題研經</a></li>
+                <li><a href="#"> 專卷研經</a></li>
+            </ul>
+        </li>
+        <li><a href="#"><span>教學</span></a>
+            <ul class="menu-hover">
+                <li><a href="#"> 原文解經(new)</a></li>
+                <li><a href="#"> 希伯來文朗讀</a></li>
+                <li><a href="#"> 希臘文朗讀</a></li>
+                <li><a href="#"> 希伯來文歌</a></li>
+                <li><a href="#"> 中國教會史</a></li>
+                <li><a href="#"> 聖經課程</a></li>
+                <li><a href="#"> 多媒體教學</a></li>
+            </ul>
+        </li>
+        <li><a href="#"><span>查詢</span></a>
+            <ul class="menu-hover">
+                <li><a href="#"> 主題查詢</a></li>
+                <li><a href="#"> 經文查詢</a></li>
+                <li><a href="#"> 物件地理查詢</a></li>
+                <li><a href="#"> 教會查詢</a></li>
+                <li><a href="#"> 其他查詢</a></li>
+                <li><a href="#"> 聖詩查詢</a></li>
+            </ul>
+        </li>
+        <li><a href="#"><span>工具</span></a>
+            <ul class="menu-hover">
+                <li><a href="#"> 舊約字彙分析</a></li>
+                <li><a href="#"> 新約字彙分析</a></li>
+                <li><a href="#"> 度量衡</a></li>
+                <li><a href="#"> 簡寫對照</a></li>
+                <li><a href="#"> 文法對照</a></li>
+            </ul>
+        </li>
+        <li><a href="#"><span>專欄</span></a>
+            <ul class="menu-hover">
+                <li><a href="#"> 電子報</a></li>
+                <li><a href="#"> 歷史走廊</a></li>
+                <li><a href="#"> 英雄本色</a></li>
+                <li><a href="#"> 經文鑑別</a></li>
+                <li><a href="#"> 信望愛論壇</a></li>
+                <li><a href="#"> 神學與生活</a></li>
+                <li><a href="#"> 主日學教育</a></li>
+                <li><a href="#"> 網路作家</a></li>
+                <li><a href="#"> 靈糧選集</a></li>
+            </ul>
+        </li>
+        <li><a href="#"><span>連結</span></a>
+            <ul class="menu-hover">
+                <li><a href="#"> 信望愛WWW</a></li>
+                <li><a href="#"> 聖經資源</a></li>
+                <li><a href="#"> 台語信望愛</a></li>
+                <li><a href="#"> 客語信望愛</a></li>
+                <li><a href="#"> 盲人點字</a></li>
+                <li><a href="#"> 神學圖書</a></li>
+                <li><a href="#"> 圖片資源</a></li>
+                <li><a href="#"> 音樂網</a></li>
+            </ul>
+        </li>
+        <li><a href="#"><span>義工</span></a>
+            <ul class="menu-hover">
+                <li><a href="#"> 公告</a></li>
+                <li><a href="#"> 關於我們</a></li>
+                <li><a href="#"> COBS工作區</a></li>
+                <li><a href="#"> 義工群</a></li>
+                <li><a href="#"> 徵稿</a></li>
+                <li><a href="#"> 捐款</a></li>
+                <li><a href="#"> 刊登消息</a></li>
+                <li><a href="#"> 流量</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+<div id="fhlToolBar">
     <div id="windowControl"></div>
+    <div id="help"></div>
+    <div id="bookSelect"></div>
+    <div id="searchTool" class="smallText"></div>
 </div>
 <div id="fhlLeftWindow" class="leftWindow">
     <div class="leftWindowInside">
         <div id="settings">
-            <p>&#9660;&nbsp;設定</p>
-            <ul>
-                <li><div id="snSelect"></div></li>
-                <li><div id="realTimePopUpSelect"></div></li>
-                <li><div id="gbSelect"></div></li>
-                <li><div id="fontSizeTool"></div></li>
-                <li><div id="mapTool"></div></li>
-                <li><div id="imageTool"></div></li>
-            </ul>
+            <div class="secondLevelInside">
+                <p>&#9660;&nbsp;設定</p>
+                <div>
+                    <ul>
+                        <li><div id="snSelect"></div></li>
+                        <li><div id="realTimePopUpSelect"></div></li>
+                        <li><div id="gbSelect"></div></li>
+                        <li><div id="mapTool"></div></li>
+                        <li><div id="imageTool"></div></li>
+                        <li><div id="fontSizeTool"></div></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div id="viewHistory">  
-        </div>
+        <div id="versionSelect"></div>
+        <div id="viewHistory"></div>
     </div>
 </div>
 <div id="fhlMidWindow">
@@ -2132,7 +2430,6 @@ var parsingPopUp={
     </div>
 </div>
 <div id="fhlInfo">
-  <div id="bibleAudio"></div>
   <div id="fhlInfoTitle"></div>
   <div id="fhlInfoContent"></div>
 </div>
@@ -2141,8 +2438,8 @@ var parsingPopUp={
   <div id="bookSelectName"></div>
   <div id="bookSelectChapter"></div>
 </div>
-<div id="versionSelectPopUp"></div>
 <div id="parsingPopUp"></div>
+<div id="helpingPopUp"><div id="helpingPopUpInside"></div></div>
 <!-- Layer 3 windows that exists after mouse leave-->
 <div id="dictionaryPopUp"></div>
 </body>

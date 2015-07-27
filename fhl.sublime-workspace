@@ -278,14 +278,6 @@
 				"buffer_size": 77229,
 				"line_ending": "Windows"
 			}
-		},
-		{
-			"file": "index_conflict.html",
-			"settings":
-			{
-				"buffer_size": 90817,
-				"line_ending": "Windows"
-			}
 		}
 	],
 	"build_system": "",
@@ -544,8 +536,8 @@
 						"selection":
 						[
 							[
-								75561,
-								75561
+								366,
+								366
 							]
 						],
 						"settings":
@@ -555,40 +547,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 61394.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "index_conflict.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 90817,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								79559,
-								79566
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 69369.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
 					"type": "text"
 				}
 			]

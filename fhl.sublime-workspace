@@ -1,0 +1,636 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"view",
+				"viewHistory"
+			],
+			[
+				"fhl",
+				"fhlAPI"
+			],
+			[
+				"getBi",
+				"getBibleParsingCBK"
+			],
+			[
+				"get",
+				"getBibleVersionData"
+			],
+			[
+				"getBible",
+				"getBibleVersionData"
+			],
+			[
+				"json",
+				"json_api"
+			],
+			[
+				"versionSe",
+				"versionSelect"
+			],
+			[
+				"ver",
+				"versionSelectPopUp"
+			],
+			[
+				"max",
+				"maxRecordIdx"
+			],
+			[
+				"maxRe",
+				"maxRecordIdx"
+			],
+			[
+				"re",
+				"record_count"
+			],
+			[
+				"sc",
+				"scrollTop"
+			],
+			[
+				"index",
+				"indexByEngs"
+			],
+			[
+				"bookSe",
+				"bookSelect"
+			],
+			[
+				"select",
+				"selectLecture"
+			],
+			[
+				"au",
+				"audio"
+			],
+			[
+				"setting",
+				"settingPopUp"
+			],
+			[
+				"se",
+				"settingPopUp"
+			],
+			[
+				"rea",
+				"realTimePopUp"
+			],
+			[
+				"real",
+				"realTimePopUpSelect"
+			],
+			[
+				"realTime",
+				"realTimePopUp"
+			],
+			[
+				"left",
+				"leftWinH"
+			],
+			[
+				"scroll",
+				"scrollH"
+			],
+			[
+				"back",
+				"background-image"
+			],
+			[
+				"fhlLe",
+				"fhlLecture"
+			],
+			[
+				"ch",
+				"chineses"
+			],
+			[
+				"bible",
+				"bible_text"
+			],
+			[
+				"border",
+				"border-radius"
+			],
+			[
+				"sn",
+				"snSelect"
+			],
+			[
+				"inline",
+				"inline-block"
+			],
+			[
+				"fhlLeft",
+				"fhlLeftBottomWindowContent"
+			],
+			[
+				"fhlLE",
+				"fhlLeftBottomWindowContent"
+			],
+			[
+				"fhlL",
+				"fhlLecture"
+			],
+			[
+				"le",
+				"leftBtmWinH"
+			],
+			[
+				"lef",
+				"leftBtmWinShow"
+			],
+			[
+				"mou",
+				"mouseleave"
+			],
+			[
+				"parsing",
+				"parsingPopUp"
+			],
+			[
+				"title",
+				"titleId"
+			],
+			[
+				"record",
+				"record_count"
+			],
+			[
+				"ur",
+				"urlJSON"
+			],
+			[
+				"bookS",
+				"bookSelectPopUp"
+			],
+			[
+				"ajax",
+				"ajaxUrl"
+			],
+			[
+				"book",
+				"bookSelectChapter"
+			],
+			[
+				"pa",
+				"paramArr"
+			],
+			[
+				"sel",
+				"selectAll"
+			],
+			[
+				"fhlIn",
+				"fhlInfocontent"
+			],
+			[
+				"version",
+				"versionSelect"
+			],
+			[
+				"comm",
+				"commentBook"
+			],
+			[
+				"fhlin",
+				"fhlInfo-parsing"
+			],
+			[
+				"lec",
+				"lecTitle"
+			],
+			[
+				"chap",
+				"chapterSelected"
+			],
+			[
+				"to",
+				"toggleChapterList"
+			],
+			[
+				"new",
+				"newTChapters"
+			],
+			[
+				"in",
+				"inline-block"
+			],
+			[
+				"list-",
+				"list-style-type"
+			],
+			[
+				"text-",
+				"text-align"
+			],
+			[
+				"top",
+				"topMenu"
+			],
+			[
+				"click",
+				"clickBtnAct"
+			],
+			[
+				"wind",
+				"windowHeight"
+			],
+			[
+				"win",
+				"windowWidth"
+			],
+			[
+				"id",
+				"idStr"
+			],
+			[
+				"start",
+				"startPosition"
+			],
+			[
+				"i",
+				"iX"
+			],
+			[
+				"page",
+				"pageX"
+			],
+			[
+				"ba",
+				"background-image"
+			],
+			[
+				"e",
+				"e"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 77229,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 216.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/D/GitHub/FHLNewWebUI/index_conflict.html",
+		"/D/GitHub/FHLNewWebUI/search_api/sephp_c_param.js",
+		"/D/GitHub/FHLNewWebUI/libs/fhl.css",
+		"/D/GitHub/FHLNewWebUI/search_api/fhl_api.js",
+		"/D/GitHub/FHLNewWebUI/index.html",
+		"/D/GitHub/FHLNewWebUI/search_api/abvphp_api.js",
+		"/D/GitHub/FHLNewWebUI/.gitignore",
+		"/D/GitHub/FHLNewWebUI/search_api/sephp_c_param.css",
+		"/D/GitHub/FHLNewWebUI/index_old.html",
+		"/D/GitHub/FHLNewWebUI/.gitattributes",
+		"/D/GitHub/FHLNewWebUI/test.html",
+		"/D/GitHub/FHLNewWebUI/libs/constant.js",
+		"/D/GitHub/FHLNewWebUI/libs/fhlAPI.js",
+		"/D/GitHub/FHLNewWebUI/testPure.html",
+		"/D/GitHub/FHLNewWebUI/libs/jquery-1.10.2.js",
+		"/C/Users/KevinWang/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/D/Learnings/History/Coursera_The Emergence of the Modern Middle East - Part I/4 - 12 - 4.6.1.1 The Non-Arab States- The Republic of Turkey (part 1) (03-58).srt",
+		"/D/GitHub/kevin/index.html",
+		"/D/GitHub/yw/InternalQuotation/jquery-1.10.2.js",
+		"/D/GitHub/yw/InternalQuotation/data.js",
+		"/C/Users/KevinWang/Desktop/fhl/PureJQueryArch/libs/fhl-pc.css",
+		"/C/Users/KevinWang/Desktop/fhl/PureJQueryArch/main.html",
+		"/C/Users/KevinWang/Desktop/fhl/PureJQueryArch/test.html",
+		"/C/Users/KevinWang/Desktop/fhl/PureJQueryArch/libs/fhl.css",
+		"/C/Users/KevinWang/Desktop/fhl/PureJQueryArch/index.html",
+		"/C/Users/KevinWang/Desktop/fhl/tjm_index1.html",
+		"/C/Users/KevinWang/Desktop/fhl/BootStrap_Arch/libs/fhl-pc.css",
+		"/C/Users/KevinWang/Desktop/fhl/BootStrap_Arch/main.html",
+		"/C/Users/KevinWang/Desktop/fhl/BootStrap_Arch/css/bootstrap.css",
+		"/C/Users/KevinWang/Desktop/fhl/BootStrap_Arch/css/bootstrap-theme.css",
+		"/C/Users/KevinWang/Desktop/fhl/main.html",
+		"/C/Users/KevinWang/Desktop/fhl/test.html",
+		"/C/Users/KevinWang/Desktop/fhl/libs/fhl-pc.css",
+		"/C/Users/KevinWang/Desktop/fhl/libs/fhl-pc-style.css",
+		"/C/Users/KevinWang/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/KevinWang/Desktop/fhl/tjm_test.html",
+		"/C/Users/KevinWang/Desktop/fhl/libs/xml2json.js",
+		"/C/Users/KevinWang/Desktop/cef/puzzle.css",
+		"/D/Dropbox/CLBC_YOUTH/2014_Q1/20140328/onepiece.css",
+		"/D/Dropbox/CLBC_YOUTH/2014_Q1/20140328/onepiece.html",
+		"/D/Dropbox/CLBC_YOUTH/2014_Q1/20140328/openQ.js",
+		"/D/Dropbox/CLBC_YOUTH/2014_Q1/20140328/optQ.js"
+	],
+	"find":
+	{
+		"height": 45.0
+	},
+	"find_in_files":
+	{
+		"height": 120.0,
+		"where_history":
+		[
+			"D:\\GitHub\\FHLNewWebUI\\search_api"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"snParse",
+			"var parsingPopup",
+			"console.dir",
+			"=====",
+			"<<<",
+			".sn",
+			"parseDic",
+			"var parsingPopup",
+			"parsingPopUp",
+			"parseBibleText",
+			"var fhllecture",
+			"snSelect",
+			"var fhllecture",
+			"var parsing",
+			"setFont",
+			".bhs",
+			"setFont",
+			"var fhllecture",
+			"function ",
+			"fhllecture",
+			"fhlLecture",
+			"fhllecture",
+			".hebrew",
+			"lecture",
+			"version",
+			"do_search =",
+			"do_search",
+			"init_g_bibleversions",
+			"sephp_search",
+			"do_search",
+			"localStorage",
+			"init_g_bibleversions",
+			"searchInit",
+			"mp_vversion",
+			"m_bibleversions",
+			"version",
+			"parsingPoup",
+			"doSearch",
+			"parsingPopUp.render",
+			"parsingPopUp",
+			"searchSN",
+			"doSearch",
+			"control_str",
+			"mapTool",
+			"insertVersion",
+			"getVersionIdx",
+			"c_preach",
+			"setCache",
+			"searchInit",
+			"請檢查「查詢範圍」與「聖經版本」設定，沒有能查詢的範圍。",
+			"fhlMidBottomWindow",
+			"searchTool",
+			"searchInit",
+			"doSearch",
+			"leftWindow",
+			"initial_div_ui",
+			"fhlMidBottomWindowTitle",
+			"init_g_bibleversions",
+			"do_search",
+			"doSearch",
+			"parsingPopUp",
+			"parsingPopup",
+			"parsing",
+			"fhlMidBottom",
+			"searchInit",
+			"search_api",
+			"console.debug",
+			"doSearch",
+			"searchTool",
+			"init_g_bibleversions",
+			"searchInit",
+			"version",
+			"parseBibleText",
+			"fhlLecture",
+			"function fhlLecture",
+			"lecture",
+			"sn",
+			"class='sn",
+			".sn",
+			"sn",
+			"onOff",
+			"realTimeOnOffSwitch",
+			"realTime",
+			"console.log",
+			"snSelect",
+			"clear",
+			"setpageState",
+			"viewHistory",
+			"setpageState",
+			"ps.",
+			"setPageState",
+			"viewHistory",
+			"ps.history",
+			"history",
+			"viewHistory",
+			"viewHi",
+			"settings",
+			"fhlLeftWindow",
+			"fhlLeftWindow.init",
+			"fhlLeftWindow.render",
+			"fhlLeftWindow.init",
+			"fhlLeftWindow",
+			"viewHistory",
+			"fhlLecture",
+			"viewHistoryList",
+			"viewHistory",
+			"history",
+			"viewHistory",
+			"viewHistoryList",
+			"viewHistory",
+			"settings",
+			"viewHistory",
+			"setting",
+			"viewHistoryPopup",
+			"viewHistory",
+			"hideAllPopUp",
+			"fhlLeftWindow",
+			"fhlLeftWindow.init",
+			"fhlLeftWindow",
+			"leftWindow",
+			"snsle",
+			"viewHistory",
+			"pageStateInit",
+			"pageInit",
+			"========",
+			"fhlleft",
+			"leftBtmWinshow",
+			"fhlMidBottomWindow"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"\"+ps.N+\"",
+			"ps.N",
+			"text",
+			"\"",
+			"setPageState",
+			"versionSelect",
+			"$(arr[i])",
+			".png"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 77229,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								366,
+								366
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 36.0
+	},
+	"input":
+	{
+		"height": 44.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "fhl.sublime-project",
+	"replace":
+	{
+		"height": 84.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 188.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
